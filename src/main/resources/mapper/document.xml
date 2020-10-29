@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="document">
+
+    <resultMap type="document" id="documentResultMap">
+        <id column="id" property="id" javaType="int" jdbcType="INTEGER"/>
+        <result column="doc_name" property="docName" javaType="string" jdbcType="VARCHAR"/>
+        <result column="workspace_id" property="workspaceId" javaType="string" jdbcType="VARCHAR"/>
+        <result column="doc_password" property="docPassword" javaType="string" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" javaType="int" jdbcType="INTEGER"/>
+        <result column="create_date" property="createDate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="type" property="type" javaType="string" jdbcType="VARCHAR"/>
+        <result column="state" property="state" javaType="int" jdbcType="INTEGER"/>
+        <result column="update_date" property="updateDate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="is_show" property="isShow" javaType="int" jdbcType="INTEGER"/>
+        <collection property="documentFiles" column="document_id" ofType="documentFile">
+            <id column="sid" property="id" javaType="int" jdbcType="INTEGER"/>
+            <result column="document_id" property="documentId" javaType="int" jdbcType="INTEGER"/>
+            <result column="content" property="content" javaType="string" jdbcType="VARCHAR"/>
+        </collection>
+
+    </resultMap>
+
+    <!-- 查找某个工作空间的文档列表 -->
+    <select id="getDocumentByWorkspaceId" parameterType="document" resultMap="documentResultMap">
+        select
+        t.id,
+        t.doc_name,
+        t.workspace_id,
+        t.doc_password,
+        t.user_id,
+        t.create_date,
+        t.type,
+        t.state,
+        t.update_date,
+        t.is_show,
+        s.id as sid,
+        s.document_id,
+        s.content
+        from zf_document t left join zf_document_file s on t.id = s.document_id
+        <where>
+            and exists (select 1 from zf_user_workspace r where t.workspace_id = r.workspace_id and r.user_id =
+            #{userId})
+            <if test="@Ognl@isNotEmpty(id)">
+                and t.id = #{id}
+            </if>
+            <if test="isShow == 0">
+                and t.is_show = #{isShow}
+            </if>
+            <if test="isShow == 1 or isShow == null">
+                and ( t.is_show = 0 or (t.is_show = 1 and t.user_id = #{userId}) )
+            </if>
+            <if test="@Ognl@isNotEmpty(workspaceId)">
+                and t.workspace_id = #{workspaceId}
+            </if>
+            <if test="@Ognl@isNotEmpty(state)">
+                and t.state = #{state}
+            </if>
+            <if test="@Ognl@isNotEmpty(docPassword)">
+                and t.doc_password = #{docPassword}
+            </if>
+            <if test="@Ognl@isNotEmpty(docName)">
+                and t.doc_name like concat('%',#{docName},'%')
+            </if>
+        </where>
+        <if test="@Ognl@isNotEmpty(row)">
+            order by t.${row} ${orderType}
+        </if>
+    </select>
+
+    <insert id="createDocument" keyProperty="id" useGeneratedKeys="true" parameterType="document">
+        insert into zf_document (doc_name, workspace_id, user_id, create_date, type, state, update_date, is_show)
+        values (#{docName},
+                #{workspaceId},
+                #{userId},
+                #{createDate},
+                #{type},
+                #{state},
+                #{updateDate},
+                #{isShow})
+    </insert>
+
+
+    <update id="updateDocument" parameterType="document">
+        update zf_document
+        <set>
+            <if test="@Ognl@isNotEmpty(updateDate)">
+                update_date = #{updateDate},
+            </if>
+            <if test="@Ognl@isNotEmpty(docName)">
+                doc_name = #{docName},
+            </if>
+            <if test="isShow != null">
+                is_show = #{isShow},
+            </if>
+            <if test="@Ognl@isNotEmpty(docPassword)">
+                doc_password = #{docPassword},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getDocumentById" parameterType="document" resultMap="documentResultMap">
+        select
+        t.id,
+        t.workspace_id,
+        t.doc_name,
+        t.user_id,
+        t.create_date,
+        t.type,
+        t.state,
+        t.update_date,
+        t.is_show,
+        r.id as sid,
+        r.document_id,
+        r.content
+        from zf_document t
+        left join zf_document_file r on t.id = r.document_id
+        <where>
+            <if test="@Ognl@isNotEmpty(docPassword) and userId != null">
+                and (t.doc_password = #{docPassword} or t.user_id = #{userId})
+            </if>
+            <if test="id != null">
+                and t.id = #{id}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
+
+

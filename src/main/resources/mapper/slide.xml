@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="slide">
+    <!-- 更新文档 -->
+    <update id="savePartSlide" parameterType="slide">
+        update file_partslide
+        set content = #{content}
+        where id = #{id}
+    </update>
+
+    <select id="getSlideByFileId" parameterType="integer">
+        select *
+        from file_partslide
+        where file_id = #{fileId}
+    </select>
+
+    <insert id="saveFileSlide" keyProperty="id" useGeneratedKeys="true" parameterType="fileSlide">
+        insert into file_slide (file_id)
+        values (#{fileId})
+    </insert>
+
+    <insert id="saveFilePartSlide" keyProperty="id" useGeneratedKeys="true" parameterType="filePartSlide">
+        insert into file_partslide (slideId, content)
+        values (#{slideId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR});
+    </insert>
+
+
+</mapper>
+
