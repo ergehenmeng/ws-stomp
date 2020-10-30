@@ -9,7 +9,7 @@ $(function(){
 	load = $.loadMsg("服务器连接中...");
 	connect();
 	$("#chatMessage").on("keypress",function(event){
-		if(event.keyCode == "13"){
+		if(event.keyCode === 13){
 			sendMessage();
 		}
 	});

@@ -1,4 +1,4 @@
-package com.eghm.websocket.action;
+package com.eghm.websocket.controller;
 
 import java.util.HashMap;
 
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
-public class IndexAction extends BaseAction{
+public class IndexController {
 	
 	
 	@Resource
@@ -103,7 +103,6 @@ public class IndexAction extends BaseAction{
 	private void setOrderByValue(HttpServletRequest request,Document document,String workspaceId){
 		
 		document.setWorkspaceId(workspaceId);
-		document.setIsShow(WebUtils.getSessionInteger(request, Constants.HIDDEN));
 		document.setState(0);
 		
 		String orderBy = WebUtils.getAttribute(request, Constants.ORDER_BY);

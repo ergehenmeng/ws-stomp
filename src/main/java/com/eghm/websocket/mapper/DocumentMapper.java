@@ -1,56 +1,40 @@
 package com.eghm.websocket.mapper;
 
-
 import com.eghm.websocket.model.Document;
-import com.eghm.websocket.model.DocumentFile;
-
-import java.util.List;
 
 public interface DocumentMapper {
+    /**
+     * 插入数据库记录
+     *
+     * @param record 条件 
+     */
+    int insert(Document record);
 
     /**
-     * 通过workspaceId获取工作空间下的所有文档
+     * 插入不为空的记录
      *
-     * @param
-     * @return
+     * @param record 条件 
      */
-    List<Document> getDocumentByWorkspaceId(Document document);
+    int insertSelective(Document record);
 
     /**
-     * 增加文档对象
+     * 根据主键获取一条数据库记录
      *
-     * @param document
-     * @return Integer 返回生成主键ID
+     * @param id 条件 
      */
-    Integer createDocument(Document document);
+    Document selectByPrimaryKey(Integer id);
 
     /**
-     * 通过主键删除文档
+     * 根据主键来更新部分数据库记录
      *
-     * @param id 主键
+     * @param record 条件 
      */
-    void deleteDocumentById(Integer id);
+    int updateByPrimaryKeySelective(Document record);
 
     /**
-     * 更新文档信息
+     * 根据主键来更新数据库记录
      *
-     * @param document
+     * @param record 条件 
      */
-    void updateDocument(Document document);
-
-    /**
-     * 通过id,用户id查询文档信息
-     *
-     * @param document
-     * @return
-     */
-    Document getDocumentById(Document document);
-
-    /**
-     * 通过主键获取文档页信息
-     *
-     * @param id
-     * @return
-     */
-    DocumentFile getDocumentFileById(Integer id);
+    int updateByPrimaryKey(Document record);
 }

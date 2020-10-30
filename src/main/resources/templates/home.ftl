@@ -16,8 +16,8 @@
 <div class="navbar navbar-default navbar-fixed-top  navbar-info">
 	<div id="navbar-responsive-collapse" class="collapse navbar-collapse">
     	<ul class="nav navbar-nav">
-      		<li class="active"><a href="##">网站首页</a></li>
-      		<li><a href="##">欢迎您:${loginUser.nickName}</a></li>
+      		<li class="active"><a href="#">网站首页</a></li>
+      		<li><a href="#">欢迎您:${loginUser.nickName}</a></li>
 	 	</ul>
   </div>
 </div>
@@ -35,7 +35,7 @@
 			
 				<#if workspaceList?? && workspaceList?size gt 0>
 					<#list workspaceList as workList>
-			   			 <a href="#" title="创建时间:${workList.createDate?string('yyyy-MM-dd')}" class="list-group-item  <#if workList.id == workspace.id>active <#else> list-group-item-warning </#if>">${workList.spaceName}<button class="close" type="button" onclick="$.deleteFun('','','确定要删除该工作空间吗?')">&times;</button></a>
+			   			 <a href="#" title="创建时间:${workList.addTime?string('yyyy-MM-dd')}" class="list-group-item  <#if workList.id == workspace.id>active <#else> list-group-item-warning </#if>">${workList.spaceName}<button class="close" type="button" onclick="$.deleteFun('','','确定要删除该工作空间吗?')">&times;</button></a>
 					</#list>
 				</#if>		
 			</div>

@@ -1,4 +1,4 @@
-package com.eghm.websocket.config;/*package com.eghm.websocket.config;
+package com.eghm.websocket.config.websocket;/*package com.eghm.websocket.config;
 
 
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;

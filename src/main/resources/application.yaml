@@ -1,7 +1,6 @@
 server:
   port: 8080
 spring:
-  ##  ˝æ›ø‚≈‰÷√
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:log4jdbc:mysql://127.0.0.1:3306/project?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&serverTimezone=UTC&useSSL=true
@@ -13,3 +12,6 @@ spring:
       idle-timeout: 60000
       maximum-pool-size: 100
       minimum-idle: 5
+
+mybatis:
+  mapper-locations:

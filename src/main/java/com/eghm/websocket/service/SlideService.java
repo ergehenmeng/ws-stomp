@@ -17,9 +17,7 @@ public interface SlideService {
 	 * @return
 	 */
 	Slide getSlideByFileId(Integer fileId);
-	
-	
-	
+
 	/**
 	 * 创建演示文稿
 	 * @param name
@@ -34,6 +32,5 @@ public interface SlideService {
 	 * @return
 	 */
 	Integer createPartSlide(Integer slideId);
-	
-	
+
 }

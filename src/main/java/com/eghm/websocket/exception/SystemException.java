@@ -7,27 +7,18 @@ public class SystemException extends RuntimeException{
 	/**
 	 * 0 为正常 1为异常
 	 */
-	private int type;
-	
-	public SystemException(){
-		super();
-	}
-	
+	private int code = 500;
+
 	public SystemException(String message){
 		super(message);
 	}
 	
-	public SystemException(String message ,int type){
+	public SystemException(int code, String message){
 		super(message);
-		this.type = type;
-	}
-	
-	public SystemException(String message,RuntimeException exception){
-		super(message,exception);
+		this.code = code;
 	}
 
-	public int getType() {
-		return type;
-	}
-	
+    public int getCode() {
+        return code;
+    }
 }

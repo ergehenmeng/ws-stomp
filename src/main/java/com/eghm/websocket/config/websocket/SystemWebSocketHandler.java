@@ -1,4 +1,4 @@
-package com.eghm.websocket.config;/*package com.eghm.websocket.config;
+package com.eghm.websocket.config.websocket;/*package com.eghm.websocket.config;
 
 import java.io.IOException;
 import java.util.ArrayList;

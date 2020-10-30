@@ -1,4 +1,4 @@
-package com.eghm.websocket.action;
+package com.eghm.websocket.controller;
 /*package com.eghm.websocket.action;
 
 import java.io.IOException;

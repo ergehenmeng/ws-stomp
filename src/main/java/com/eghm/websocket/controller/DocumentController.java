@@ -1,15 +1,4 @@
-package com.eghm.websocket.action;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+package com.eghm.websocket.controller;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.crypto.digest.MD5;
@@ -19,7 +8,10 @@ import com.eghm.websocket.model.User;
 import com.eghm.websocket.model.UserChat;
 import com.eghm.websocket.service.DocumentFileService;
 import com.eghm.websocket.service.DocumentService;
-import com.eghm.websocket.utils.*;
+import com.eghm.websocket.utils.Constants;
+import com.eghm.websocket.utils.LimitQueue;
+import com.eghm.websocket.utils.StringUtil;
+import com.eghm.websocket.utils.WebUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -34,10 +26,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @Controller
 @Slf4j
-public class DocumentAction extends BaseAction {
+public class DocumentController {
 
 	
 	private static final String DEST_DOCUMENT_URL = "/document/";
@@ -111,10 +112,8 @@ public class DocumentAction extends BaseAction {
 			}
 			request.getSession().setAttribute(Constants.ORDER_BY,document.getOrder());
 		}
-		
-		if(document.getIsShow() != null){
-			request.getSession().setAttribute(Constants.HIDDEN, document.getIsShow());
-		}
+
+        request.getSession().setAttribute("show", document.getShow());
 		
 		User user = WebUtils.getUser(request);
 		document.setState(0);
@@ -191,7 +190,7 @@ public class DocumentAction extends BaseAction {
 		document.setUserId(user.getId());
 		List<Document> list = documentService.getDocumentByWorkspaceId(document);
 		if(list != null && list.size() > 0){
-			document.setDocPassword(MD5.create().digestHex(docPassword));
+			document.setPassword(MD5.create().digestHex(docPassword));
 			documentService.updateDocument(document);
 			model.put("result", true);
 			model.put("msg", "文档加密成功");
@@ -249,7 +248,8 @@ public class DocumentAction extends BaseAction {
 	public Map<String,Object> initDocument(SimpMessageHeaderAccessor accessor ,@DestinationVariable Integer workspaceId,@DestinationVariable Integer documentId){
 		log.debug("文档空间: 工作空间ID: " + workspaceId + " 文档ID " + documentId);
 		log.debug("当前类: " + this);
-		Document document = new Document(documentId);
+		Document document = new Document();
+		document.setId(documentId);
 		document = documentService.getDocumentById(document);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put("document", document);

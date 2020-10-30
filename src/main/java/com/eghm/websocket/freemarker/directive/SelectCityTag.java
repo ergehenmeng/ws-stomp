@@ -14,11 +14,8 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
 /**
- * 自定义下拉框标签
- * @time 2016年5月20日
- * @author fanyin
+ * @author
  */
-@SuppressWarnings({"rawtypes","unchecked"})
 public class SelectCityTag implements TemplateDirectiveModel{
 	
 	

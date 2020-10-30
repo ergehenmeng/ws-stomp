@@ -1,4 +1,4 @@
-package com.eghm.websocket.action.websocket;
+package com.eghm.websocket.config.websocket;
 
 
 import com.eghm.websocket.utils.Constants;

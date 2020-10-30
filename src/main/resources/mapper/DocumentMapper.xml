@@ -1,22 +1,187 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eghm.websocket.mapper.DocumentMapper">
+  <resultMap id="BaseResultMap" type="com.eghm.websocket.model.Document">
+    <!--
+      @create by mybatis
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="workspace_id" jdbcType="INTEGER" property="workspaceId" />
+    <result column="doc_name" jdbcType="VARCHAR" property="docName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="show" jdbcType="BIT" property="show" />
+    <result column="sort" jdbcType="SMALLINT" property="sort" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="BaseColumnList">
+    <!--
+      @create by mybatis
+    -->
+    id, workspace_id, doc_name, type, state, pwd, show, sort, add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--
+      @create by mybatis
+    -->
+    select 
+    <include refid="BaseColumnList" />
+    from document
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.eghm.websocket.model.Document">
+    <!--
+      @create by mybatis
+    -->
+    insert into document (id, workspace_id, doc_name, 
+      type, state, pwd, show, 
+      sort, add_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{workspaceId,jdbcType=INTEGER}, #{docName,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{pwd,jdbcType=VARCHAR}, #{show,jdbcType=BIT}, 
+      #{sort,jdbcType=SMALLINT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.eghm.websocket.model.Document">
+    <!--
+      @create by mybatis
+    -->
+    insert into document
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="workspaceId != null">
+        workspace_id,
+      </if>
+      <if test="docName != null">
+        doc_name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="pwd != null">
+        pwd,
+      </if>
+      <if test="show != null">
+        show,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="workspaceId != null">
+        #{workspaceId,jdbcType=INTEGER},
+      </if>
+      <if test="docName != null">
+        #{docName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="pwd != null">
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="show != null">
+        #{show,jdbcType=BIT},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=SMALLINT},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eghm.websocket.model.Document">
+    <!--
+      @create by mybatis
+    -->
+    update document
+    <set>
+      <if test="workspaceId != null">
+        workspace_id = #{workspaceId,jdbcType=INTEGER},
+      </if>
+      <if test="docName != null">
+        doc_name = #{docName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="pwd != null">
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="show != null">
+        show = #{show,jdbcType=BIT},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=SMALLINT},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eghm.websocket.model.Document">
+    <!--
+      @create by mybatis
+    -->
+    update document
+    set workspace_id = #{workspaceId,jdbcType=INTEGER},
+      doc_name = #{docName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      state = #{state,jdbcType=TINYINT},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      show = #{show,jdbcType=BIT},
+      sort = #{sort,jdbcType=SMALLINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 
-    <resultMap type="com.eghm.websocket.model.Document" id="documentResultMap">
-        <id column="id" property="id" javaType="int" jdbcType="INTEGER"/>
-        <result column="doc_name" property="docName" javaType="string" jdbcType="VARCHAR"/>
-        <result column="workspace_id" property="workspaceId" javaType="string" jdbcType="VARCHAR"/>
-        <result column="doc_password" property="docPassword" javaType="string" jdbcType="VARCHAR"/>
-        <result column="user_id" property="userId" javaType="int" jdbcType="INTEGER"/>
-        <result column="create_date" property="createDate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-        <result column="type" property="type" javaType="string" jdbcType="VARCHAR"/>
-        <result column="state" property="state" javaType="int" jdbcType="INTEGER"/>
-        <result column="update_date" property="updateDate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-        <result column="is_show" property="isShow" javaType="int" jdbcType="INTEGER"/>
-        <collection property="documentFiles" column="document_id" ofType="documentFile">
-            <id column="sid" property="id" javaType="int" jdbcType="INTEGER"/>
-            <result column="document_id" property="documentId" javaType="int" jdbcType="INTEGER"/>
-            <result column="content" property="content" javaType="string" jdbcType="VARCHAR"/>
+    <resultMap id="documentResultMap" type="com.eghm.websocket.model.Document">
+        <id column="id" javaType="int" jdbcType="INTEGER" property="id" />
+        <result column="doc_name" javaType="string" jdbcType="VARCHAR" property="docName" />
+        <result column="workspace_id" javaType="string" jdbcType="VARCHAR" property="workspaceId" />
+        <result column="doc_password" javaType="string" jdbcType="VARCHAR" property="docPassword" />
+        <result column="user_id" javaType="int" jdbcType="INTEGER" property="userId" />
+        <result column="create_date" javaType="java.util.Date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="type" javaType="string" jdbcType="VARCHAR" property="type" />
+        <result column="state" javaType="int" jdbcType="INTEGER" property="state" />
+        <result column="update_date" javaType="java.util.Date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="is_show" javaType="int" jdbcType="INTEGER" property="isShow" />
+        <collection column="document_id" ofType="documentFile" property="documentFiles">
+            <id column="sid" javaType="int" jdbcType="INTEGER" property="id" />
+            <result column="document_id" javaType="int" jdbcType="INTEGER" property="documentId" />
+            <result column="content" javaType="string" jdbcType="VARCHAR" property="content" />
         </collection>
 
     </resultMap>
@@ -68,7 +233,7 @@
         </if>
     </select>
 
-    <insert id="createDocument" keyProperty="id" useGeneratedKeys="true" parameterType="com.eghm.websocket.model.Document">
+    <insert id="createDocument" keyProperty="id" parameterType="com.eghm.websocket.model.Document" useGeneratedKeys="true">
         insert into zf_document (doc_name, workspace_id, user_id, create_date, type, state, update_date, is_show)
         values (#{docName},
                 #{workspaceId},
@@ -131,5 +296,3 @@
 
 
 </mapper>
-
-

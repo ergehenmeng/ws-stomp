@@ -1,4 +1,4 @@
-package com.eghm.websocket.config;
+package com.eghm.websocket.config.websocket;
 
 import java.util.Map;
 

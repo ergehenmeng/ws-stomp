@@ -13,7 +13,6 @@ public interface DocumentService {
      */
     List<Document> getDocumentByWorkspaceId(Document document);
 
-
     /**
      * 创建文档对象
      *
@@ -35,7 +34,6 @@ public interface DocumentService {
      * @param document
      */
     void updateDocument(Document document);
-
 
     /**
      * 通过id,用户id查询文档信息

@@ -1,4 +1,4 @@
-package com.eghm.websocket.action;
+package com.eghm.websocket.config.websocket;
 
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import org.springframework.web.socket.WebSocketSession;
 @Slf4j
 public class ChatMessageHandler implements WebSocketHandler {
 
-    private static final ArrayList<WebSocketSession> users = new ArrayList<WebSocketSession>();
+    private static final ArrayList<WebSocketSession> users = new ArrayList<>();
 
 
     @Override

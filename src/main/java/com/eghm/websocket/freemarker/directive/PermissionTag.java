@@ -13,7 +13,10 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
-@SuppressWarnings("rawtypes")
+
+/**
+ * @author 
+ */
 public class PermissionTag implements TemplateDirectiveModel{
 	
 	@Resource

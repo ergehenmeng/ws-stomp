@@ -5,28 +5,53 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
-
-
 /**
- * @time 下午2:41:042016年4月25日
- * @author fanyin
- * @table zf_workspace
+ * @author 二哥很猛
  */
 @Data
-public class Workspace implements Serializable{
-	
-	private static final long serialVersionUID = -7545301027909797595L;
+public class Workspace implements Serializable {
 
-	private String id;
-	
-	private String spaceName;
-	
-	private String spaceNotice;//空间公告
-	
-	private Date createDate;
-	
-	private Integer userId;//所属用户
-	
-	private Integer state;//状态 0:正常 1:删除
-	
+    /**
+     * 主键<br>
+     * 表 : workspace<br>
+     * 对应字段 : id<br>
+     */
+    private Integer id;
+
+    /**
+     * 命名空间的名称<br>
+     * 表 : workspace<br>
+     * 对应字段 : title<br>
+     */
+    private String title;
+
+    /**
+     * 命名空间的公告<br>
+     * 表 : workspace<br>
+     * 对应字段 : notice<br>
+     */
+    private String notice;
+
+    /**
+     * 该工作空间所属的用户id<br>
+     * 表 : workspace<br>
+     * 对应字段 : user_id<br>
+     */
+    private Integer userId;
+
+    /**
+     * <br>
+     * 表 : workspace<br>
+     * 对应字段 : add_time<br>
+     */
+    private Date addTime;
+
+    /**
+     * 更新时间<br>
+     * 表 : workspace<br>
+     * 对应字段 : update_time<br>
+     */
+    private Date updateTime;
+
+    private static final long serialVersionUID = 1L;
 }

@@ -1,4 +1,4 @@
-package com.eghm.websocket.action.websocket;
+package com.eghm.websocket.config.websocket;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.MessageHeaders;

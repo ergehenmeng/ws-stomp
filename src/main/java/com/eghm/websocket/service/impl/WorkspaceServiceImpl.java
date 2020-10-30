@@ -10,17 +10,15 @@ import com.eghm.websocket.mapper.WorkspaceMapper;
 import com.eghm.websocket.model.Workspace;
 import com.eghm.websocket.service.WorkspaceService;
 
-@Service("workspaceService")
+@Service
 public class WorkspaceServiceImpl implements WorkspaceService {
-	
-	@Resource
-	private WorkspaceMapper workspaceMapper;
-	
-	@Override
-	public List<Workspace> getWorkspaceByUserId(Integer id) {
-		
-		return workspaceMapper.getWorkspaceByUserId(id);
-	}
 
+    @Resource
+    private WorkspaceMapper workspaceMapper;
+
+    @Override
+    public List<Workspace> getWorkspaceByUserId(Integer id) {
+        return workspaceMapper.getWorkspaceByUserId(id);
+    }
 
 }
