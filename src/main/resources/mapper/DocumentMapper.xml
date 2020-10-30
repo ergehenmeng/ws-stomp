@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="document">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eghm.websocket.mapper.DocumentMapper">
 
-    <resultMap type="document" id="documentResultMap">
+    <resultMap type="com.eghm.websocket.model.Document" id="documentResultMap">
         <id column="id" property="id" javaType="int" jdbcType="INTEGER"/>
         <result column="doc_name" property="docName" javaType="string" jdbcType="VARCHAR"/>
         <result column="workspace_id" property="workspaceId" javaType="string" jdbcType="VARCHAR"/>
@@ -22,7 +22,7 @@
     </resultMap>
 
     <!-- 查找某个工作空间的文档列表 -->
-    <select id="getDocumentByWorkspaceId" parameterType="document" resultMap="documentResultMap">
+    <select id="getDocumentByWorkspaceId" parameterType="com.eghm.websocket.model.Document" resultMap="documentResultMap">
         select
         t.id,
         t.doc_name,
@@ -68,7 +68,7 @@
         </if>
     </select>
 
-    <insert id="createDocument" keyProperty="id" useGeneratedKeys="true" parameterType="document">
+    <insert id="createDocument" keyProperty="id" useGeneratedKeys="true" parameterType="com.eghm.websocket.model.Document">
         insert into zf_document (doc_name, workspace_id, user_id, create_date, type, state, update_date, is_show)
         values (#{docName},
                 #{workspaceId},
@@ -81,7 +81,7 @@
     </insert>
 
 
-    <update id="updateDocument" parameterType="document">
+    <update id="updateDocument" parameterType="com.eghm.websocket.model.Document">
         update zf_document
         <set>
             <if test="@Ognl@isNotEmpty(updateDate)">
@@ -103,7 +103,7 @@
         where id = #{id}
     </update>
 
-    <select id="getDocumentById" parameterType="document" resultMap="documentResultMap">
+    <select id="getDocumentById" parameterType="com.eghm.websocket.model.Document" resultMap="documentResultMap">
         select
         t.id,
         t.workspace_id,

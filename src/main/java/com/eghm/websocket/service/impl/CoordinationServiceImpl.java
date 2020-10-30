@@ -16,10 +16,7 @@ public class CoordinationServiceImpl implements CoordinationService {
 	
 	@Override
 	public Coordination getCoordinationById(Integer id) {
-		
 		return coordinationMapper.getCoordinationById(id);
 	}
-	
-	
-	
+
 }

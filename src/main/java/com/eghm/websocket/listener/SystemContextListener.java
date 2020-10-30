@@ -8,7 +8,7 @@ import javax.servlet.ServletContextListener;
  * @author Administrator
  *
  */
-public class SytemContextListener implements ServletContextListener{
+public class SystemContextListener implements ServletContextListener{
 
     @Override
 	public void contextInitialized(ServletContextEvent sce) {
@@ -19,8 +19,7 @@ public class SytemContextListener implements ServletContextListener{
 
     @Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 

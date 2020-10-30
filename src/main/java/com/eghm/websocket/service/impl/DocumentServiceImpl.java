@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.eghm.websocket.mapper.CoordinationMapper;
-import com.eghm.websocket.mapper.DocumentDao;
+import com.eghm.websocket.mapper.DocumentMapper;
 import com.eghm.websocket.model.Document;
 import com.eghm.websocket.service.DocumentService;
 
@@ -16,7 +16,7 @@ import com.eghm.websocket.service.DocumentService;
 public class DocumentServiceImpl implements DocumentService{
 	
 	@Resource
-	private DocumentDao documentDao;
+	private DocumentMapper documentMapper;
 	
 	@Resource
 	private CoordinationMapper coordinationMapper;
@@ -25,10 +25,9 @@ public class DocumentServiceImpl implements DocumentService{
 	@Override
 	public List<Document> getDocumentByWorkspaceId(Document document) {
 		
-		return documentDao.getDocumentByWorkspaceId(document);
+		return documentMapper.getDocumentByWorkspaceId(document);
 	}
-	
-	
+
 	@Override
 	public Document createDocument(Document docEntity) {
 		Date nowDate = new Date();
@@ -36,7 +35,7 @@ public class DocumentServiceImpl implements DocumentService{
 		docEntity.setUpdateDate(nowDate);
 		docEntity.setState(0);
 		docEntity.setIsShow(0);
-		Integer id = documentDao.createDocument(docEntity);
+		Integer id = documentMapper.createDocument(docEntity);
 		docEntity.setId(id);
 		return docEntity;
 	}
@@ -47,21 +46,21 @@ public class DocumentServiceImpl implements DocumentService{
 		if(document.getId() == null) return;
 		document.setState(1);
 		document.setUpdateDate(new Date());
-		documentDao.updateDocument(document);
+		documentMapper.updateDocument(document);
 	}
 
 
 	@Override
 	public void updateDocument(Document document) {
 		document.setUpdateDate(new Date());
-		documentDao.updateDocument(document);
+		documentMapper.updateDocument(document);
 	}
 
 
 	@Override
 	public Document getDocumentById(Document document) {
 		
-		return documentDao.getDocumentById(document);
+		return documentMapper.getDocumentById(document);
 	}
 
 

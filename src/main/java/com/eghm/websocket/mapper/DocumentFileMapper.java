@@ -3,7 +3,7 @@ package com.eghm.websocket.mapper;
 
 import com.eghm.websocket.model.DocumentFile;
 
-public interface DocumentFileDao {
+public interface DocumentFileMapper {
 	
 	/**
 	 * 通过主键获取文档页信息

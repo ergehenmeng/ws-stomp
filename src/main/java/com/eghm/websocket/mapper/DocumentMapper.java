@@ -6,7 +6,7 @@ import com.eghm.websocket.model.DocumentFile;
 
 import java.util.List;
 
-public interface DocumentDao {
+public interface DocumentMapper {
 
     /**
      * 通过workspaceId获取工作空间下的所有文档

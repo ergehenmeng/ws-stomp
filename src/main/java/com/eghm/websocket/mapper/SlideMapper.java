@@ -6,20 +6,20 @@ import com.eghm.websocket.model.FileSlide;
 import com.eghm.websocket.model.PartSlide;
 import com.eghm.websocket.model.Slide;
 
-public interface SlideDao {
+public interface SlideMapper {
 	
 	/**
 	 * 保存演示文稿
 	 * @param slidePart
 	 */
-	public void saveSlidePart(PartSlide slidePart);
+	void saveSlidePart(PartSlide slidePart);
 	
 	/**
 	 * 通过fileId获取对象
 	 * @param fileId
 	 * @return
 	 */
-	public Slide getSlideByFileId(Integer fileId);
+	Slide getSlideByFileId(Integer fileId);
 	
 	
 	/**
@@ -27,13 +27,13 @@ public interface SlideDao {
 	 * @param fileSlide
 	 * @return
 	 */
-	public Integer saveFileSlide(FileSlide fileSlide);
+	Integer saveFileSlide(FileSlide fileSlide);
 	
 	/**
 	 * 保存
 	 * @param partSlide
 	 * @return
 	 */
-	public Integer saveFilePartSlide(FilePartSlide partSlide);
+	Integer saveFilePartSlide(FilePartSlide partSlide);
 	
 }

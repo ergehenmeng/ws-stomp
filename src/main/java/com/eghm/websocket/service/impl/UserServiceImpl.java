@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.eghm.websocket.mapper.UserDao;
+import com.eghm.websocket.mapper.UserMapper;
 import com.eghm.websocket.model.User;
 import com.eghm.websocket.service.UserService;
 
@@ -16,7 +16,7 @@ import com.eghm.websocket.service.UserService;
 public class UserServiceImpl implements UserService{
 	
 	@Resource
-	private UserDao userDao;
+	private UserMapper userMapper;
 	
 	/**
 	 * 通过name phone email获取用户
@@ -25,13 +25,13 @@ public class UserServiceImpl implements UserService{
 	@Cacheable(value="r")
     @Override
 	public  User getUserByMap(Map<String,Object> map){
-		return userDao.getUserByMap(map);
+		return userMapper.getUserByMap(map);
 	}
 
 	@Override
 	public List<User> getUserFriendList(Integer userId, String workspaceId) {
 		
-		return userDao.getUserFriendList(userId,workspaceId);
+		return userMapper.getUserFriendList(userId,workspaceId);
 	}
 	
 }

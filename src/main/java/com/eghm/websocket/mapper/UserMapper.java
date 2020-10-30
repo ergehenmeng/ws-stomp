@@ -6,7 +6,7 @@ import java.util.Map;
 import com.eghm.websocket.model.User;
 
 
-public interface UserDao {
+public interface UserMapper {
 	
 	/**
 	 * 通过name phone email获取用户

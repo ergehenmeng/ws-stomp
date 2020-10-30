@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.eghm.websocket.mapper.WorkspaceMapper">
+	<select id="getWorkspaceByUserId" parameterType="integer" resultType="workspace">
+		select * from zf_workspace t where 
+		exists (select 1 from zf_user_workspace r where t.id = r.workspace_id and r.user_id = #{id})
+	</select>
+</mapper>
+

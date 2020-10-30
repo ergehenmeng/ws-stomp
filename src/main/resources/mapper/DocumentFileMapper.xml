@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eghm.websocket.mapper.DocumentFileMapper">
+
+    <!-- 通过主键获取文档页信息 -->
+    <select id="getDocumentFileById" parameterType="int" resultType="com.eghm.websocket.model.DocumentFile">
+        select id, document_id, content
+        from zf_document_file
+        where id = #{id}
+    </select>
+
+    <update id="updateDocumentFile" parameterType="com.eghm.websocket.model.DocumentFile">
+        update zf_document_file
+        set content = #{content}
+        where id = #{id}
+    </update>
+
+</mapper>
+
+

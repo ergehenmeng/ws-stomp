@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.eghm.websocket.mapper.DocumentFileDao;
+import com.eghm.websocket.mapper.DocumentFileMapper;
 import com.eghm.websocket.model.DocumentFile;
 import com.eghm.websocket.service.DocumentFileService;
 
@@ -12,17 +12,17 @@ import com.eghm.websocket.service.DocumentFileService;
 public class DocumentFileImpl implements DocumentFileService{
 	
 	@Resource
-	private DocumentFileDao documentFileDao;
+	private DocumentFileMapper documentFileMapper;
 	
 	@Override
 	public DocumentFile getDocumentFileById(Integer id) {
 		
-		return documentFileDao.getDocumentFileById(id);
+		return documentFileMapper.getDocumentFileById(id);
 	}
 
 	@Override
 	public void updateDocumentFile(DocumentFile documentFile) {
-		documentFileDao.updateDocumentFile(documentFile);
+		documentFileMapper.updateDocumentFile(documentFile);
 	}
 
 }
