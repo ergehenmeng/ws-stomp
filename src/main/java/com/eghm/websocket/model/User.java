@@ -11,6 +11,8 @@ import java.util.Date;
 @Data
 public class User implements Serializable {
 
+    public static final byte LOCK = 0;
+
     /**
      * 主键<br>
      * 表 : user<br>

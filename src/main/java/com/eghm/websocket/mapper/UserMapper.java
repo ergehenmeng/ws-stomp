@@ -1,6 +1,7 @@
 package com.eghm.websocket.mapper;
 
 import com.eghm.websocket.model.User;
+import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
     /**
@@ -37,4 +38,11 @@ public interface UserMapper {
      * @param record 条件 
      */
     int updateByPrimaryKey(User record);
+
+    /**
+     * 手机号码查询用户
+     * @param mobile mobile
+     * @return user
+     */
+    User getByMobile(@Param("mobile") String mobile);
 }

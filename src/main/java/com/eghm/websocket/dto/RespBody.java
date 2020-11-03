@@ -24,10 +24,18 @@ public class RespBody<T> {
         return respBody;
     }
 
+    public static <T> RespBody<T> error(String errorMsg) {
+        return error(500, errorMsg);
+    }
+
     public static <T> RespBody<T> error(ErrorCode code) {
+        return error(code.getCode(), code.getMsg());
+    }
+
+    private static <T> RespBody<T> error(int code, String msg) {
         RespBody<T> respBody = new RespBody<>();
-        respBody.setCode(code.getCode());
-        respBody.setMsg(code.getMsg());
+        respBody.setCode(code);
+        respBody.setMsg(msg);
         return respBody;
     }
 

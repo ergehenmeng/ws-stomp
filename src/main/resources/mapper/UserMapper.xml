@@ -142,26 +142,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-    <!-- 用户名,手机,邮箱 -->
-    <select id="getUserByMap" parameterType="map" resultType="com.eghm.websocket.model.User">
-        <![CDATA[
-		select id,
-		login_name,
-		pwd,
-		init_pwd,
-		nick_name,
-		state,
-		mobile_phone,
-		email,
-		add_time from sys_user 
-	    ]]>
-        <where>
-            <if test="@Ognl@isNotEmpty(loginName)">
-                and login_name = #{loginName}
-            </if>
-        </where>
 
-    </select>
     <select id="getUserFriendList" parameterType="map" resultType="com.eghm.websocket.model.User">
 		<![CDATA[
         select *
@@ -173,5 +154,9 @@
         ]]>
 	</select>
 
+    <select id="getByMobile" resultMap="BaseResultMap">
+        select  <include refid="BaseColumnList"/> from user
+        where mobile = #{mobile} limit 1
+    </select>
 
 </mapper>
