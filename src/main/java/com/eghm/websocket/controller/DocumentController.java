@@ -1,328 +1,214 @@
 package com.eghm.websocket.controller;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.crypto.digest.MD5;
+import cn.hutool.core.util.StrUtil;
+import com.eghm.websocket.dto.RespBody;
+import com.eghm.websocket.enums.ErrorCode;
+import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.model.Document;
-import com.eghm.websocket.model.DocumentFile;
+import com.eghm.websocket.model.Page;
 import com.eghm.websocket.model.User;
 import com.eghm.websocket.model.UserChat;
-import com.eghm.websocket.service.DocumentFileService;
 import com.eghm.websocket.service.DocumentService;
-import com.eghm.websocket.utils.Constants;
+import com.eghm.websocket.service.PageService;
+import com.eghm.websocket.utils.CommonConstant;
 import com.eghm.websocket.utils.LimitQueue;
-import com.eghm.websocket.utils.StringUtil;
-import com.eghm.websocket.utils.WebUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 @Controller
 @Slf4j
 public class DocumentController {
 
-	
-	private static final String DEST_DOCUMENT_URL = "/document/";
-	
-	private Map<String,Object> model = new HashMap<String,Object>();
-	
-	/**
-	 * 后台一步处理 客户端统一订阅一个接口即 /app/document/workspace/documentId 
-	 * 其他均以type值判断
-	 * type:1 实时更新文档内容
-	 * type:2 实时更新聊天记录
-	 * 
-	 */
-	
+    private static final String DEST_DOCUMENT_URL = "/document/";
 
-	@Resource
-	private DocumentService documentService;
-	
-	@Resource
-	private DocumentFileService documentFileService;
-	
-	//@Resource
-	//private SimpMessagingTemplate messagingTemplate;
-	
-	@Resource
-	private SimpMessageSendingOperations simpMessageSendingOperations;
-	
-	/**
-	 * 聊天记录缓存
-	 */
-	private Map<Integer,LimitQueue<UserChat>> cacheChat = new HashMap<>();
-	
-	
+    @Autowired
+    private DocumentService documentService;
 
-	/**
-	 * 创建文档
-	 * @param request
-	 * @param workspaceId 工作空间id
-	 * @param document 创建文档的参数接收类
-	 * @return
-	 */
-	@RequestMapping("/createDocument/{workspaceId}")
-	@ResponseBody
-	public Map<String,Object> createDocument(HttpServletRequest request,@PathVariable String workspaceId,Document document){
-		
-		document.setWorkspaceId(workspaceId);
-		User user = WebUtils.getUser(request);
-		document.setUserId(user.getId());
-		document.verify();
-		
-		model.put("result", true);
-		model.put("msg", documentService.createDocument(document));
-		return model;
-	}
-	
-	/**
-	 * 查询文档信息
-	 * @param request
-	 * @param workspaceId 工作空间
-	 * @param document 用于接收查询参数
-	 * @return
-	 */
-	@RequestMapping("/getDocument/{workspaceId}")
-	@ResponseBody
-	public Map<String,Object> getDocument(HttpServletRequest request,@PathVariable String workspaceId,Document document){
-		if(! StringUtils.isEmpty(document.getOrder())){
-			String[] order = document.getOrder().split(",");
-			if(order.length == 2){
-				document.setRow(StringUtil.getUnderlineCase(order[0]));
-				document.setOrderType(order[1]);
-			}
-			request.getSession().setAttribute(Constants.ORDER_BY,document.getOrder());
-		}
+    @Autowired
+    private PageService pageService;
 
-        request.getSession().setAttribute("show", document.getShow());
-		
-		User user = WebUtils.getUser(request);
-		document.setState(0);
-		document.setUserId(user.getId());
-		document.setWorkspaceId(workspaceId);
-		
-		model.put("result", true);
-		model.put("msg", documentService.getDocumentByWorkspaceId(document));
-		return model;
-	}
-	
-	/**
-	 * 删除文档
-	 * @param request
-	 * @param workspaceId
-	 * @param document
-	 * @return
-	 */
-	@RequestMapping("/deleteDocument/{workspaceId}")
-	@ResponseBody
-	public Map<String,Object> deleteDocument(HttpServletRequest request,@PathVariable String workspaceId,Document document){
-		User user = WebUtils.getUser(request);
-		document.setUserId(user.getId());
-		List<Document> list = documentService.getDocumentByWorkspaceId(document);
-		if(list != null && list.size() > 0){
-			documentService.deleteDocumentById(document);
-			model.put("result", true);
-			model.put("msg", "删除文档成功");
-		}else{
-			model.put("result", false);
-			model.put("msg", "无操作该文件的权限");
-		}
-		return model;
-	}
-	
-	/**
-	 * 更新文档名称
-	 * @param request
-	 * @param workspaceId
-	 * @param document
-	 * @param docName
-	 * @return
-	 */
-	@RequestMapping("/updateDocument/{workspaceId}")
-	@ResponseBody
-	public Map<String,Object> updateDocument(HttpServletRequest request ,@PathVariable String workspaceId,Document document,String docName){
-		User user = WebUtils.getUser(request);
-		document.setUserId(user.getId());
-		document.setDocName(null);
-		List<Document> list = documentService.getDocumentByWorkspaceId(document);
-		if(list != null && list.size() > 0){
-			document.setDocName(docName);
-			documentService.updateDocument(document);
-			model.put("result", true);
-			model.put("msg", "文档重命名成功");
-		}else{
-			model.put("result", false);
-			model.put("msg", "无操作该文件的权限");
-		}
-		return model;
-	}
-	/**
-	 * 文档加密
-	 * @param request
-	 * @param workspaceId
-	 * @param document
-	 * @param docPassword
-	 * @return
-	 */
-	@RequestMapping("/createPassword/{workspaceId}")
-	@ResponseBody
-	public Map<String,Object> createPassword(HttpServletRequest request ,@PathVariable String workspaceId,Document document,String docPassword){
-		User user = WebUtils.getUser(request);
-		document.setUserId(user.getId());
-		List<Document> list = documentService.getDocumentByWorkspaceId(document);
-		if(list != null && list.size() > 0){
-			document.setPassword(MD5.create().digestHex(docPassword));
-			documentService.updateDocument(document);
-			model.put("result", true);
-			model.put("msg", "文档加密成功");
-		}else{
-			model.put("result", false);
-			model.put("msg", "无操作该文件的权限");
-		}
-		return model;
-	}
-	
-	/**
-	 * 密码验证
-	 * @param request
-	 * @param workspaceId
-	 * @param document
-	 * @return
-	 */
-	@RequestMapping("/checkPassword/{workspaceId}")
-	@ResponseBody
-	public Map<String,Object> checkPassword(HttpServletRequest request,@PathVariable String workspaceId,Document document){
-		User user = WebUtils.getUser(request);
-		document.setUserId(user.getId());
-		Document doc = documentService.getDocumentById(document);
-		if(doc != null){
-			model.put("result", true);
-			model.put("msg", "密码验证通过");
-		}else{
-			model.put("result", false);
-			model.put("msg", "密码验证错误");
-		}
-		return model;
-	}
-	
-	/**
-	 * 文档管理页面
-	 * @param workspaceId
-	 * @param documentId
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping("/document/{workspaceId}/{documentId}")
-	public String document(@PathVariable String workspaceId,@PathVariable Integer documentId,ModelMap model){
-		model.addAttribute("workspaceId", workspaceId);
-		model.addAttribute("documentId", documentId);
-		return "document";
-	}
-	
-	
-	/**
-	 * 默认被调用一次
-	 * 初始化某个文档
-	 * @return
-	 */
-	@SubscribeMapping("/initDocument/{workspaceId}/{documentId}")
-	public Map<String,Object> initDocument(SimpMessageHeaderAccessor accessor ,@DestinationVariable Integer workspaceId,@DestinationVariable Integer documentId){
-		log.debug("文档空间: 工作空间ID: " + workspaceId + " 文档ID " + documentId);
-		log.debug("当前类: " + this);
-		Document document = new Document();
-		document.setId(documentId);
-		document = documentService.getDocumentById(document);
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("document", document);
-		if(!cacheChat.containsKey(documentId)){//空间缓存不存在,则创建
-			cacheChat.put(documentId, new LimitQueue<UserChat>(50));
-		}
-		result.put("chat", cacheChat.get(documentId));
-		
-		return result;
-	}
-	
-	
-	
-	/**
-	 * 接收并转发聊天室的消息
-	 * @param accessor 获取用户sessionId等信息
-	 * @param userChat 接收和要转发的信息
-	 */
-	@MessageMapping("/userChat")
-	public void sendMessage(SimpMessageHeaderAccessor accessor , UserChat userChat){
-		Map<String,Object> map = accessor.getSessionAttributes();
-		User user = (User) map.get(Constants.SESSION_USER);
-		if(user != null){
-			userChat.setId(user.getId());
-			try {
-				userChat.setChatContent(HtmlUtils.htmlEscape(URLDecoder.decode(userChat.getChatContent(), "utf-8")));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
- 			userChat.setNickName(user.getNickName());
-			userChat.setCreateTime(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-			userChat.setType(1);
-			simpMessageSendingOperations.convertAndSend(DEST_DOCUMENT_URL + userChat.getWorkspaceId() + "/" + userChat.getDocumentId(), userChat);
-			LimitQueue<UserChat> limit = cacheChat.get(userChat.getDocumentId());
-			limit.offer(userChat);
-		}
-	}
-	
-	/**
-	 * 切换document列表
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping("/changeFile")
-	@ResponseBody
-	public DocumentFile changeFile(Integer id){
-		return documentFileService.getDocumentFileById(id);
-	}
-	
-	/**
-	 * 文档内容改变后同步
-	 * @param accessor
-	 */
-	@MessageMapping("/documentChange")
-	public void documentFile(SimpMessageHeaderAccessor accessor , DocumentFile documentFile){
-		Map<String,Object> map = accessor.getSessionAttributes();
-		User user = (User) map.get(Constants.SESSION_USER);
-		Map<String,Object> result = new HashMap<String,Object>();
-		if(user != null){
-			try {
-				documentFile.setContent(URLDecoder.decode(documentFile.getContent(),"utf-8"));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-			result.put("id", documentFile.getId());
-			result.put("userId", user.getId());
-			result.put("content", documentFile.getContent());
-			result.put("type", 2);
-			simpMessageSendingOperations.convertAndSend(DEST_DOCUMENT_URL + documentFile.getWorkspaceId() + "/" + documentFile.getDocumentId(), result);
-			documentFileService.updateDocumentFile(documentFile);
-		}
-	}
-	
-	
-	
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    /**
+     * 聊天记录缓存
+     */
+    private Map<Integer, LimitQueue<UserChat>> cacheChat = new ConcurrentHashMap<>();
+
+
+    /**
+     * 创建文档
+     */
+    @RequestMapping("/createDocument/{workspaceId}")
+    @ResponseBody
+    public RespBody<Object> createDocument(@PathVariable Integer workspaceId, String docName, FileType type) {
+        documentService.createDocument(workspaceId, docName, type);
+        return RespBody.success();
+    }
+
+    /**
+     * 查询文档信息
+     */
+    @RequestMapping("/getDocument/{workspaceId}")
+    @ResponseBody
+    public RespBody<List<Document>> getDocument(@PathVariable Integer workspaceId) {
+        List<Document> documentList = documentService.getByWorkspaceId(workspaceId);
+        return RespBody.success(documentList);
+    }
+
+    /**
+     * 删除文档
+     */
+    @RequestMapping("/deleteDocument/{workspaceId}")
+    @ResponseBody
+    public RespBody<Object> deleteDocument(@PathVariable String workspaceId, Integer docId) {
+        documentService.deleteById(docId);
+        return RespBody.success();
+    }
+
+    /**
+     * 更新文档名称
+     */
+    @PostMapping("/updateDocument/{workspaceId}")
+    @ResponseBody
+    public RespBody<Object> updateDocument(@PathVariable String workspaceId, Integer docId, String docName) {
+        Document document = documentService.getById(docId);
+        document.setDocName(docName);
+        documentService.updateSelective(document);
+        return RespBody.success();
+    }
+
+    /**
+     * 文档加密
+     */
+    @PostMapping("/createPassword/{workspaceId}")
+    @ResponseBody
+    public RespBody<Object> createPassword(@PathVariable Integer workspaceId, Integer docId, String pwd) {
+        documentService.setPwd(docId, pwd);
+        return RespBody.success();
+    }
+
+    /**
+     * 密码验证
+     */
+    @RequestMapping("/checkPassword/{workspaceId}")
+    @ResponseBody
+    public RespBody<Object> checkPassword(@PathVariable Integer workspaceId, Integer docId, String pwd) {
+        Document doc = documentService.getById(docId);
+        if (StrUtil.isNotEmpty(doc.getPwd()) && !doc.getPwd().equals(pwd)) {
+            return RespBody.error(ErrorCode.DOC_PWD_ERROR);
+        }
+        return RespBody.success();
+    }
+
+    /**
+     * 文档管理页面
+     */
+    @RequestMapping("/document/{workspaceId}/{documentId}")
+    public String document(@PathVariable String workspaceId, @PathVariable Integer documentId, ModelMap model) {
+        model.addAttribute("workspaceId", workspaceId);
+        model.addAttribute("documentId", documentId);
+        return "document";
+    }
+
+
+    /**
+     * 默认被调用一次
+     * 初始化某个文档
+     */
+    @SubscribeMapping("/initDocument/{workspaceId}/{documentId}")
+    public Map<String, Object> initDocument(SimpMessageHeaderAccessor accessor, @DestinationVariable Integer workspaceId, @DestinationVariable Integer documentId) {
+        log.debug("文档空间: 工作空间ID: " + workspaceId + " 文档ID " + documentId);
+        Document document = new Document();
+        document.setId(documentId);
+        document = documentService.getDocumentById(document);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("document", document);
+        //空间缓存不存在,则创建
+        if (!cacheChat.containsKey(documentId)) {
+            cacheChat.put(documentId, new LimitQueue<>(50));
+        }
+        result.put("chat", cacheChat.get(documentId));
+
+        return result;
+    }
+
+
+    /**
+     * 接收并转发聊天室的消息
+     *
+     * @param accessor 获取用户sessionId等信息
+     * @param userChat 接收和要转发的信息
+     */
+    @MessageMapping("/userChat")
+    public void sendMessage(SimpMessageHeaderAccessor accessor, UserChat userChat) {
+        Map<String, Object> map = accessor.getSessionAttributes();
+        User user = (User) map.get(CommonConstant.SESSION_USER);
+        if (user != null) {
+            userChat.setId(user.getId());
+            try {
+                userChat.setChatContent(HtmlUtils.htmlEscape(URLDecoder.decode(userChat.getChatContent(), "utf-8")));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            userChat.setNickName(user.getNickName());
+            userChat.setCreateTime(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            userChat.setType(1);
+            messagingTemplate.convertAndSend(DEST_DOCUMENT_URL + userChat.getWorkspaceId() + "/" + userChat.getDocumentId(), userChat);
+            LimitQueue<UserChat> limit = cacheChat.get(userChat.getDocumentId());
+            limit.offer(userChat);
+        }
+    }
+
+    /**
+     * 切换页
+     */
+    @RequestMapping("/changePage")
+    @ResponseBody
+    public RespBody<Page> changePage(Integer id) {
+        Page page = pageService.getById(id);
+        return RespBody.success(page);
+    }
+
+    /**
+     * 文档内容改变后同步
+     */
+    @MessageMapping("/updatePage")
+    public void updatePage(SimpMessageHeaderAccessor accessor, Page page) {
+        Map<String, Object> map = accessor.getSessionAttributes();
+        User user = (User) map.get(CommonConstant.SESSION_USER);
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (user != null) {
+            result.put("id", page.getId());
+            result.put("userId", user.getId());
+            result.put("content", page.getContent());
+            result.put("type", 2);
+            messagingTemplate.convertAndSend(DEST_DOCUMENT_URL + page.getWorkspaceId() + "/" + page.getDocumentId(), result);
+            pageService.updatePage(page.getId(), page.getContent());
+        }
+    }
+
+
 }

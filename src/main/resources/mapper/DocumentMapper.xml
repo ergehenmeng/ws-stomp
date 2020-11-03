@@ -11,7 +11,7 @@
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="state" jdbcType="TINYINT" property="state" />
     <result column="pwd" jdbcType="VARCHAR" property="pwd" />
-    <result column="show" jdbcType="BIT" property="show" />
+    <result column="hidden" jdbcType="BIT" property="hidden" />
     <result column="sort" jdbcType="SMALLINT" property="sort" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -20,7 +20,7 @@
     <!--
       @create by mybatis
     -->
-    id, workspace_id, doc_name, type, state, pwd, show, sort, add_time, update_time
+    id, workspace_id, doc_name, type, state, pwd, hidden, sort, add_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
@@ -36,15 +36,18 @@
       @create by mybatis
     -->
     insert into document (id, workspace_id, doc_name, 
-      type, state, pwd, show, 
+      type, state, pwd, hidden,
       sort, add_time, update_time
       )
     values (#{id,jdbcType=INTEGER}, #{workspaceId,jdbcType=INTEGER}, #{docName,jdbcType=VARCHAR}, 
-      #{type,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{pwd,jdbcType=VARCHAR}, #{show,jdbcType=BIT}, 
+      #{type,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{pwd,jdbcType=VARCHAR}, #{hidden,jdbcType=BIT},
       #{sort,jdbcType=SMALLINT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.eghm.websocket.model.Document">
+  <insert id="insertSelective" parameterType="com.eghm.websocket.model.Document" useGeneratedKeys="true">
+    <selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER" keyColumn="id">
+        select LAST_INSERT_ID()
+    </selectKey>
     <!--
       @create by mybatis
     -->
@@ -68,8 +71,8 @@
       <if test="pwd != null">
         pwd,
       </if>
-      <if test="show != null">
-        show,
+      <if test="hidden != null">
+        hidden,
       </if>
       <if test="sort != null">
         sort,
@@ -100,8 +103,8 @@
       <if test="pwd != null">
         #{pwd,jdbcType=VARCHAR},
       </if>
-      <if test="show != null">
-        #{show,jdbcType=BIT},
+      <if test="hidden != null">
+        #{hidden,jdbcType=BIT},
       </if>
       <if test="sort != null">
         #{sort,jdbcType=SMALLINT},
@@ -135,8 +138,8 @@
       <if test="pwd != null">
         pwd = #{pwd,jdbcType=VARCHAR},
       </if>
-      <if test="show != null">
-        show = #{show,jdbcType=BIT},
+      <if test="hidden != null">
+        hidden = #{show,jdbcType=BIT},
       </if>
       <if test="sort != null">
         sort = #{sort,jdbcType=SMALLINT},
@@ -160,139 +163,15 @@
       type = #{type,jdbcType=VARCHAR},
       state = #{state,jdbcType=TINYINT},
       pwd = #{pwd,jdbcType=VARCHAR},
-      show = #{show,jdbcType=BIT},
+      hidden = #{hidden,jdbcType=BIT},
       sort = #{sort,jdbcType=SMALLINT},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <resultMap id="documentResultMap" type="com.eghm.websocket.model.Document">
-        <id column="id" javaType="int" jdbcType="INTEGER" property="id" />
-        <result column="doc_name" javaType="string" jdbcType="VARCHAR" property="docName" />
-        <result column="workspace_id" javaType="string" jdbcType="VARCHAR" property="workspaceId" />
-        <result column="doc_password" javaType="string" jdbcType="VARCHAR" property="docPassword" />
-        <result column="user_id" javaType="int" jdbcType="INTEGER" property="userId" />
-        <result column="create_date" javaType="java.util.Date" jdbcType="TIMESTAMP" property="createDate" />
-        <result column="type" javaType="string" jdbcType="VARCHAR" property="type" />
-        <result column="state" javaType="int" jdbcType="INTEGER" property="state" />
-        <result column="update_date" javaType="java.util.Date" jdbcType="TIMESTAMP" property="updateDate" />
-        <result column="is_show" javaType="int" jdbcType="INTEGER" property="isShow" />
-        <collection column="document_id" ofType="documentFile" property="documentFiles">
-            <id column="sid" javaType="int" jdbcType="INTEGER" property="id" />
-            <result column="document_id" javaType="int" jdbcType="INTEGER" property="documentId" />
-            <result column="content" javaType="string" jdbcType="VARCHAR" property="content" />
-        </collection>
-
-    </resultMap>
-
-    <!-- 查找某个工作空间的文档列表 -->
-    <select id="getDocumentByWorkspaceId" parameterType="com.eghm.websocket.model.Document" resultMap="documentResultMap">
-        select
-        t.id,
-        t.doc_name,
-        t.workspace_id,
-        t.doc_password,
-        t.user_id,
-        t.create_date,
-        t.type,
-        t.state,
-        t.update_date,
-        t.is_show,
-        s.id as sid,
-        s.document_id,
-        s.content
-        from zf_document t left join zf_document_file s on t.id = s.document_id
-        <where>
-            and exists (select 1 from zf_user_workspace r where t.workspace_id = r.workspace_id and r.user_id =
-            #{userId})
-            <if test="@Ognl@isNotEmpty(id)">
-                and t.id = #{id}
-            </if>
-            <if test="isShow == 0">
-                and t.is_show = #{isShow}
-            </if>
-            <if test="isShow == 1 or isShow == null">
-                and ( t.is_show = 0 or (t.is_show = 1 and t.user_id = #{userId}) )
-            </if>
-            <if test="@Ognl@isNotEmpty(workspaceId)">
-                and t.workspace_id = #{workspaceId}
-            </if>
-            <if test="@Ognl@isNotEmpty(state)">
-                and t.state = #{state}
-            </if>
-            <if test="@Ognl@isNotEmpty(docPassword)">
-                and t.doc_password = #{docPassword}
-            </if>
-            <if test="@Ognl@isNotEmpty(docName)">
-                and t.doc_name like concat('%',#{docName},'%')
-            </if>
-        </where>
-        <if test="@Ognl@isNotEmpty(row)">
-            order by t.${row} ${orderType}
-        </if>
+    <select id="getByWorkspaceId" resultMap="BaseResultMap">
+        select <include refid="BaseColumnList"/> from document where workspace_id = #{workspaceId}
     </select>
-
-    <insert id="createDocument" keyProperty="id" parameterType="com.eghm.websocket.model.Document" useGeneratedKeys="true">
-        insert into zf_document (doc_name, workspace_id, user_id, create_date, type, state, update_date, is_show)
-        values (#{docName},
-                #{workspaceId},
-                #{userId},
-                #{createDate},
-                #{type},
-                #{state},
-                #{updateDate},
-                #{isShow})
-    </insert>
-
-
-    <update id="updateDocument" parameterType="com.eghm.websocket.model.Document">
-        update zf_document
-        <set>
-            <if test="@Ognl@isNotEmpty(updateDate)">
-                update_date = #{updateDate},
-            </if>
-            <if test="@Ognl@isNotEmpty(docName)">
-                doc_name = #{docName},
-            </if>
-            <if test="isShow != null">
-                is_show = #{isShow},
-            </if>
-            <if test="@Ognl@isNotEmpty(docPassword)">
-                doc_password = #{docPassword},
-            </if>
-            <if test="state != null">
-                state = #{state},
-            </if>
-        </set>
-        where id = #{id}
-    </update>
-
-    <select id="getDocumentById" parameterType="com.eghm.websocket.model.Document" resultMap="documentResultMap">
-        select
-        t.id,
-        t.workspace_id,
-        t.doc_name,
-        t.user_id,
-        t.create_date,
-        t.type,
-        t.state,
-        t.update_date,
-        t.is_show,
-        r.id as sid,
-        r.document_id,
-        r.content
-        from zf_document t
-        left join zf_document_file r on t.id = r.document_id
-        <where>
-            <if test="@Ognl@isNotEmpty(docPassword) and userId != null">
-                and (t.doc_password = #{docPassword} or t.user_id = #{userId})
-            </if>
-            <if test="id != null">
-                and t.id = #{id}
-            </if>
-        </where>
-    </select>
-
 
 </mapper>

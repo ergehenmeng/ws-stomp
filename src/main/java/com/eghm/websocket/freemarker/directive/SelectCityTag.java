@@ -5,17 +5,13 @@ import java.io.Writer;
 import java.util.Map;
 import java.util.Set;
 
-import com.eghm.websocket.utils.StringUtil;
-
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
-/**
- * @author
- */
+
 public class SelectCityTag implements TemplateDirectiveModel{
 	
 	

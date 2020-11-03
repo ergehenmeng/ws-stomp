@@ -56,9 +56,9 @@ public class Document implements Serializable {
     /**
      * 是否显示 true:显示 false:隐藏<br>
      * 表 : document<br>
-     * 对应字段 : show<br>
+     * 对应字段 : hidden<br>
      */
-    private Boolean show;
+    private Boolean hidden;
 
     /**
      * 排序规则<br>

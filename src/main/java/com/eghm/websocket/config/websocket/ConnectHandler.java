@@ -5,7 +5,7 @@ package com.eghm.websocket.config.websocket;
 import java.util.Map;
 
 import com.eghm.websocket.model.User;
-import com.eghm.websocket.utils.Constants;
+import com.eghm.websocket.utils.CommonConstant;
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -20,8 +20,8 @@ public class ConnectHandler implements ApplicationListener<SessionConnectEvent> 
 		System.out.println("接入了.................................");
 		MessageHeaders headers =  event.getMessage().getHeaders();
 		Map<String, Object> attribute = SimpMessageHeaderAccessor.getSessionAttributes(headers);
-		User user = (User)attribute.get(Constants.SESSION_USER);
+		User user = (User)attribute.get(CommonConstant.SESSION_USER);
 		String sessionId = SimpMessageHeaderAccessor.getSessionId(headers);
-		Constants.WEBSOCKET_SESSION.put(sessionId, user);
+		CommonConstant.WEBSOCKET_SESSION.put(sessionId, user);
 	}
 }

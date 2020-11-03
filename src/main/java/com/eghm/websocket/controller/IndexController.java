@@ -15,14 +15,14 @@ import com.eghm.websocket.model.Workspace;
 import com.eghm.websocket.service.DocumentService;
 import com.eghm.websocket.service.UserService;
 import com.eghm.websocket.service.WorkspaceService;
-import com.eghm.websocket.utils.Constants;
-import com.eghm.websocket.utils.StringUtil;
-import com.eghm.websocket.utils.WebUtils;
+import com.eghm.websocket.utils.CommonConstant;
+import freemarker.template.utility.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.util.WebUtils;
 
 
 @Controller
@@ -38,17 +38,14 @@ public class IndexController {
 	@Resource
 	private DocumentService documentService;
 	
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String index(){
-		return "index";
+		return "template/index";
 	}
 	
 	/**
 	 * 登陆成功,进入聊天主界面
 	 * 展示左侧工作空间以及工作空间的文档+工作空间的好友
-	 * @param request
-	 * @param userName
-	 * @return
 	 */
 	@RequestMapping("/login")
 	@ResponseBody
@@ -57,7 +54,7 @@ public class IndexController {
 		map.put("loginName", userName);
 		User loginUser = userService.getUserByMap(map);
 		if(loginUser != null && loginUser.getPwd().equals(MD5.create().digestHex(password))){
-			request.getSession().setAttribute(Constants.SESSION_USER, loginUser);
+			request.getSession().setAttribute(CommonConstant.SESSION_USER, loginUser);
 			map.put("result", true);
 			map.put("msg" , "用户信息验证通过");
 		}else{
@@ -70,10 +67,6 @@ public class IndexController {
 	
 	/**
 	 * 登陆成功进入主界面
-	 * @param request
-	 * @param model 
-	 * @param document 接收参数
-	 * @return
 	 */
 	@RequestMapping("/home")
 	public String home(HttpServletRequest request,ModelMap model,Document document){
@@ -97,15 +90,13 @@ public class IndexController {
 	/**
 	 * 设置orderBy的相关属性
 	 * 设置查询条件
-	 * @param request
-	 * @param document
 	 */
 	private void setOrderByValue(HttpServletRequest request,Document document,String workspaceId){
 		
 		document.setWorkspaceId(workspaceId);
 		document.setState(0);
 		
-		String orderBy = WebUtils.getAttribute(request, Constants.ORDER_BY);
+		String orderBy = WebUtils.getAttribute(request, CommonConstant.ORDER_BY);
 		if(orderBy != null && orderBy.split(",").length == 2){
 			String[] rows = orderBy.split(",");
 			document.setRow(StringUtil.getUnderlineCase(rows[0]));

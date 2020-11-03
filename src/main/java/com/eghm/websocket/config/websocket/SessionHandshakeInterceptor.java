@@ -5,7 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import com.eghm.websocket.model.User;
-import com.eghm.websocket.utils.Constants;
+import com.eghm.websocket.utils.CommonConstant;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -28,8 +28,8 @@ public class SessionHandshakeInterceptor extends HttpSessionHandshakeInterceptor
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
             HttpSession session = servletRequest.getServletRequest().getSession(false);
             if (session != null) {
-            	User user = (User) session.getAttribute(Constants.SESSION_USER);
-            	attributes.put(Constants.SESSION_USER , user);
+            	User user = (User) session.getAttribute(CommonConstant.SESSION_USER);
+            	attributes.put(CommonConstant.SESSION_USER , user);
             	return true;
             }
         }

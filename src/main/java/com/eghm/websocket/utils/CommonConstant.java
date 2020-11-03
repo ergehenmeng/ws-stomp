@@ -1,5 +1,7 @@
 package com.eghm.websocket.utils;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,12 +12,17 @@ import com.eghm.websocket.model.User;
  * @author Administrator
  *
  */
-public class Constants {
+public class CommonConstant {
 	
 	/**
 	 * 字符集 utf-8
 	 */
-	public static final String UTF8 = "UTF-8";
+	public static final Charset UTF8 = StandardCharsets.UTF_8;
+
+    /**
+     * 未知ip地址
+     */
+    public static final String UNKNOWN = "unknown";
 	
 	/**
 	 * Http post请求

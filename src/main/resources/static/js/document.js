@@ -17,7 +17,7 @@ $(function(){
 
 window.onbeforeunload = function(event){
 	return test();
-}
+};
 function test(){
 	console.log(initDocument);
 	if(initDocument)initDocumen.unsubscribe();
@@ -95,11 +95,11 @@ function initDocuemntEdit(){
  */
 function loadLeftFileList(obj){
 	$.each(obj,function(i,v){
-		if(i == 0 ){
-			$("#leftFileList").append('<div class="col-xs-12"><a class="thumbnail selectActive" onclick="changeFile(this,' + v.id + ');" href="javascript:void(0)"><img alt="" src="/images/ppt_fanye.png" style="height: 100px;  display: block;"></a></div>');
+		if(i === 0 ){
+			$("#leftFileList").append('<div class="col-xs-12"><a class="thumbnail selectActive" onclick="changePage(this,' + v.id + ');" href="javascript:void(0)"><img alt="" src="/images/ppt_fanye.png" style="height: 100px;  display: block;"></a></div>');
 			$("#fileId").val(v.id);
 		}else{
-			$("#leftFileList").append('<div class="col-xs-12"><a class="thumbnail" onclick="changeFile(this,' + v.id + ');" href="javascript:void(0)"><img alt="" src="/images/ppt_fanye.png" style="height: 100px;  display: block;"></a></div>');
+			$("#leftFileList").append('<div class="col-xs-12"><a class="thumbnail" onclick="changePage(this,' + v.id + ');" href="javascript:void(0)"><img alt="" src="/images/ppt_fanye.png" style="height: 100px;  display: block;"></a></div>');
 		}
 	});
 }
@@ -123,11 +123,11 @@ function sendContentMsg(){
  * 切换文档页事件
  * @param id
  */
-function changeFile(obj,id){
-	var fileId = $("#fileId").val();
+function changePage(obj,id){
+	let fileId = $("#fileId").val();
 	if(fileId != id){
 		$("#fileId").val(id);
-		$.post("/changeFile",{"id":id},function(data){
+		$.post("/changePage",{"id":id},function(data){
 			removeEvent();
 			ueditor.setContent(data.content);
 			$("#leftFileList a").removeClass("selectActive");
@@ -201,8 +201,8 @@ function sendMessage(){
  * @param id 
  * @param msg 文档内容
  */
-function  sendContent(id,msg){
-	stompClient.send("/app/documentChange", {},JSON.stringify({
+function sendContent(id,msg){
+	stompClient.send("/app/updatePage", {},JSON.stringify({
         'content': encodeURIComponent(msg),
         'id': id,
         "documentId":documentId,
