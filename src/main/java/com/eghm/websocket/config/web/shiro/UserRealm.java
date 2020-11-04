@@ -35,13 +35,12 @@ public class UserRealm extends AuthorizingRealm {
         if (StrUtil.isEmpty(captcha) || !captcha.equals(attribute)) {
             throw new AuthenticationException("验证码输入错误");
         }
-        User user;
         try {
-            user = userService.login(passwordToken.getUsername(), new String(passwordToken.getPassword()));
+            User user = userService.login(passwordToken.getUsername(), new String(passwordToken.getPassword()));
+            return new SimpleAuthenticationInfo(user, passwordToken.getPassword(), getName());
         } catch (SystemException e) {
             throw new AuthenticationException(e.getMessage(), e);
         }
-        return new SimpleAuthenticationInfo(user, passwordToken.getPassword(), getName());
     }
 
     @Override
