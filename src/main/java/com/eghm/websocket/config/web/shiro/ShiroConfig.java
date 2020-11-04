@@ -1,5 +1,6 @@
 package com.eghm.websocket.config.web.shiro;
 
+import com.eghm.websocket.service.UserService;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.realm.Realm;
@@ -28,8 +29,9 @@ public class ShiroConfig {
     }
 
     @Bean
-    public Realm userRealm() {
+    public Realm userRealm(UserService userService) {
         UserRealm realm = new UserRealm();
+        realm.setUserService(userService);
         realm.setCacheManager(cacheManager());
         return realm;
     }

@@ -32,7 +32,7 @@ public class RespBody<T> {
         return error(code.getCode(), code.getMsg());
     }
 
-    private static <T> RespBody<T> error(int code, String msg) {
+    public static <T> RespBody<T> error(int code, String msg) {
         RespBody<T> respBody = new RespBody<>();
         respBody.setCode(code);
         respBody.setMsg(msg);
