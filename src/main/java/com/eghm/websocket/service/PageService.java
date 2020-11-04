@@ -10,6 +10,7 @@ public interface PageService {
 
     /**
      * 主键查询
+     *
      * @param id key
      * @return 页
      */
@@ -17,7 +18,8 @@ public interface PageService {
 
     /**
      * 更新页内容
-     * @param id key
+     *
+     * @param id      key
      * @param content content
      */
     void updatePage(Integer id, String content);

@@ -20,10 +20,6 @@ public interface UserService {
 
     /**
      * 获取该工作空间中所有的用户
-     *
-     * @param userId
-     * @param workspaceId
-     * @return
      */
-    List<User> getUserFriendList(Integer userId, String workspaceId);
+    List<User> getUserFriendList(Integer userId, Integer workspaceId);
 }

@@ -2,6 +2,7 @@ package com.eghm.websocket.config.web.shiro;
 
 import cn.hutool.core.util.StrUtil;
 import com.eghm.websocket.exception.SystemException;
+import com.eghm.websocket.model.User;
 import com.eghm.websocket.service.UserService;
 import com.eghm.websocket.utils.CommonConstant;
 import com.eghm.websocket.utils.WebUtil;
@@ -34,12 +35,13 @@ public class UserRealm extends AuthorizingRealm {
         if (StrUtil.isEmpty(captcha) || !captcha.equals(attribute)) {
             throw new AuthenticationException("验证码输入错误");
         }
+        User user;
         try {
-            userService.login(passwordToken.getUsername(), new String(passwordToken.getPassword()));
+            user = userService.login(passwordToken.getUsername(), new String(passwordToken.getPassword()));
         } catch (SystemException e) {
             throw new AuthenticationException(e.getMessage(), e);
         }
-        return new SimpleAuthenticationInfo(passwordToken.getUsername(), passwordToken.getPassword(), getName());
+        return new SimpleAuthenticationInfo(user, passwordToken.getPassword(), getName());
     }
 
     @Override

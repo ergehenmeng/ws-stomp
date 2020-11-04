@@ -74,7 +74,7 @@ public class DocumentController {
     @RequestMapping("/getDocument/{workspaceId}")
     @ResponseBody
     public RespBody<List<Document>> getDocument(@PathVariable Integer workspaceId) {
-        List<Document> documentList = documentService.getByWorkspaceId(workspaceId);
+        List<Document> documentList = documentService.getBySpaceId(workspaceId, null, null);
         return RespBody.success(documentList);
     }
 
@@ -141,9 +141,7 @@ public class DocumentController {
     @SubscribeMapping("/initDocument/{workspaceId}/{documentId}")
     public Map<String, Object> initDocument(SimpMessageHeaderAccessor accessor, @DestinationVariable Integer workspaceId, @DestinationVariable Integer documentId) {
         log.debug("文档空间: 工作空间ID: " + workspaceId + " 文档ID " + documentId);
-        Document document = new Document();
-        document.setId(documentId);
-        document = documentService.getDocumentById(document);
+        Document document = documentService.getById(documentId);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("document", document);
         //空间缓存不存在,则创建

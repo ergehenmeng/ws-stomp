@@ -1,6 +1,9 @@
 package com.eghm.websocket.mapper;
 
 import com.eghm.websocket.model.Workspace;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface WorkspaceMapper {
 
@@ -38,4 +41,11 @@ public interface WorkspaceMapper {
      * @param record 条件 
      */
     int updateByPrimaryKey(Workspace record);
+
+    /**
+     * 用户工作空间列表
+     * @param userId userId
+     * @return
+     */
+    List<Workspace> getByUserId(@Param("userId") Integer userId);
 }

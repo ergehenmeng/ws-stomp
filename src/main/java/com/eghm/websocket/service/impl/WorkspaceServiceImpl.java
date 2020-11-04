@@ -1,24 +1,25 @@
 package com.eghm.websocket.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.eghm.websocket.mapper.WorkspaceMapper;
 import com.eghm.websocket.model.Workspace;
 import com.eghm.websocket.service.WorkspaceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+/**
+ * @author 二哥很猛
+ */
 @Service
 public class WorkspaceServiceImpl implements WorkspaceService {
 
-    @Resource
+    @Autowired
     private WorkspaceMapper workspaceMapper;
 
     @Override
-    public List<Workspace> getWorkspaceByUserId(Integer id) {
-        return workspaceMapper.getWorkspaceByUserId(id);
+    public List<Workspace> getByUserId(Integer id) {
+        return workspaceMapper.getByUserId(id);
     }
 
 }

@@ -4,7 +4,7 @@ $(function () {
         extend: ['extend/layer.ext.js']
     });
     $("#documentName").on("keypress", function (e) {
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
             searchDocument();
         }
     });
@@ -56,17 +56,17 @@ function searchDocument() {
 /**
  * 添加文档
  * @param entity
- * @param list是否为列表
+ * @param list 是否为列表
  */
 function loadDocument(entity, list) {
-    var html = "";
+    let html = "";
     if (entity != null && !$.isEmptyObject(entity)) {
         if (list) {
             $.each(entity, function (i, v) {
                 html += formatHtml(v);
             });
             $("#documentId").empty().append(html);
-        } else if ($("#noDocument").length != 0) {
+        } else if ($("#noDocument").length !== 0) {
             $("#documentId").empty().append(formatHtml(entity));
         } else {
             $("#documentId").append(formatHtml(entity));
@@ -78,8 +78,8 @@ function loadDocument(entity, list) {
 }
 
 function formatHtml(entity) {
-    var html = '<div class="col-xs-2 underline">';
-    html += '<a href="#" class="thumbnail documentMenu ' + (entity.isShow == "1" ? "hidden-backgroud" : "") + '" >';
+    let html = '<div class="col-xs-2 underline">';
+    html += '<a href="#" class="thumbnail documentMenu ' + (entity.hidden ? "hidden-backgroud" : "") + '" >';
     html += '<img alt="' + entity.type + '" src="./images/icon_' + entity.type + '.png" style="height: 100px;  display: block;" >';
     html += '<span>' + entity.docName + '</span> <input type="hidden" value="' + entity.id + '" class="id" /></a> <input type="hidden" value="' + entity.type + '" class="type" /></a></div>';
 
@@ -117,38 +117,42 @@ function addPassword(value, message) {
 }
 
 
-var centerMenu = [[{
+
+let centerMenu = [[{
     text: "排序",
     data: [[{
         text: "名称",
         func: function () {
-            var orderBy = $("#orderBy").val();
-            if (orderBy == "docName,asc") {
-                $("#orderBy").val("docName,desc");
+            let $orderBy = $("#orderBy");
+            let orderBy = $orderBy.val();
+            if (orderBy === "docName,asc") {
+                $orderBy.val("docName,desc");
             } else {
-                $("#orderBy").val("docName,asc");
+                $orderBy.val("docName,asc");
             }
             searchDocument();
         }
     }, {
         text: "修改时间",
         func: function () {
-            var orderBy = $("#orderBy").val();
-            if (orderBy == "updateDate,asc") {
-                $("#orderBy").val("updateDate,desc");
+            let $orderBy = $("#orderBy");
+            let orderBy = $orderBy.val();
+            if (orderBy === "updateDate,asc") {
+                $orderBy.val("updateDate,desc");
             } else {
-                $("#orderBy").val("updateDate,asc");
+                $orderBy.val("updateDate,asc");
             }
             searchDocument();
         }
     }, {
         text: "类型",
         func: function () {
-            var orderBy = $("#orderBy").val();
-            if (orderBy == "type,asc") {
-                $("#orderBy").val("type,desc");
+            let $orderBy = $("#orderBy");
+            let orderBy = $orderBy.val();
+            if (orderBy === "type,asc") {
+                $orderBy.val("type,desc");
             } else {
-                $("#orderBy").val("type,asc");
+                $orderBy.val("type,asc");
             }
             searchDocument();
         }
@@ -176,11 +180,12 @@ var centerMenu = [[{
 }, {
     text: "显示隐藏",
     func: function () {
-        var isShow = $("#showHideDocument").val();
-        if (isShow == "0" || isShow == null || isShow == "") {
-            $("#showHideDocument").val("1");
-        } else if (isShow == "1") {
-            $("#showHideDocument").val("0");
+        let $hiddenDocument = $("#hiddenDocument");
+        let hidden = $hiddenDocument.val();
+        if (hidden) {
+            $hiddenDocument.val(false);
+        } else {
+            $hiddenDocument.val(true);
         }
         searchDocument();
     }
@@ -195,10 +200,10 @@ function openNewWindow(url) {
 }
 
 
-var fileMenu = [[{
+let fileMenu = [[{
     text: "打开",
     func: function () {
-        var id = $(this).children(".id").val();
+        let id = $(this).children(".id").val();
         openNewWindow("/document/" + workspaceId + "/" + id);
     }
 }, {
@@ -206,33 +211,36 @@ var fileMenu = [[{
     data: [[{
         text: "名称",
         func: function () {
-            var orderBy = $("#orderBy").val();
-            if (orderBy == "docName,desc" || orderBy == null || orderBy == "") {
-                $("#orderBy").val("docName,asc");
-            } else if (orderBy == "docName,asc") {
-                $("#orderBy").val("docName,desc");
+            let $orderBy = $("#orderBy");
+            let orderBy = $orderBy.val();
+            if (orderBy === "docName,desc") {
+                $orderBy.val("docName,asc");
+            } else if (orderBy === "docName,asc") {
+                $orderBy.val("docName,desc");
             }
             searchDocument();
         }
     }, {
         text: "修改时间",
         func: function () {
-            var orderBy = $("#orderBy").val();
-            if (orderBy == "updateDate,desc" || orderBy == null || orderBy == "") {
-                $("#orderBy").val("updateDate,asc");
-            } else if (orderBy == "updateDate,asc") {
-                $("#orderBy").val("updateDate,desc");
+            let $orderBy = $("#orderBy");
+            let orderBy = $orderBy.val();
+            if (orderBy === "updateDate,desc") {
+                $orderBy.val("updateDate,asc");
+            } else if (orderBy === "updateDate,asc") {
+                $orderBy.val("updateDate,desc");
             }
             searchDocument();
         }
     }, {
         text: "类型",
         func: function () {
-            var orderBy = $("#orderBy").val();
-            if (orderBy == "type,desc" || orderBy == null || orderBy == "") {
-                $("#orderBy").val("type,asc");
-            } else if (orderBy == "type,asc") {
-                $("#orderBy").val("type,desc");
+            let $orderBy = $("#orderBy");
+            let orderBy = $orderBy.val();
+            if (orderBy === "type,desc") {
+                $orderBy.val("type,asc");
+            } else if (orderBy === "type,asc") {
+                $orderBy.val("type,desc");
             }
             searchDocument();
         }
@@ -245,14 +253,14 @@ var fileMenu = [[{
 }], [{
     text: "删除",
     func: function () {
-        var id = $(this).children(".id").val();
+        let id = $(this).children(".id").val();
         $.deleteFun("/deleteDocument/" + workspaceId, id, "确定要删除该文档吗?", null, searchDocument);
     }
 }, {
     text: "重命名",
     func: function () {
-        var docName = $(this).children("span").text();
-        var id = $(this).children(".id").val();
+        let docName = $(this).children("span").text();
+        let id = $(this).children(".id").val();
         $.showPrompt("请输入文档的新名称", updateDocument, id, docName);
 
     }
@@ -274,16 +282,16 @@ var fileMenu = [[{
 }, {
     text: "加密",
     func: function () {
-        var docName = $(this).children("span").text();
-        var id = $(this).children(".id").val();
+        let docName = $(this).children("span").text();
+        let id = $(this).children(".id").val();
         $.password(docName + " 加密", 1, addPassword, 6, {"id": id});
     }
 }, {
     text: "属性",
     func: function () {
-        var docName = $(this).children("span").text();
+        let docName = $(this).children("span").text();
 
-        var html = "<form class='form-horizontal'>";
+        let html = "<form class='form-horizontal'>";
         html += "<div class='from-group'>";
         html += "<label  class='col-xs-4 control-label'><small>创建人</small></label><div class='col-xs-8'><label  class='control-label'><small>张珊<small></label></div>";
         html += "</div>";
@@ -300,7 +308,7 @@ var fileMenu = [[{
         $.window(html, docName + " 的属性");
     }
 }]];
-var friendMenu = [[{
+let friendMenu = [[{
     text: "发送信息",
     func: function () {
 

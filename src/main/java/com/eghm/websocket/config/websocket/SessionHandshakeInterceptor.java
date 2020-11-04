@@ -13,10 +13,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 /**
- * 
- * @time 2016年5月16日
- * @author fanyin
- * websocket HttpSession拦截器
+ * @author 二哥很猛
  */
 public class SessionHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 	

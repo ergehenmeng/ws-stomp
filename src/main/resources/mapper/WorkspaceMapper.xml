@@ -120,7 +120,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-	<select id="getWorkspaceByUserId" parameterType="integer" resultType="com.eghm.websocket.model.Workspace">
+	<select id="getByUserId" resultMap="BaseResultMap">
 		select * from zf_workspace t where 
 		exists (select 1 from zf_user_workspace r where t.id = r.workspace_id and r.user_id = #{id})
 	</select>

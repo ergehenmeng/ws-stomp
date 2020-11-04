@@ -31,6 +31,11 @@ public enum ErrorCode {
      */
     USER_PWD_ERROR(603, "账号或密码错误"),
 
+    /**
+     * 用户登陆已过期
+     */
+    LOGIN_TIMEOUT(604, "用户登陆已过期"),
+
     ;
 
     private int code;

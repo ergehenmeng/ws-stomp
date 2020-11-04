@@ -15,23 +15,21 @@ import freemarker.template.TemplateModelException;
 
 
 /**
- * @author 
+ * @author
  */
-public class PermissionTag implements TemplateDirectiveModel{
-	
-	@Resource
-	private HttpServletRequest request;
-	
-	@Override
-	public void execute(Environment env, Map params, TemplateModel[] loopVars,
-			TemplateDirectiveBody body) throws TemplateException, IOException {
-		if(params.isEmpty()){
-			throw new TemplateModelException("该标签参数不允许为空");
-		}
-		
-	}
+public class PermissionTag implements TemplateDirectiveModel {
 
+    @Resource
+    private HttpServletRequest request;
 
-	
+    @Override
+    public void execute(Environment env, Map params, TemplateModel[] loopVars,
+                        TemplateDirectiveBody body) throws TemplateException, IOException {
+        if (params.isEmpty()) {
+            throw new TemplateModelException("该标签参数不允许为空");
+        }
+
+    }
+
 
 }

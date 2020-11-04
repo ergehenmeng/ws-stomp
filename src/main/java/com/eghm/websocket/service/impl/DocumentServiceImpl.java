@@ -9,16 +9,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author 二哥很猛
+ */
 @Service
 public class DocumentServiceImpl implements DocumentService{
 	
 	@Autowired
 	private DocumentMapper documentMapper;
 
-	@Override
-	public List<Document> getByWorkspaceId(Integer workspaceId) {
-		return documentMapper.getByWorkspaceId(workspaceId);
-	}
+    @Override
+    public List<Document> getBySpaceId(Integer spaceId, String orderColumn, String orderType) {
+        return documentMapper.getBySpaceId(spaceId, orderColumn, orderType);
+    }
 
     @Override
     public Document createDocument(Integer workspaceId, String docName, FileType type) {

@@ -1,21 +1,17 @@
 package com.eghm.websocket.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.BCrypt;
 import com.eghm.websocket.enums.ErrorCode;
 import com.eghm.websocket.exception.SystemException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-
 import com.eghm.websocket.mapper.UserMapper;
 import com.eghm.websocket.model.User;
 import com.eghm.websocket.service.UserService;
+import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author 二哥很猛
@@ -45,8 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserFriendList(Integer userId, String workspaceId) {
-        return userMapper.getUserFriendList(userId, workspaceId);
+    public List<User> getUserFriendList(Integer userId, Integer workspaceId) {
+        return Lists.newArrayList();
     }
 
 }

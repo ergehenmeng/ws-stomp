@@ -9,8 +9,12 @@ public interface DocumentService {
 
     /**
      * 通过workspaceId获取工作空间下的所有文档
+     * @param spaceId   工作空间
+     * @param orderColumn 排序字段
+     * @param orderType 排序方式
+     * @return 文档
      */
-    List<Document> getByWorkspaceId(Integer workspaceId);
+    List<Document> getBySpaceId(Integer spaceId, String orderColumn, String orderType);
 
     /**
      * 创建文档对象

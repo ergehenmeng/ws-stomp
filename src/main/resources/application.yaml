@@ -15,7 +15,7 @@ spring:
   ## freemarker 相关配置
   freemarker:
     cache: true
-    template-loader-path: classpath:/template/
+    template-loader-path: classpath:/templates/
     settings:
       template_update_delay: 60s
       number_format: 0.##

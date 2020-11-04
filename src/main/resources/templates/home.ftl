@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>主界面</title>
+<title>文档管理</title>
 <#include "resources.ftl">
 <script src="${cxtPath}/js/home.js?t=201742114" type="text/javascript" charset="UTF-8"></script>
 <script type="text/javascript">
-	var workspaceId = ${workspace.id};
+	var workspaceId = ${workspaceId};
 </script>
 </head>
 <body>
-<input type="hidden" id="showHideDocument" value="${hidden!''}"/>
+<input type="hidden" id="hiddenDocument" value="${hidden!'false'}"/>
 <input type="hidden" id="orderBy" value="${orderBy!''}"/>
 
 <div class="navbar navbar-default navbar-fixed-top  navbar-info">
 	<div id="navbar-responsive-collapse" class="collapse navbar-collapse">
     	<ul class="nav navbar-nav">
       		<li class="active"><a href="#">网站首页</a></li>
-      		<li><a href="#">欢迎您:${loginUser.nickName}</a></li>
+      		<li><a href="#">欢迎您:${nickName!}</a></li>
 	 	</ul>
   </div>
 </div>

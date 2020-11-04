@@ -43,8 +43,12 @@ public interface DocumentMapper {
 
     /**
      * 根据工作空间查询文档
-     * @param workspaceId workspaceId
+     * @param spaceId  spaceId
+     * @param column 排序字段
+     * @param orderType 排序类型
      * @return list
      */
-    List<Document> getByWorkspaceId(@Param("workspaceId") Integer workspaceId);
+    List<Document> getBySpaceId(@Param("spaceId") Integer spaceId,
+                                @Param("column") String column,
+                                @Param("orderType") String orderType);
 }
