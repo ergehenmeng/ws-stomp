@@ -11,30 +11,6 @@
     <link rel="stylesheet" href="/static/css/ace-fonts.css"/>
     <link rel="stylesheet" href="/static/css/ace.min.css"/>
     <link rel="stylesheet" href="/static/css/ace-rtl.min.css"/>
-    <script src="/static/js/jquery.min.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(function () {
-            $(document).on("click", "#login", function (e) {
-                let userName = $("#userName").val();
-                let password = $("#password").val();
-                if (!userName || !password) {
-                    $("#tipMsg").text("用户名或密码不能为空");
-                }
-                $.post("/login", {
-                    "userName": userName,
-                    "password": password,
-                    "rememberMe": $("#rememberMe").prop('checked')
-                }, function (data) {
-                    if (data.result) {
-                        $("#password").val("");
-                        window.location.href = "/home";
-                    } else {
-                        $("#tipMsg").text(data.msg);
-                    }
-                }, "json");
-            });
-        });
-    </script>
 </head>
 <body class="login-layout light-login">
 <div class="main-container">
@@ -90,4 +66,29 @@
     </div>
 </div>
 </body>
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+<script src="/static/js/md5.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $(document).on("click", "#login", function (e) {
+            let userName = $("#userName").val();
+            let password = $("#password").val();
+            if (!userName || !password) {
+                $("#tipMsg").text("用户名或密码不能为空");
+            }
+            $.post("/login", {
+                "userName": userName,
+                "password": md5(password),
+                "rememberMe": $("#rememberMe").prop('checked')
+            }, function (data) {
+                if (data.result) {
+                    $("#password").val("");
+                    window.location.href = "/home";
+                } else {
+                    $("#tipMsg").text(data.msg);
+                }
+            }, "json");
+        });
+    });
+</script>
 </html>

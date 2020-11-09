@@ -15,5 +15,4 @@ public class SubscribeHandler implements ApplicationListener<SessionSubscribeEve
 		System.out.println("subscriptionId------------------------:" + subscriptionId);
 		System.out.println("sessionId-----------------------------:" + sessionId);
 	}
-
 }

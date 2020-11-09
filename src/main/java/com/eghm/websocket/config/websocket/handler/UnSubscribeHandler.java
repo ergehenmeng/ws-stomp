@@ -15,5 +15,4 @@ public class UnSubscribeHandler implements ApplicationListener<SessionUnsubscrib
 		System.out.println("subscriptionId取消订阅------------------------:" + subscriptionId);
 		System.out.println("sessionId取消订阅-----------------------------:" + sessionId);
 	}
-
 }

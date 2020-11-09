@@ -1,0 +1,15 @@
+{
+  "group": [
+    {
+      "name": "project"
+    }
+  ],
+  "properties": [
+    {
+      "name": "project.captcha",
+      "defaultValue": "false",
+      "description": "是否开启验证码",
+      "type": "java.lang.Boolean"
+    }
+  ]
+}

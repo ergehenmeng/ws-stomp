@@ -1,22 +1,16 @@
 package com.eghm.websocket.config.websocket.handler;
 
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.socket.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
-
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.WebSocketMessage;
-import org.springframework.web.socket.WebSocketSession;
 
 @Slf4j
 public class ChatMessageHandler implements WebSocketHandler {
 
     private static final ArrayList<WebSocketSession> users = new ArrayList<>();
-
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session)
@@ -33,14 +27,11 @@ public class ChatMessageHandler implements WebSocketHandler {
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-
         sendMessageToUsers(message);
-
     }
 
     @Override
-    public void handleTransportError(WebSocketSession session,
-                                     Throwable exception) throws Exception {
+    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
         if (session.isOpen()) {
             session.close();
         }
@@ -49,8 +40,7 @@ public class ChatMessageHandler implements WebSocketHandler {
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session,
-                                      CloseStatus closeStatus) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         log.error("链接关闭......" + closeStatus.toString());
         users.remove(session);
 

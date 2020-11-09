@@ -14,6 +14,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author 殿小二
@@ -22,6 +23,12 @@ import org.apache.shiro.subject.PrincipalCollection;
 public class UserRealm extends AuthorizingRealm {
 
     private UserService userService;
+
+    /**
+     * 是否开启验证码验证
+     */
+    @Value("${project.captcha:false}")
+    private Boolean checkCaptcha;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -32,7 +39,8 @@ public class UserRealm extends AuthorizingRealm {
         SystemPasswordToken passwordToken = (SystemPasswordToken) token;
         Object attribute = WebUtil.getRequest().getAttribute(CommonConstant.AUTH_CODE);
         String captcha = passwordToken.getCaptcha();
-        if (StrUtil.isEmpty(captcha) || !captcha.equals(attribute)) {
+        boolean check = checkCaptcha && (StrUtil.isEmpty(captcha) || !captcha.equals(attribute));
+        if (check) {
             throw new AuthenticationException("验证码输入错误");
         }
         try {
