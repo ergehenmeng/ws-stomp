@@ -20,11 +20,12 @@ public class UserController {
      * 登陆接口
      */
     @PostMapping("/login")
-    public RespBody<Object> login(String mobile, String pwd, String captcha) {
+    public RespBody<Object> login(String mobile, String pwd, Boolean rememberMe, String captcha) {
         SystemPasswordToken token = new SystemPasswordToken();
         token.setUsername(mobile);
         token.setPassword(pwd.toCharArray());
         token.setCaptcha(captcha);
+        token.setRememberMe(rememberMe);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);

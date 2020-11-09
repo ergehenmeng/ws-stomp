@@ -22,7 +22,8 @@
                 }
                 $.post("/login", {
                     "userName": userName,
-                    "password": password
+                    "password": password,
+                    "rememberMe": $("#rememberMe").prop('checked')
                 }, function (data) {
                     if (data.result) {
                         $("#password").val("");
@@ -69,7 +70,7 @@
                                             </div>
                                             <div class="clearfix">
                                                 <label class="inline">
-                                                    <input type="checkbox" class="ace"/><span class="lbl">记住我</span>
+                                                    <input type="checkbox" class="ace" id="rememberMe"/><span class="lbl">记住我</span>
                                                 </label>
                                                 <button type="button" id="login"
                                                         class="width-35 pull-right btn btn-sm btn-primary">

@@ -19,8 +19,11 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition definition = new DefaultShiroFilterChainDefinition();
+        // 首页
         definition.addPathDefinition("/index", "anon");
+        // 登陆接口
         definition.addPathDefinition("/login", "anon");
+        // 静态资源
         definition.addPathDefinition("/static/**", "anon");
         definition.addPathDefinition("/**", "authc");
         return definition;
