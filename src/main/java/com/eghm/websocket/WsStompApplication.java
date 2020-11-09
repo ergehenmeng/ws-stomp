@@ -1,16 +1,14 @@
 package com.eghm.websocket;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletComponentScan;
-
-import javax.servlet.annotation.WebListener;
 
 /**
  * @author 二哥很猛
  */
 @SpringBootApplication
-@ServletComponentScan(basePackages = "com.eghm.websocket.listener")
+@MapperScan(basePackages = "com.eghm.websocket.mapper")
 public class WsStompApplication {
 
     public static void main(String[] args) {

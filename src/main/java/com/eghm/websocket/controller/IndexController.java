@@ -34,7 +34,7 @@ public class IndexController {
     @Resource
     private DocumentService documentService;
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public String index() {
         return "index";
     }

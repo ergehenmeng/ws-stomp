@@ -34,6 +34,4 @@ spring:
 mybatis:
   mapper-locations:
     - classpath*:mapper/**/*.xml
-## 权限相关配置
-shiro:
-  loginUrl: /login
+

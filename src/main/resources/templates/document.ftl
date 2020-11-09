@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
 <title>文档编辑页面</title>
 <#include "resources.ftl">
-<script type="text/javascript" src="${cxtPath}/js/document.js?t=201703021188"></script>
+<script type="text/javascript" src="/static/js/document.js?t=201703021188"></script>
 <script type="text/javascript">
 	var workspaceId = ${workspaceId!};
 	var documentId = ${documentId!};

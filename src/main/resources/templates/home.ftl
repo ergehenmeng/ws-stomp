@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>文档管理</title>
 <#include "resources.ftl">
-<script src="${cxtPath}/js/home.js?t=201742114" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/js/home.js?t=201742114" type="text/javascript" charset="UTF-8"></script>
 <script type="text/javascript">
 	var workspaceId = ${workspaceId};
 </script>

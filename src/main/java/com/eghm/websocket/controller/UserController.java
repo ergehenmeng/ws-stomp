@@ -7,18 +7,19 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author 殿小二
  * @date 2020/11/3
  */
+@RestController
 public class UserController {
 
     /**
      * 登陆接口
      */
     @PostMapping("/login")
-    @ResponseBody
     public RespBody<Object> login(String mobile, String pwd, String captcha) {
         SystemPasswordToken token = new SystemPasswordToken();
         token.setUsername(mobile);
