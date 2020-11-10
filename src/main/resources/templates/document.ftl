@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>文档编辑页面</title>
 <#include "resources.ftl">
+<script src="/static/js/sockjs.min.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/js/webstomp.js" type="text/javascript" charset="UTF-8"></script>
 <script type="text/javascript" src="/static/js/document.js?t=201703021188"></script>
 <script type="text/javascript">
 	var workspaceId = ${workspaceId!};
