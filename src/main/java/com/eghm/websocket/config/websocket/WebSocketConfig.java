@@ -23,7 +23,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 客户端发送的消息前缀
-        registry.setUserDestinationPrefix("/chat");
+        registry.setApplicationDestinationPrefixes("/websocket");
         registry.enableSimpleBroker("");
     }
 }
