@@ -1,46 +1,38 @@
-var load = null;
-var ueditor = null;
-var initDocument = null;
-var documentClient = null;
+let load = null;
+let ueditor = null;
 let stompClient;
+let $chatMessage = $("#chatMessage");
+let $pageId = $("#pageId");
 $(function () {
     ueditor = UE.getEditor("container");
     load = $.loadMsg("服务器连接中...");
-    connect();
-    $("#chatMessage").on("keypress", function (event) {
+    connectServer();
+    $chatMessage.on("keypress", function (event) {
         if (event.keyCode === 13) {
             sendMessage();
         }
     });
 });
 
-window.onbeforeunload = function (event) {
-    return test();
-};
-
-function test() {
-    console.log(initDocument);
-    if (initDocument) initDocumen.unsubscribe();
-    if (documentClient) documentClient.unsubscribe();
-}
 
 /**
  * websocket首次建立连接
  * @param endpoint 链接地址
  * @param num 重试次数
  */
-let connectServer = function (endpoint, num) {
+let connectServer = function(endpoint, num) {
     if (num > 10) {
         console.error("websocket服务链接超时");
         return;
     }
     let socket = new SockJS(endpoint);
-    stompClient = webstomp.over(socket);
+    stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         if (load != null) {
             layer.close(load);
         }
         initDoc();
+        initChat();
     }, function (err) {
         console.error("websocket链接失败:" + err);
         connectServer(endpoint, num++);
@@ -48,82 +40,55 @@ let connectServer = function (endpoint, num) {
 };
 
 
+/**
+ * 初始化文档编辑
+ */
 let initDoc = function () {
+    subscribe("/websocket/initDocument/" + workspaceId + "/" + documentId, function (json) {
+        loadLeftFileList(json.document.documentFiles);
+        let canWrite = (json.document.userId === userId);
+        loadCenterFile(json.document.documentFiles[0], canWrite);
+        forEachChat(json.chat);
+    });
+};
+
+/**
+ * 初始化聊天信息
+ * 订阅编辑信息
+ */
+let initChat = function() {
+    subscribe("/document/" + workspaceId + "/" + documentId, function (json) {
+        let type = json.type;
+        switch (type) {
+            case 1: // 聊天信息内容
+                showChat(json.data);
+                break;
+            case 2: // 编辑器内容同步
+                updateContent(json.data);
+                break;
+        }
+    });
+};
+
+/**
+ * 订阅
+ * @param subscribeUrl 订阅地址
+ * @param callback 回调地址,返回值中包含解析过的json对象
+ */
+let subscribe = function(subscribeUrl, callback) {
     if (stompClient) {
-        stompClient.subscribe("/websocket/initDocument/" + workspaceId + "/" + documentId, function (data) {
-            let documentResult = JSON.parse(data.body);
-            if (!$.isEmpty(documentResult) && !$.isEmpty(documentResult.document)) {
-                loadLeftFileList(documentResult.document.documentFiles);
-                let canWrite = (documentResult.document.userId === userId);
-                loadCenterFile(documentResult.document.documentFiles[0], canWrite);
-                forEachChat(documentResult.chat);
+        stompClient.subscribe(subscribeUrl, function (data) {
+            console.log("subscribeResp:" + data.body);
+            if (typeof callback === "function" ) {
+                let jsonResult = JSON.parse(data.body);
+                callback(jsonResult);
             }
         });
+    } else {
+        console.error("subscribe失败,client未初始化");
     }
 };
 
-
-function connect() {
-    var socket = new SockJS("/coordination");
-    stompClient = Stomp.over(socket);
-    stompClient.connect("", "", function (frame) {
-        console.log("websocket链接成功:" + frame);
-
-        initDocuemntEdit();
-        documentSubscribe();
-    }, function (err) {
-        console.log("websocket链接失败:" + err);
-        connect();
-    });
-}
-
-
-/**
- * 全局订阅聊天消息和编辑器消息内容
- * 订阅消息时,可以在服务器端@SubscribeMapping来相应消息,与HTTP类似,请求一次相应一次(仅仅执行一次,但与HTTP区别是该方法是异步的)
- * {
- * type:1,
- * content:content
- * }
- *
- */
-function documentSubscribe() {
-    documentClient = stompClient.subscribe("/document/" + workspaceId + "/" + documentId, function (data) {
-        var result = JSON.parse(data.body);
-        console.log(result);
-        if (!$.isEmptyObject(result)) {
-            var type = result.type;
-            switch (type) {
-                case 1://聊天信息内容
-                    showChat(result);
-                    break;
-                case 2://编辑器内容同步
-                    updateContent(result);
-                    break;
-
-            }
-        }
-    });
-}
-
-/**
- * 初始化编辑器内容 通过/app过滤直接调用初始化方法
- * @param client
- * @param doucmentId 文档id
- * @param fileId 文档中页Id
- * @return data 返回格式 json
- */
-function initDocuemntEdit() {
-    initDocument = stompClient.subscribe("/app/initDocument/" + workspaceId + "/" + documentId, function (data) {
-        var documentResult = JSON.parse(data.body);
-        if (!$.isEmpty(documentResult) && !$.isEmpty(documentResult.document)) {
-            loadLeftFileList(documentResult.document.documentFiles);
-            var read = (documentResult.document.userId == userId) ? true : false;
-            loadCenterFile(documentResult.document.documentFiles[0], read);
-            forEachChat(documentResult.chat);
-        }
-    });
-}
 
 /**
  * 加载左侧列表
@@ -133,7 +98,7 @@ function loadLeftFileList(obj) {
     $.each(obj, function (i, v) {
         if (i === 0) {
             $("#leftFileList").append('<div class="col-xs-12"><a class="thumbnail selectActive" onclick="changePage(this,' + v.id + ');" href="javascript:void(0)"><img alt="" src="/images/ppt_fanye.png" style="height: 100px;  display: block;"></a></div>');
-            $("#fileId").val(v.id);
+            $pageId.val(v.id);
         } else {
             $("#leftFileList").append('<div class="col-xs-12"><a class="thumbnail" onclick="changePage(this,' + v.id + ');" href="javascript:void(0)"><img alt="" src="/images/ppt_fanye.png" style="height: 100px;  display: block;"></a></div>');
         }
@@ -152,18 +117,18 @@ function removeEvent() {
 }
 
 function sendContentMsg() {
-    var content = ueditor.getContent();
-    sendContent($("#fileId").val(), content);
+    updatePageContent($pageId.val(), ueditor.getContent());
 }
 
 /**
  * 切换文档页事件
  * @param id
+ * @param obj
  */
 function changePage(obj, id) {
-    let fileId = $("#fileId").val();
-    if (fileId != id) {
-        $("#fileId").val(id);
+    let fileId = $pageId.val();
+    if (fileId !== id) {
+        $pageId.val(id);
         $.post("/changePage", {"id": id}, function (data) {
             removeEvent();
             ueditor.setContent(data.content);
@@ -194,13 +159,13 @@ function loadCenterFile(obj, canWrite) {
 
 /**
  * 订阅文档编辑空间(中)
- * @param client
+ * @param data 服务端响应信息
  */
-function updateContent(result) {
-    var fileId = $("#fileId").val();
-    if (userId != result.userId && fileId == result.id) {
+function updateContent(data) {
+    let fileId = $("#fileId").val();
+    if (userId !== data.userId && fileId === data.id) {
         removeEvent();
-        ueditor.setContent(result.content);
+        ueditor.setContent(data.content);
         addEvent();
     }
 }
@@ -216,22 +181,21 @@ function forEachChat(data) {
             showChat(v);
         });
     }
-
 }
 
 /**
  * 发送和接收聊天信息
  */
-function sendMessage() {
-    var msg = $.trim($("#chatMessage").val());
+function sendMsg() {
+    let msg = $.trim($chatMessage.val());
     if (msg) {
-        stompClient.send("/app/userChat", {}, JSON.stringify({
+        send("/app/userChat", {
             'chatContent': encodeURIComponent(msg),
             'documentId': documentId,
             'workspaceId': workspaceId
-        }));
+        });
     }
-    $("#chatMessage").focus();
+    $chatMessage.focus();
 }
 
 /**
@@ -239,29 +203,35 @@ function sendMessage() {
  * @param id
  * @param msg 文档内容
  */
-function sendContent(id, msg) {
-    stompClient.send("/app/updatePage", {}, JSON.stringify({
+function updatePageContent(id, msg) {
+    send("/app/updatePage",{
         'content': encodeURIComponent(msg),
         'id': id,
         "documentId": documentId,
         "workspaceId": workspaceId
-
-    }));
+    })
 }
 
+let send = function (sendUrl, json) {
+    if (stompClient) {
+        stompClient.send(sendUrl, {}, JSON.stringify(json));
+    } else {
+        console.error("send失败,client未初始化");
+    }
+};
 
 /**
  * 显示聊天信息
  * @param data 后台返回的信息json
  */
 function showChat(data) {
-    var active = "p_noactive";
+    let active = "p_noactive";
     if (data.id === userId) {
         active = "p_active";
-        $("#chatMessage").val("");
+        $chatMessage.val("");
     }
     $("#chatRoom").append(contentHtml(data.nickName, data.createTime, data.chatContent, active));
-    var div = document.getElementById("chatRoom");
+    let div = document.getElementById("chatRoom");
     div.scrollTop = div.scrollHeight;
 }
 
@@ -271,7 +241,8 @@ function showChat(data) {
  * @param name 发言人
  * @param msg 发言内容
  * @param active 状态
- * @returns {String}
+ * @returns {string}
+ * @param time 发送时间
  */
 function contentHtml(name, time, msg, active) {
     return "<p class='" + active + "'>" + name + " " + time + "</p>" + "<p class='chatContent'>" + msg + "</p>";
@@ -281,10 +252,7 @@ function contentHtml(name, time, msg, active) {
  * 判断对象是否为空
  */
 $.isEmpty = function (obj) {
-    if (obj == null || obj == "" || $.isEmptyObject(obj)) {
-        return true;
-    }
-    return false;
+    return !obj || $.isEmptyObject(obj);
 };
 
 
