@@ -20,6 +20,11 @@ public enum FileType {
      */
     DOC("DOC", "普通文档"),
 
+    /**
+     * Markdown文档
+     */
+    MD("MD", "Markdown文档"),
+
     ;
     private String type;
 

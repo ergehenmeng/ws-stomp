@@ -14,24 +14,24 @@ public interface DocumentService {
      * @param orderType 排序方式
      * @return 文档
      */
-    List<Document> getBySpaceId(Integer spaceId, String orderColumn, String orderType);
+    List<Document> getBySpaceId(Long spaceId, String orderColumn, String orderType);
 
     /**
      * 创建文档对象
      */
-    Document createDocument(Integer workspaceId, String docName, FileType type);
+    Document createDocument(Long spaceId, String docName, FileType type);
 
     /**
      * 通过主键删除文档 逻辑删除
      */
-    void deleteById(Integer id);
+    void deleteById(Long id);
 
     /**
      * 设置文档密码
      * @param docId docId
      * @param pwd pwd
      */
-    void setPwd(Integer docId, String pwd);
+    void setPwd(Long docId, String pwd);
 
     /**
      * 更新文档信息
@@ -43,7 +43,7 @@ public interface DocumentService {
      * @param docId 主键
      * @return doc
      */
-    Document getById(Integer docId);
+    Document getById(Long docId);
 
 
 }

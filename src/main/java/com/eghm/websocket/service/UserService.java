@@ -21,5 +21,5 @@ public interface UserService {
     /**
      * 获取该工作空间中所有的用户
      */
-    List<User> getUserFriendList(Integer userId, Integer workspaceId);
+    List<User> getUserFriendList(Long userId, Long workspaceId);
 }

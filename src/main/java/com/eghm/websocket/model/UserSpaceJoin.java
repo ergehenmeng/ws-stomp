@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class UserSpaceJoin {
 	
-	private Integer userId;
+	private Long userId;
 	
-	private Integer spaceId;
+	private Long spaceId;
 
 }

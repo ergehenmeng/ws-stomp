@@ -5,8 +5,8 @@
         <!--
           @create by mybatis
         -->
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="workspace_id" jdbcType="INTEGER" property="workspaceId"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="workspace_id" jdbcType="BIGINT" property="workspaceId"/>
         <result column="doc_name" jdbcType="VARCHAR" property="docName"/>
         <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="state" jdbcType="TINYINT" property="state"/>
@@ -39,15 +39,12 @@
         type, state, pwd, hidden,
         sort, add_time, update_time
         )
-        values (#{id,jdbcType=INTEGER}, #{workspaceId,jdbcType=INTEGER}, #{docName,jdbcType=VARCHAR},
+        values (#{id,jdbcType=BIGINT}, #{workspaceId,jdbcType=BIGINT}, #{docName,jdbcType=VARCHAR},
         #{type,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{pwd,jdbcType=VARCHAR}, #{hidden,jdbcType=BIT},
         #{sort,jdbcType=SMALLINT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
-    <insert id="insertSelective" parameterType="com.eghm.websocket.model.Document" useGeneratedKeys="true">
-        <selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER" keyColumn="id">
-            select LAST_INSERT_ID()
-        </selectKey>
+    <insert id="insertSelective" parameterType="com.eghm.websocket.model.Document" >
         <!--
           @create by mybatis
         -->
@@ -86,10 +83,10 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id,jdbcType=INTEGER},
+                #{id,jdbcType=BIGINT},
             </if>
             <if test="workspaceId != null">
-                #{workspaceId,jdbcType=INTEGER},
+                #{workspaceId,jdbcType=BIGINT},
             </if>
             <if test="docName != null">
                 #{docName,jdbcType=VARCHAR},
@@ -124,7 +121,7 @@
         update document
         <set>
             <if test="workspaceId != null">
-                workspace_id = #{workspaceId,jdbcType=INTEGER},
+                workspace_id = #{workspaceId,jdbcType=BIGINT},
             </if>
             <if test="docName != null">
                 doc_name = #{docName,jdbcType=VARCHAR},
@@ -151,14 +148,14 @@
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.eghm.websocket.model.Document">
         <!--
           @create by mybatis
         -->
         update document
-        set workspace_id = #{workspaceId,jdbcType=INTEGER},
+        set workspace_id = #{workspaceId,jdbcType=BIGINT},
         doc_name = #{docName,jdbcType=VARCHAR},
         type = #{type,jdbcType=VARCHAR},
         state = #{state,jdbcType=TINYINT},
@@ -167,7 +164,7 @@
         sort = #{sort,jdbcType=SMALLINT},
         add_time = #{addTime,jdbcType=TIMESTAMP},
         update_time = #{updateTime,jdbcType=TIMESTAMP}
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="getBySpaceId" resultMap="BaseResultMap">

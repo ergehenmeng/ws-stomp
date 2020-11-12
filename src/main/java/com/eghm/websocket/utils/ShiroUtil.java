@@ -26,7 +26,7 @@ public class ShiroUtil {
         throw new SystemException(ErrorCode.LOGIN_TIMEOUT);
     }
 
-    public static Integer getUserId() {
+    public static Long getUserId() {
         return getUser().getId();
     }
 

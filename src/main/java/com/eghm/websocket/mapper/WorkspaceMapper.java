@@ -47,5 +47,5 @@ public interface WorkspaceMapper {
      * @param userId userId
      * @return
      */
-    List<Workspace> getByUserId(@Param("userId") Integer userId);
+    List<Workspace> getByUserId(@Param("userId") Long userId);
 }

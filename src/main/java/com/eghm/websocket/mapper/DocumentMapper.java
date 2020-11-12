@@ -25,7 +25,7 @@ public interface DocumentMapper {
      *
      * @param id 条件 
      */
-    Document selectByPrimaryKey(Integer id);
+    Document selectByPrimaryKey(Long id);
 
     /**
      * 根据主键来更新部分数据库记录
@@ -48,7 +48,7 @@ public interface DocumentMapper {
      * @param orderType 排序类型
      * @return list
      */
-    List<Document> getBySpaceId(@Param("spaceId") Integer spaceId,
+    List<Document> getBySpaceId(@Param("spaceId") Long spaceId,
                                 @Param("column") String column,
                                 @Param("orderType") String orderType);
 }

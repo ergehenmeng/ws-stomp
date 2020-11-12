@@ -17,12 +17,12 @@ public class PageServiceImpl implements PageService {
     private PageMapper pageMapper;
 
     @Override
-    public Page getById(Integer id) {
+    public Page getById(Long id) {
         return pageMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public void updatePage(Integer id, String content) {
+    public void updatePage(Long id, String content) {
         Page page = new Page();
         page.setId(id);
         page.setContent(content);

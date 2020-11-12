@@ -14,7 +14,7 @@ public interface PageService {
      * @param id key
      * @return 页
      */
-    Page getById(Integer id);
+    Page getById(Long id);
 
     /**
      * 更新页内容
@@ -22,5 +22,5 @@ public interface PageService {
      * @param id      key
      * @param content content
      */
-    void updatePage(Integer id, String content);
+    void updatePage(Long id, String content);
 }

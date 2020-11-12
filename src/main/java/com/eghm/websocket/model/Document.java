@@ -16,14 +16,14 @@ public class Document implements Serializable {
      * 表 : document<br>
      * 对应字段 : id<br>
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 工作空间id<br>
      * 表 : document<br>
      * 对应字段 : workspace_id<br>
      */
-    private Integer workspaceId;
+    private Long workspaceId;
 
     /**
      * <br>
@@ -33,7 +33,7 @@ public class Document implements Serializable {
     private String docName;
 
     /**
-     * 文档类型 word ppt<br>
+     * 文档类型 word md<br>
      * 表 : document<br>
      * 对应字段 : type<br>
      */

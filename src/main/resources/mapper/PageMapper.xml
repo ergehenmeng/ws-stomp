@@ -5,9 +5,9 @@
         <!--
           @create by mybatis
         -->
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="document_id" jdbcType="INTEGER" property="documentId"/>
-        <result column="workspace_id" jdbcType="INTEGER" property="workspaceId"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="document_id" jdbcType="BIGINT" property="documentId"/>
+        <result column="workspace_id" jdbcType="BIGINT" property="workspaceId"/>
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -47,7 +47,7 @@
         insert into page (id, document_id, workspace_id,
         add_time, update_time, content
         )
-        values (#{id,jdbcType=INTEGER}, #{documentId,jdbcType=INTEGER}, #{workspaceId,jdbcType=INTEGER},
+        values (#{id,jdbcType=BIGINT}, #{documentId,jdbcType=BIGINT}, #{workspaceId,jdbcType=BIGINT},
         #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
         )
     </insert>
@@ -78,13 +78,13 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id,jdbcType=INTEGER},
+                #{id,jdbcType=BIGINT},
             </if>
             <if test="documentId != null">
-                #{documentId,jdbcType=INTEGER},
+                #{documentId,jdbcType=BIGINT},
             </if>
             <if test="workspaceId != null">
-                #{workspaceId,jdbcType=INTEGER},
+                #{workspaceId,jdbcType=BIGINT},
             </if>
             <if test="addTime != null">
                 #{addTime,jdbcType=TIMESTAMP},
@@ -104,10 +104,10 @@
         update page
         <set>
             <if test="documentId != null">
-                document_id = #{documentId,jdbcType=INTEGER},
+                document_id = #{documentId,jdbcType=BIGINT},
             </if>
             <if test="workspaceId != null">
-                workspace_id = #{workspaceId,jdbcType=INTEGER},
+                workspace_id = #{workspaceId,jdbcType=BIGINT},
             </if>
             <if test="addTime != null">
                 add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -119,15 +119,15 @@
                 content = #{content,jdbcType=LONGVARCHAR},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.eghm.websocket.model.Page">
         <!--
           @create by mybatis
         -->
         update page
-        set document_id = #{documentId,jdbcType=INTEGER},
-        workspace_id = #{workspaceId,jdbcType=INTEGER},
+        set document_id = #{documentId,jdbcType=BIGINT},
+        workspace_id = #{workspaceId,jdbcType=BIGINT},
         add_time = #{addTime,jdbcType=TIMESTAMP},
         update_time = #{updateTime,jdbcType=TIMESTAMP},
         content = #{content,jdbcType=LONGVARCHAR}
@@ -138,10 +138,10 @@
           @create by mybatis
         -->
         update page
-        set document_id = #{documentId,jdbcType=INTEGER},
-        workspace_id = #{workspaceId,jdbcType=INTEGER},
+        set document_id = #{documentId,jdbcType=BIGINT},
+        workspace_id = #{workspaceId,jdbcType=BIGINT},
         add_time = #{addTime,jdbcType=TIMESTAMP},
         update_time = #{updateTime,jdbcType=TIMESTAMP}
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>

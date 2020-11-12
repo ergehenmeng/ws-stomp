@@ -48,7 +48,7 @@ public class IndexController {
         User user = ShiroUtil.getUser();
         List<Workspace> list = spaceService.getByUserId(user.getId());
         if (CollUtil.isNotEmpty(list)) {
-            Integer firstWorkspaceId = list.get(0).getId();
+            Long firstWorkspaceId = list.get(0).getId();
             model.addAttribute("workspaceId", firstWorkspaceId);
             List<User> friendList = userService.getUserFriendList(user.getId(), firstWorkspaceId);
             model.addAttribute("friendList", friendList);

@@ -16,7 +16,7 @@ public class Workspace implements Serializable {
      * 表 : workspace<br>
      * 对应字段 : id<br>
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 命名空间的名称<br>
@@ -37,7 +37,7 @@ public class Workspace implements Serializable {
      * 表 : workspace<br>
      * 对应字段 : user_id<br>
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * <br>

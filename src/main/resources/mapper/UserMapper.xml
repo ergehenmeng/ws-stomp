@@ -5,7 +5,7 @@
         <!--
           @create by mybatis
         -->
-        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="mobile" jdbcType="CHAR" property="mobile"/>
         <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
         <result column="pwd" jdbcType="VARCHAR" property="pwd"/>
@@ -27,7 +27,7 @@
         select
         <include refid="BaseColumnList"/>
         from user
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </select>
     <insert id="insert" parameterType="com.eghm.websocket.model.User">
         <!--
@@ -36,7 +36,7 @@
         insert into user (id, mobile, nick_name,
         pwd, init_pwd, state,
         add_time, update_time)
-        values (#{id,jdbcType=INTEGER}, #{mobile,jdbcType=CHAR}, #{nickName,jdbcType=VARCHAR},
+        values (#{id,jdbcType=BIGINT}, #{mobile,jdbcType=CHAR}, #{nickName,jdbcType=VARCHAR},
         #{pwd,jdbcType=VARCHAR}, #{initPwd,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT},
         #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
     </insert>
@@ -73,7 +73,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id,jdbcType=INTEGER},
+                #{id,jdbcType=BIGINT},
             </if>
             <if test="mobile != null">
                 #{mobile,jdbcType=CHAR},
@@ -126,7 +126,7 @@
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.eghm.websocket.model.User">
         <!--
@@ -140,7 +140,7 @@
         state = #{state,jdbcType=TINYINT},
         add_time = #{addTime,jdbcType=TIMESTAMP},
         update_time = #{updateTime,jdbcType=TIMESTAMP}
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="getUserFriendList" parameterType="map" resultType="com.eghm.websocket.model.User">

@@ -55,7 +55,7 @@ public class DocumentController {
     /**
      * 聊天记录缓存
      */
-    private Map<Integer, LimitQueue<UserChat>> cacheChat = new ConcurrentHashMap<>();
+    private Map<Long, LimitQueue<UserChat>> cacheChat = new ConcurrentHashMap<>();
 
 
     /**
@@ -63,7 +63,7 @@ public class DocumentController {
      */
     @RequestMapping("/createDocument/{workspaceId}")
     @ResponseBody
-    public RespBody<Object> createDocument(@PathVariable Integer workspaceId, String docName, FileType type) {
+    public RespBody<Object> createDocument(@PathVariable Long workspaceId, String docName, FileType type) {
         documentService.createDocument(workspaceId, docName, type);
         return RespBody.success();
     }
@@ -73,7 +73,7 @@ public class DocumentController {
      */
     @RequestMapping("/getDocument/{workspaceId}")
     @ResponseBody
-    public RespBody<List<Document>> getDocument(@PathVariable Integer workspaceId) {
+    public RespBody<List<Document>> getDocument(@PathVariable Long workspaceId) {
         List<Document> documentList = documentService.getBySpaceId(workspaceId, null, null);
         return RespBody.success(documentList);
     }
@@ -83,7 +83,7 @@ public class DocumentController {
      */
     @RequestMapping("/deleteDocument/{workspaceId}")
     @ResponseBody
-    public RespBody<Object> deleteDocument(@PathVariable String workspaceId, Integer docId) {
+    public RespBody<Object> deleteDocument(@PathVariable Long workspaceId, Long docId) {
         documentService.deleteById(docId);
         return RespBody.success();
     }
@@ -93,7 +93,7 @@ public class DocumentController {
      */
     @PostMapping("/updateDocument/{workspaceId}")
     @ResponseBody
-    public RespBody<Object> updateDocument(@PathVariable String workspaceId, Integer docId, String docName) {
+    public RespBody<Object> updateDocument(@PathVariable Long workspaceId, Long docId, String docName) {
         Document document = documentService.getById(docId);
         document.setDocName(docName);
         documentService.updateSelective(document);
@@ -105,7 +105,7 @@ public class DocumentController {
      */
     @PostMapping("/createPassword/{workspaceId}")
     @ResponseBody
-    public RespBody<Object> createPassword(@PathVariable Integer workspaceId, Integer docId, String pwd) {
+    public RespBody<Object> createPassword(@PathVariable Long workspaceId, Long docId, String pwd) {
         documentService.setPwd(docId, pwd);
         return RespBody.success();
     }
@@ -115,7 +115,7 @@ public class DocumentController {
      */
     @RequestMapping("/checkPassword/{workspaceId}")
     @ResponseBody
-    public RespBody<Object> checkPassword(@PathVariable Integer workspaceId, Integer docId, String pwd) {
+    public RespBody<Object> checkPassword(@PathVariable Long workspaceId, Long docId, String pwd) {
         Document doc = documentService.getById(docId);
         if (StrUtil.isNotEmpty(doc.getPwd()) && !doc.getPwd().equals(pwd)) {
             return RespBody.error(ErrorCode.DOC_PWD_ERROR);
@@ -127,7 +127,7 @@ public class DocumentController {
      * 文档管理页面
      */
     @RequestMapping("/document/{workspaceId}/{documentId}")
-    public String document(@PathVariable String workspaceId, @PathVariable Integer documentId, ModelMap model) {
+    public String document(@PathVariable Long workspaceId, @PathVariable Long documentId, ModelMap model) {
         model.addAttribute("workspaceId", workspaceId);
         model.addAttribute("documentId", documentId);
         return "document";
@@ -139,7 +139,7 @@ public class DocumentController {
      * 初始化某个文档
      */
     @SubscribeMapping("/initDocument/{workspaceId}/{documentId}")
-    public Map<String, Object> initDocument(SimpMessageHeaderAccessor accessor, @DestinationVariable Integer workspaceId, @DestinationVariable Integer documentId) {
+    public Map<String, Object> initDocument(SimpMessageHeaderAccessor accessor, @DestinationVariable Long workspaceId, @DestinationVariable Long documentId) {
         log.debug("文档空间: 工作空间ID: " + workspaceId + " 文档ID " + documentId);
         Document document = documentService.getById(documentId);
         Map<String, Object> result = new HashMap<String, Object>();
@@ -185,7 +185,7 @@ public class DocumentController {
      */
     @RequestMapping("/changePage")
     @ResponseBody
-    public RespBody<Page> changePage(Integer id) {
+    public RespBody<Page> changePage(Long id) {
         Page page = pageService.getById(id);
         return RespBody.success(page);
     }

@@ -19,7 +19,7 @@ public interface SlideMapper {
 	 * @param fileId
 	 * @return
 	 */
-	Slide getSlideByFileId(Integer fileId);
+	Slide getSlideByFileId(Long fileId);
 	
 	
 	/**

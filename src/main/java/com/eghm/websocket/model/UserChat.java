@@ -8,7 +8,7 @@ public class UserChat {
 	/**
 	 * 用户id
 	 */
-	public Integer id ;
+	public Long id ;
 	
 	/**
 	 * 用户昵称
@@ -23,7 +23,7 @@ public class UserChat {
 	/**
 	 * 文档空间ID
 	 */
-	private Integer documentId;
+	private Long documentId;
 	
 	private String createTime;
 	
@@ -32,6 +32,6 @@ public class UserChat {
 	 */
 	private Integer type;
 
-	private Integer workspaceId;
+	private Long workspaceId;
 
 }

@@ -4,6 +4,7 @@ import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.mapper.DocumentMapper;
 import com.eghm.websocket.model.Document;
 import com.eghm.websocket.service.DocumentService;
+import com.eghm.websocket.utils.KeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +19,18 @@ public class DocumentServiceImpl implements DocumentService{
 	@Autowired
 	private DocumentMapper documentMapper;
 
+	@Autowired
+    private KeyGenerator keyGenerator;
+
     @Override
-    public List<Document> getBySpaceId(Integer spaceId, String orderColumn, String orderType) {
+    public List<Document> getBySpaceId(Long spaceId, String orderColumn, String orderType) {
         return documentMapper.getBySpaceId(spaceId, orderColumn, orderType);
     }
 
     @Override
-    public Document createDocument(Integer workspaceId, String docName, FileType type) {
+    public Document createDocument(Long workspaceId, String docName, FileType type) {
 	    Document document = new Document();
+	    document.setId(keyGenerator.generateKey().longValue());
         document.setDocName(docName);
         document.setWorkspaceId(workspaceId);
         document.setType(type.getType());
@@ -34,7 +39,7 @@ public class DocumentServiceImpl implements DocumentService{
     }
 
     @Override
-	public void deleteById(Integer id) {
+	public void deleteById(Long id) {
 		Document document = new Document();
         document.setId(id);
 		document.setState((byte)0);
@@ -42,7 +47,7 @@ public class DocumentServiceImpl implements DocumentService{
 	}
 
     @Override
-    public void setPwd(Integer docId, String pwd) {
+    public void setPwd(Long docId, String pwd) {
         Document document = documentMapper.selectByPrimaryKey(docId);
         // TODO 校验文档是否为当前用户所拥有
         document.setPwd(pwd);
@@ -55,7 +60,7 @@ public class DocumentServiceImpl implements DocumentService{
     }
 
     @Override
-    public Document getById(Integer docId) {
+    public Document getById(Long docId) {
         return documentMapper.selectByPrimaryKey(docId);
     }
 }

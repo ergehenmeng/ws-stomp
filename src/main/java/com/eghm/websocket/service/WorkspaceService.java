@@ -14,6 +14,6 @@ public interface WorkspaceService {
      * @param userId userId
      * @return 工作空间
      */
-    List<Workspace> getByUserId(Integer userId);
+    List<Workspace> getByUserId(Long userId);
 
 }

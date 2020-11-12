@@ -41,7 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserFriendList(Integer userId, Integer workspaceId) {
+    public List<User> getUserFriendList(Long userId, Long workspaceId) {
+        // TODO 待完成
         return Lists.newArrayList();
     }
 

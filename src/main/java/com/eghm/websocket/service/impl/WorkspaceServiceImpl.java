@@ -18,7 +18,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     private WorkspaceMapper workspaceMapper;
 
     @Override
-    public List<Workspace> getByUserId(Integer id) {
+    public List<Workspace> getByUserId(Long id) {
         return workspaceMapper.getByUserId(id);
     }
 

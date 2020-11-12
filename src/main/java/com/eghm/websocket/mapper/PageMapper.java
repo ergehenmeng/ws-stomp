@@ -23,7 +23,7 @@ public interface PageMapper {
      *
      * @param id 条件 
      */
-    Page selectByPrimaryKey(Integer id);
+    Page selectByPrimaryKey(Long id);
 
     /**
      * 根据主键来更新部分数据库记录

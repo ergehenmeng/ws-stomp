@@ -36,6 +36,11 @@ public enum ErrorCode {
      */
     LOGIN_TIMEOUT(604, "用户登陆已过期"),
 
+    /**
+     * 未获取到本机ip
+     */
+    UNKNOWN_HOST_ADDRESS(605, "未获取到本机ip"),
+
     ;
 
     private int code;

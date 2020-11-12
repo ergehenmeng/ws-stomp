@@ -15,21 +15,21 @@ public class Page implements Serializable {
      * 表 : page<br>
      * 对应字段 : id<br>
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 文档id<br>
      * 表 : page<br>
      * 对应字段 : document_id<br>
      */
-    private Integer documentId;
+    private Long documentId;
 
     /**
      * 文档所属空间id<br>
      * 表 : page<br>
      * 对应字段 : workspace_id<br>
      */
-    private Integer workspaceId;
+    private Long workspaceId;
 
     /**
      * 添加时间<br>
