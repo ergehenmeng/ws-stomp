@@ -1,3 +1,4 @@
+<link rel="icon" href="data:;base64,=">
 <link type="text/css" href="/static/css/bootstrap.min.css" rel="stylesheet" />
 <link type="text/css" href="/static/css/smartMenu.css" rel="stylesheet" />
 <link type="text/css" href="/static/css/main.css" rel="stylesheet" />

@@ -24,7 +24,9 @@ public class ShiroConfig {
         // 登陆接口
         definition.addPathDefinition("/login", "anon");
         // 静态资源
+        definition.addPathDefinition("/favicon.ico", "anon");
         definition.addPathDefinition("/static/**", "anon");
+
         definition.addPathDefinition("/**", "authc");
         return definition;
     }

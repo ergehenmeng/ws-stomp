@@ -36,3 +36,5 @@ mybatis:
     - classpath*:mapper/**/*.xml
 project:
   captcha: false
+shiro:
+  unauthorizedUrl: /index

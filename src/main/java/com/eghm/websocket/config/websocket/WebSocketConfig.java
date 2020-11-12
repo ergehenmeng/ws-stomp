@@ -17,7 +17,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // websocket链接地址
-        registry.addEndpoint("/documentChat").withSockJS();
+        registry.addEndpoint("/serverChat").withSockJS();
     }
 
     @Override

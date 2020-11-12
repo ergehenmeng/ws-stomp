@@ -6,10 +6,10 @@ let $pageId = $("#pageId");
 $(function () {
     ueditor = UE.getEditor("container");
     load = $.loadMsg("服务器连接中...");
-    connectServer();
+    connectServer("/serverChat", 1);
     $chatMessage.on("keypress", function (event) {
         if (event.keyCode === 13) {
-            sendMessage();
+            sendMsg();
         }
     });
 });

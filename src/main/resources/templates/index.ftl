@@ -6,6 +6,7 @@
     <title>在线教育系统</title>
     <meta name="description" content="User login page"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <link rel="icon" href="data:;base64,=">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="/static/css/ace-fonts.css"/>
@@ -29,16 +30,12 @@
                                         <fieldset>
                                             <label class="block clearfix">
                                                 <span class="block input-icon input-icon-right">
-                                                    <input type="text" name="userName" id="userName"
-                                                           class="form-control" placeholder="用户名、手机号、邮箱"/><i
-                                                            class="ace-icon fa fa-user"></i>
+                                                    <input type="text" name="mobile" id="mobile" class="form-control" placeholder="用户名、手机号、邮箱"/><i class="ace-icon fa fa-user"></i>
 												</span>
                                             </label>
                                             <label class="block clearfix">
                                                 <span class="block input-icon input-icon-right">
-                                                    <input type="password" name="password" id="password"
-                                                           class="form-control" placeholder="密码"/> <i
-                                                            class="ace-icon fa fa-lock"></i>
+                                                    <input type="password" name="pwd" id="pwd" class="form-control" value="123456" placeholder="密码"/> <i class="ace-icon fa fa-lock"></i>
 												</span>
                                             </label>
                                             <div class="text-center" style="height: 25px;">
@@ -48,10 +45,7 @@
                                                 <label class="inline">
                                                     <input type="checkbox" class="ace" id="rememberMe"/><span class="lbl">记住我</span>
                                                 </label>
-                                                <button type="button" id="login"
-                                                        class="width-35 pull-right btn btn-sm btn-primary">
-                                                    <i class="ace-icon fa fa-key"></i> <span
-                                                            class="bigger-110">登陆</span>
+                                                <button type="button" id="login" class="width-35 pull-right btn btn-sm btn-primary"> <i class="ace-icon fa fa-key"></i> <span class="bigger-110">登陆</span>
                                                 </button>
                                             </div>
                                         </fieldset>
@@ -71,18 +65,18 @@
 <script type="text/javascript">
     $(function () {
         $(document).on("click", "#login", function (e) {
-            let userName = $("#userName").val();
-            let password = $("#password").val();
-            if (!userName || !password) {
+            let mobile = $("#mobile").val();
+            let pwd = $("#pwd").val();
+            if (!mobile || !pwd) {
                 $("#tipMsg").text("用户名或密码不能为空");
             }
             $.post("/login", {
-                "userName": userName,
-                "password": md5(password),
+                "mobile": mobile,
+                "pwd": md5(pwd),
                 "rememberMe": $("#rememberMe").prop('checked')
             }, function (data) {
-                if (data.result) {
-                    $("#password").val("");
+                if (data.code === 200) {
+                    $("#pwd").val("");
                     window.location.href = "/home";
                 } else {
                     $("#tipMsg").text(data.msg);

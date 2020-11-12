@@ -2,6 +2,7 @@ package com.eghm.websocket.service.impl;
 
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.crypto.digest.MD5;
 import com.eghm.websocket.enums.ErrorCode;
 import com.eghm.websocket.exception.SystemException;
 import com.eghm.websocket.mapper.UserMapper;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
         if (user.getState() == User.LOCK) {
             throw new SystemException(ErrorCode.USER_LOCK_ERROR);
         }
-        if (!BCrypt.checkpw(user.getPwd(), pwd)) {
+        if (!BCrypt.checkpw(pwd, user.getPwd())) {
             throw new SystemException(ErrorCode.USER_PWD_ERROR);
         }
         return user;
