@@ -2,13 +2,11 @@ package com.eghm.websocket.service.impl;
 
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.BCrypt;
-import cn.hutool.crypto.digest.MD5;
 import com.eghm.websocket.enums.ErrorCode;
 import com.eghm.websocket.exception.SystemException;
 import com.eghm.websocket.mapper.UserMapper;
 import com.eghm.websocket.model.User;
 import com.eghm.websocket.service.UserService;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserFriendList(Long userId, Long spaceId) {
-        // TODO 待完成
-        return Lists.newArrayList();
+    public List<User> getFriendList(Long spaceId) {
+        return userMapper.getFriendList(spaceId);
     }
 
 }

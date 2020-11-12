@@ -20,6 +20,8 @@ public interface UserService {
 
     /**
      * 获取该工作空间中所有的用户
+     * @param spaceId spaceId
+     * @return
      */
-    List<User> getUserFriendList(Long userId, Long spaceId);
+    List<User> getFriendList(Long spaceId);
 }

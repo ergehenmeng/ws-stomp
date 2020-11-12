@@ -2,11 +2,11 @@ package com.eghm.websocket.controller;
 
 import cn.hutool.core.collection.CollUtil;
 import com.eghm.websocket.model.Document;
-import com.eghm.websocket.model.User;
 import com.eghm.websocket.model.Space;
+import com.eghm.websocket.model.User;
 import com.eghm.websocket.service.DocumentService;
-import com.eghm.websocket.service.UserService;
 import com.eghm.websocket.service.SpaceService;
+import com.eghm.websocket.service.UserService;
 import com.eghm.websocket.utils.ShiroUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,11 +47,11 @@ public class IndexController {
         User user = ShiroUtil.getUser();
         List<Space> list = spaceService.getByUserId(user.getId());
         if (CollUtil.isNotEmpty(list)) {
-            Long firstspaceId = list.get(0).getId();
-            model.addAttribute("spaceId", firstspaceId);
-            List<User> friendList = userService.getUserFriendList(user.getId(), firstspaceId);
+            Long spaceId = list.get(0).getId();
+            model.addAttribute("spaceId", spaceId);
+            List<User> friendList = userService.getFriendList(spaceId);
             model.addAttribute("friendList", friendList);
-            List<Document> documentList = documentService.getBySpaceId(firstspaceId, null, null);
+            List<Document> documentList = documentService.getBySpaceId(spaceId, null, null);
             model.addAttribute("documentList", documentList);
         }
         model.addAttribute("spaceList", list);

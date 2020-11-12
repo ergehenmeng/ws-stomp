@@ -4,6 +4,7 @@ import com.eghm.websocket.enums.ErrorCode;
 
 /**
  * 针对websocket的异常
+ *
  * @author 殿小二
  * @date 2020/11/4
  */
@@ -20,7 +21,7 @@ public class WebSocketException extends RuntimeException {
         this(errorCode.getCode(), errorCode.getMsg());
     }
 
-    private WebSocketException(int code, String message){
+    private WebSocketException(int code, String message) {
         super(message);
         this.code = code;
     }

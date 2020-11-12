@@ -1,12 +1,11 @@
 package com.eghm.websocket.service.impl;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.eghm.websocket.mapper.DocumentFileMapper;
 import com.eghm.websocket.model.DocumentFile;
 import com.eghm.websocket.service.DocumentFileService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 @Service
 public class DocumentFileServiceImpl implements DocumentFileService {

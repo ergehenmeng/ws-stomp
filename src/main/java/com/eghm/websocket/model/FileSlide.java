@@ -6,7 +6,7 @@ import lombok.Data;
 public class FileSlide {
 
     private Integer id;
-	
-	private Integer fileId;
-	
+
+    private Integer fileId;
+
 }

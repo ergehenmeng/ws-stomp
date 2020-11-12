@@ -1,7 +1,7 @@
 package com.eghm.websocket.service;
 
-import com.eghm.websocket.model.Slide;
 import com.eghm.websocket.model.PartSlide;
+import com.eghm.websocket.model.Slide;
 
 public interface SlideService {
 

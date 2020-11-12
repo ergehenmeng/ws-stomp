@@ -50,9 +50,8 @@ public interface UserMapper {
 
     /**
      * 查询在指定工作空间上的所有用户
-     * @param userId userId
      * @param spaceId 工作空间id
      * @return
      */
-    List<User> getUserFriendList(@Param("userId")Long userId, @Param("spaceId") Long spaceId);
+    List<User> getFriendList(@Param("spaceId") Long spaceId);
 }

@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class Text {
-	
-	private Integer id;
-	private String delta;
+
+    private Integer id;
+    private String delta;
 
 }

@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class Coordination {
-	
-	private Integer id;
-	
-	private Integer fileId;
-	
-	private Integer spaceId;
+
+    private Integer id;
+
+    private Integer fileId;
+
+    private Integer spaceId;
 
 }

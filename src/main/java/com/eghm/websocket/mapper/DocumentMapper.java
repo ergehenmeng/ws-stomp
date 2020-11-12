@@ -48,7 +48,5 @@ public interface DocumentMapper {
      * @param orderType 排序类型
      * @return list
      */
-    List<Document> getBySpaceId(@Param("spaceId") Long spaceId,
-                                @Param("column") String column,
-                                @Param("orderType") String orderType);
+    List<Document> getBySpaceId(@Param("spaceId") Long spaceId, @Param("column") String column, @Param("orderType") String orderType);
 }

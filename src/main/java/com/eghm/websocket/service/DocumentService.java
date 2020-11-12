@@ -1,9 +1,9 @@
 package com.eghm.websocket.service;
 
-import java.util.List;
-
 import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.model.Document;
+
+import java.util.List;
 
 public interface DocumentService {
 

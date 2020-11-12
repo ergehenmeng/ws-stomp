@@ -7,21 +7,21 @@ import com.eghm.websocket.enums.ErrorCode;
  */
 public class SystemException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * 0 为正常 1为异常
-	 */
-	private int code;
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 0 为正常 1为异常
+     */
+    private int code;
 
     public SystemException(ErrorCode errorCode) {
-	    this(errorCode.getCode(), errorCode.getMsg());
+        this(errorCode.getCode(), errorCode.getMsg());
     }
 
-    private SystemException(int code, String message){
-		super(message);
-		this.code = code;
-	}
+    private SystemException(int code, String message) {
+        super(message);
+        this.code = code;
+    }
 
     public int getCode() {
         return code;
