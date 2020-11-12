@@ -3,6 +3,8 @@ package com.eghm.websocket.mapper;
 import com.eghm.websocket.model.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserMapper {
     /**
      * 插入数据库记录
@@ -45,4 +47,12 @@ public interface UserMapper {
      * @return user
      */
     User getByMobile(@Param("mobile") String mobile);
+
+    /**
+     * 查询在指定工作空间上的所有用户
+     * @param userId userId
+     * @param spaceId 工作空间id
+     * @return
+     */
+    List<User> getUserFriendList(@Param("userId")Long userId, @Param("spaceId") Long spaceId);
 }

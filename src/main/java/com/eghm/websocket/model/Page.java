@@ -27,9 +27,9 @@ public class Page implements Serializable {
     /**
      * 文档所属空间id<br>
      * 表 : page<br>
-     * 对应字段 : workspace_id<br>
+     * 对应字段 : space_id<br>
      */
-    private Long workspaceId;
+    private Long spaceId;
 
     /**
      * 添加时间<br>

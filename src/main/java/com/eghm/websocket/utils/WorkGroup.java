@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
  *
  * @author 二哥很猛
  */
-public enum Workspace {
+public enum WorkGroup {
 
     /**
      * 主机名称方式,该方式要求主机序号以数字开始或结尾,且中间不能包含数字

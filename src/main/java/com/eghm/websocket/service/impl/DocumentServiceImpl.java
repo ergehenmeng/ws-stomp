@@ -28,11 +28,11 @@ public class DocumentServiceImpl implements DocumentService{
     }
 
     @Override
-    public Document createDocument(Long workspaceId, String docName, FileType type) {
+    public Document createDocument(Long spaceId, String docName, FileType type) {
 	    Document document = new Document();
 	    document.setId(keyGenerator.generateKey().longValue());
         document.setDocName(docName);
-        document.setWorkspaceId(workspaceId);
+        document.setSpaceId(spaceId);
         document.setType(type.getType());
         documentMapper.insertSelective(document);
         return document;

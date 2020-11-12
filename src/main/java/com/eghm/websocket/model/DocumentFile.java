@@ -15,6 +15,6 @@ public class DocumentFile implements Serializable{
 	
 	private Integer userId;
 	
-	private Integer workspaceId;
+	private Integer spaceId;
 
 }

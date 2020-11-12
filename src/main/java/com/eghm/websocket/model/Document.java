@@ -21,9 +21,9 @@ public class Document implements Serializable {
     /**
      * 工作空间id<br>
      * 表 : document<br>
-     * 对应字段 : workspace_id<br>
+     * 对应字段 : space_id<br>
      */
-    private Long workspaceId;
+    private Long spaceId;
 
     /**
      * <br>

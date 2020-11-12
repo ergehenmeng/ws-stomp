@@ -149,10 +149,10 @@
         from sys_user t
         where exists
                   (select 1
-                   from zf_user_workspace r
+                   from zf_user_space r
                    where r.user_id = t.id
                      and r.user_id <> #{userId}
-                     and r.workspace_id = ${workspaceId})
+                     and r.space_id = ${spaceId})
         ]]>
 	</select>
 

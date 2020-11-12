@@ -32,6 +32,6 @@ public class UserChat {
 	 */
 	private Integer type;
 
-	private Long workspaceId;
+	private Long spaceId;
 
 }

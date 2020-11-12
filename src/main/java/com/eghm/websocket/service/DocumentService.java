@@ -8,7 +8,7 @@ import com.eghm.websocket.model.Document;
 public interface DocumentService {
 
     /**
-     * 通过workspaceId获取工作空间下的所有文档
+     * 通过spaceId获取工作空间下的所有文档
      * @param spaceId   工作空间
      * @param orderColumn 排序字段
      * @param orderType 排序方式

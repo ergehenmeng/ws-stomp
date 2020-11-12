@@ -7,7 +7,7 @@
         -->
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="document_id" jdbcType="BIGINT" property="documentId"/>
-        <result column="workspace_id" jdbcType="BIGINT" property="workspaceId"/>
+        <result column="space_id" jdbcType="BIGINT" property="spaceId"/>
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -21,7 +21,7 @@
         <!--
           @create by mybatis
         -->
-        id, document_id, workspace_id, add_time, update_time
+        id, document_id, space_id, add_time, update_time
     </sql>
     <sql id="BlobColumnList">
         <!--
@@ -44,10 +44,10 @@
         <!--
           @create by mybatis
         -->
-        insert into page (id, document_id, workspace_id,
+        insert into page (id, document_id, space_id,
         add_time, update_time, content
         )
-        values (#{id,jdbcType=BIGINT}, #{documentId,jdbcType=BIGINT}, #{workspaceId,jdbcType=BIGINT},
+        values (#{id,jdbcType=BIGINT}, #{documentId,jdbcType=BIGINT}, #{spaceId,jdbcType=BIGINT},
         #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
         )
     </insert>
@@ -63,8 +63,8 @@
             <if test="documentId != null">
                 document_id,
             </if>
-            <if test="workspaceId != null">
-                workspace_id,
+            <if test="spaceId != null">
+                space_id,
             </if>
             <if test="addTime != null">
                 add_time,
@@ -83,8 +83,8 @@
             <if test="documentId != null">
                 #{documentId,jdbcType=BIGINT},
             </if>
-            <if test="workspaceId != null">
-                #{workspaceId,jdbcType=BIGINT},
+            <if test="spaceId != null">
+                #{spaceId,jdbcType=BIGINT},
             </if>
             <if test="addTime != null">
                 #{addTime,jdbcType=TIMESTAMP},
@@ -106,8 +106,8 @@
             <if test="documentId != null">
                 document_id = #{documentId,jdbcType=BIGINT},
             </if>
-            <if test="workspaceId != null">
-                workspace_id = #{workspaceId,jdbcType=BIGINT},
+            <if test="spaceId != null">
+                space_id = #{spaceId,jdbcType=BIGINT},
             </if>
             <if test="addTime != null">
                 add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -127,7 +127,7 @@
         -->
         update page
         set document_id = #{documentId,jdbcType=BIGINT},
-        workspace_id = #{workspaceId,jdbcType=BIGINT},
+        space_id = #{spaceId,jdbcType=BIGINT},
         add_time = #{addTime,jdbcType=TIMESTAMP},
         update_time = #{updateTime,jdbcType=TIMESTAMP},
         content = #{content,jdbcType=LONGVARCHAR}
@@ -139,7 +139,7 @@
         -->
         update page
         set document_id = #{documentId,jdbcType=BIGINT},
-        workspace_id = #{workspaceId,jdbcType=BIGINT},
+        space_id = #{spaceId,jdbcType=BIGINT},
         add_time = #{addTime,jdbcType=TIMESTAMP},
         update_time = #{updateTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}

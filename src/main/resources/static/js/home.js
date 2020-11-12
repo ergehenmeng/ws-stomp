@@ -25,7 +25,7 @@ function reloadMenu() {
  * 创建word文档
  */
 function createDocument(docName, type) {
-    $.post("/createDocument/" + workspaceId, {"docName": docName, "type": type}, function (data) {
+    $.post("/createDocument/" + spaceId, {"docName": docName, "type": type}, function (data) {
         if (data.result) {
             layer.alert("创建文档成功", {icon: 1});
             loadDocument(data.msg, false);
@@ -43,7 +43,7 @@ function searchDocument() {
     let docName = $("#documentName").val();
     let isHidden = $("#showHideDocument").val();
     let order = $("#orderBy").val();
-    $.post("/getDocument/" + workspaceId, {"docName": docName, "hidden": isHidden, "order": order}, function (data) {
+    $.post("/getDocument/" + spaceId, {"docName": docName, "hidden": isHidden, "order": order}, function (data) {
         if (data.result) {
             loadDocument(data.msg, true);
         } else {
@@ -88,7 +88,7 @@ function formatHtml(entity) {
 
 
 function updateDocument(newValue, id) {
-    $.post("/updateDocument/" + workspaceId, {"docName": newValue, "id": id}, function (data) {
+    $.post("/updateDocument/" + spaceId, {"docName": newValue, "id": id}, function (data) {
         if (data.result) {
             $.right(data.msg);
             searchDocument();
@@ -107,7 +107,7 @@ function updateDocument(newValue, id) {
 function addPassword(value, message) {
     let sendData = $.extend({}, message);
     sendData["docPassword"] = value;
-    $.post("/createPassword/" + workspaceId, sendData, function (data) {
+    $.post("/createPassword/" + spaceId, sendData, function (data) {
         if (data.result) {
             $.right(data.msg);
         } else {
@@ -204,7 +204,7 @@ let fileMenu = [[{
     text: "打开",
     func: function () {
         let id = $(this).children(".id").val();
-        openNewWindow("/document/" + workspaceId + "/" + id);
+        openNewWindow("/document/" + spaceId + "/" + id);
     }
 }, {
     text: "排序",
@@ -254,7 +254,7 @@ let fileMenu = [[{
     text: "删除",
     func: function () {
         let id = $(this).children(".id").val();
-        $.deleteFun("/deleteDocument/" + workspaceId, id, "确定要删除该文档吗?", null, searchDocument);
+        $.deleteFun("/deleteDocument/" + spaceId, id, "确定要删除该文档吗?", null, searchDocument);
     }
 }, {
     text: "重命名",

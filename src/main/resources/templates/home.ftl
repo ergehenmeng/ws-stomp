@@ -6,7 +6,7 @@
 <#include "resources.ftl">
 <script src="/static/js/home.js?t=201742114" type="text/javascript" charset="UTF-8"></script>
 <script type="text/javascript">
-	var workspaceId = ${workspaceId};
+	var spaceId = ${spaceId};
 </script>
 </head>
 <body>
@@ -33,9 +33,9 @@
 		<div class="panel-body" style="height: 640px;overflow:auto;" id="test">
 			<div class="list-group">
 			
-				<#if workspaceList?? && workspaceList?size gt 0>
-					<#list workspaceList as workList>
-			   			 <a href="#" title="创建时间:${workList.addTime?string('yyyy-MM-dd')}" class="list-group-item  <#if workList.id == workspace.id>active <#else> list-group-item-warning </#if>">${workList.spaceName}<button class="close" type="button" onclick="$.deleteFun('','','确定要删除该工作空间吗?')">&times;</button></a>
+				<#if spaceList?? && spaceList?size gt 0>
+					<#list spaceList as workList>
+			   			 <a href="#" title="创建时间:${workList.addTime?string('yyyy-MM-dd')}" class="list-group-item  <#if workList.id == space.id>active <#else> list-group-item-warning </#if>">${workList.spaceName}<button class="close" type="button" onclick="$.deleteFun('','','确定要删除该工作空间吗?')">&times;</button></a>
 					</#list>
 				</#if>		
 			</div>

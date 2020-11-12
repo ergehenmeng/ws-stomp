@@ -1,5 +1,6 @@
 package com.eghm.websocket.utils;
 
+import com.eghm.websocket.model.Space;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -70,10 +71,10 @@ public class KeyGenerator {
     }
 
     public synchronized Number generateKey() {
-        return this.generateKey(Workspace.IP);
+        return this.generateKey(WorkGroup.IP);
     }
 
-    public synchronized Number generateKey(Workspace workSpace) {
+    public synchronized Number generateKey(WorkGroup space) {
 
         long currentMillis = System.currentTimeMillis();
 
@@ -91,10 +92,10 @@ public class KeyGenerator {
         lastTime = currentMillis;
 
         if (log.isDebugEnabled()) {
-            log.debug("分布式id生成信息:[{}]-[{}]-[{}]", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date(lastTime)), workSpace.getId(), sequence);
+            log.debug("分布式id生成信息:[{}]-[{}]-[{}]", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date(lastTime)), space.getId(), sequence);
         }
 
-        return ((currentMillis - EPOCH) << TIMESTAMP_LEFT_SHIFT_BITS) | (workSpace.getId() << WORKER_ID_LEFT_SHIFT_BITS) | sequence;
+        return ((currentMillis - EPOCH) << TIMESTAMP_LEFT_SHIFT_BITS) | (space.getId() << WORKER_ID_LEFT_SHIFT_BITS) | sequence;
     }
 
     /**

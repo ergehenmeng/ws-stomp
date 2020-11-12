@@ -64,7 +64,7 @@
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false" enableDeleteByPrimaryKey="false">
         </table>
-        <table tableName="workspace" domainObjectName="Workspace"
+        <table tableName="space" domainObjectName="space"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false" enableDeleteByPrimaryKey="false">

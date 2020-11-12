@@ -61,29 +61,29 @@ public class DocumentController {
     /**
      * 创建文档
      */
-    @RequestMapping("/createDocument/{workspaceId}")
+    @RequestMapping("/createDocument/{spaceId}")
     @ResponseBody
-    public RespBody<Object> createDocument(@PathVariable Long workspaceId, String docName, FileType type) {
-        documentService.createDocument(workspaceId, docName, type);
+    public RespBody<Object> createDocument(@PathVariable Long spaceId, String docName, FileType type) {
+        documentService.createDocument(spaceId, docName, type);
         return RespBody.success();
     }
 
     /**
      * 查询文档信息
      */
-    @RequestMapping("/getDocument/{workspaceId}")
+    @RequestMapping("/getDocument/{spaceId}")
     @ResponseBody
-    public RespBody<List<Document>> getDocument(@PathVariable Long workspaceId) {
-        List<Document> documentList = documentService.getBySpaceId(workspaceId, null, null);
+    public RespBody<List<Document>> getDocument(@PathVariable Long spaceId) {
+        List<Document> documentList = documentService.getBySpaceId(spaceId, null, null);
         return RespBody.success(documentList);
     }
 
     /**
      * 删除文档
      */
-    @RequestMapping("/deleteDocument/{workspaceId}")
+    @RequestMapping("/deleteDocument/{spaceId}")
     @ResponseBody
-    public RespBody<Object> deleteDocument(@PathVariable Long workspaceId, Long docId) {
+    public RespBody<Object> deleteDocument(@PathVariable Long spaceId, Long docId) {
         documentService.deleteById(docId);
         return RespBody.success();
     }
@@ -91,9 +91,9 @@ public class DocumentController {
     /**
      * 更新文档名称
      */
-    @PostMapping("/updateDocument/{workspaceId}")
+    @PostMapping("/updateDocument/{spaceId}")
     @ResponseBody
-    public RespBody<Object> updateDocument(@PathVariable Long workspaceId, Long docId, String docName) {
+    public RespBody<Object> updateDocument(@PathVariable Long spaceId, Long docId, String docName) {
         Document document = documentService.getById(docId);
         document.setDocName(docName);
         documentService.updateSelective(document);
@@ -103,9 +103,9 @@ public class DocumentController {
     /**
      * 文档加密
      */
-    @PostMapping("/createPassword/{workspaceId}")
+    @PostMapping("/createPassword/{spaceId}")
     @ResponseBody
-    public RespBody<Object> createPassword(@PathVariable Long workspaceId, Long docId, String pwd) {
+    public RespBody<Object> createPassword(@PathVariable Long spaceId, Long docId, String pwd) {
         documentService.setPwd(docId, pwd);
         return RespBody.success();
     }
@@ -113,9 +113,9 @@ public class DocumentController {
     /**
      * 密码验证
      */
-    @RequestMapping("/checkPassword/{workspaceId}")
+    @RequestMapping("/checkPassword/{spaceId}")
     @ResponseBody
-    public RespBody<Object> checkPassword(@PathVariable Long workspaceId, Long docId, String pwd) {
+    public RespBody<Object> checkPassword(@PathVariable Long spaceId, Long docId, String pwd) {
         Document doc = documentService.getById(docId);
         if (StrUtil.isNotEmpty(doc.getPwd()) && !doc.getPwd().equals(pwd)) {
             return RespBody.error(ErrorCode.DOC_PWD_ERROR);
@@ -126,9 +126,9 @@ public class DocumentController {
     /**
      * 文档管理页面
      */
-    @RequestMapping("/document/{workspaceId}/{documentId}")
-    public String document(@PathVariable Long workspaceId, @PathVariable Long documentId, ModelMap model) {
-        model.addAttribute("workspaceId", workspaceId);
+    @RequestMapping("/document/{spaceId}/{documentId}")
+    public String document(@PathVariable Long spaceId, @PathVariable Long documentId, ModelMap model) {
+        model.addAttribute("spaceId", spaceId);
         model.addAttribute("documentId", documentId);
         return "document";
     }
@@ -138,9 +138,9 @@ public class DocumentController {
      * 默认被调用一次
      * 初始化某个文档
      */
-    @SubscribeMapping("/initDocument/{workspaceId}/{documentId}")
-    public Map<String, Object> initDocument(SimpMessageHeaderAccessor accessor, @DestinationVariable Long workspaceId, @DestinationVariable Long documentId) {
-        log.debug("文档空间: 工作空间ID: " + workspaceId + " 文档ID " + documentId);
+    @SubscribeMapping("/initDocument/{spaceId}/{documentId}")
+    public Map<String, Object> initDocument(SimpMessageHeaderAccessor accessor, @DestinationVariable Long spaceId, @DestinationVariable Long documentId) {
+        log.debug("文档空间: 工作空间ID: " + spaceId + " 文档ID " + documentId);
         Document document = documentService.getById(documentId);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("document", document);
@@ -174,7 +174,7 @@ public class DocumentController {
             userChat.setNickName(user.getNickName());
             userChat.setCreateTime(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
             userChat.setType(1);
-            messagingTemplate.convertAndSend(DEST_DOCUMENT_URL + userChat.getWorkspaceId() + "/" + userChat.getDocumentId(), userChat);
+            messagingTemplate.convertAndSend(DEST_DOCUMENT_URL + userChat.getSpaceId() + "/" + userChat.getDocumentId(), userChat);
             LimitQueue<UserChat> limit = cacheChat.get(userChat.getDocumentId());
             limit.offer(userChat);
         }
@@ -203,7 +203,7 @@ public class DocumentController {
             result.put("userId", user.getId());
             result.put("content", page.getContent());
             result.put("type", 2);
-            messagingTemplate.convertAndSend(DEST_DOCUMENT_URL + page.getWorkspaceId() + "/" + page.getDocumentId(), result);
+            messagingTemplate.convertAndSend(DEST_DOCUMENT_URL + page.getSpaceId() + "/" + page.getDocumentId(), result);
             pageService.updatePage(page.getId(), page.getContent());
         }
     }

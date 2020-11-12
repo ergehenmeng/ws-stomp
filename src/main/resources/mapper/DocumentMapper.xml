@@ -6,7 +6,7 @@
           @create by mybatis
         -->
         <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="workspace_id" jdbcType="BIGINT" property="workspaceId"/>
+        <result column="space_id" jdbcType="BIGINT" property="spaceId"/>
         <result column="doc_name" jdbcType="VARCHAR" property="docName"/>
         <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="state" jdbcType="TINYINT" property="state"/>
@@ -20,7 +20,7 @@
         <!--
           @create by mybatis
         -->
-        id, workspace_id, doc_name, type, state, pwd, hidden, sort, add_time, update_time
+        id, space_id, doc_name, type, state, pwd, hidden, sort, add_time, update_time
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         <!--
@@ -35,11 +35,11 @@
         <!--
           @create by mybatis
         -->
-        insert into document (id, workspace_id, doc_name,
+        insert into document (id, space_id, doc_name,
         type, state, pwd, hidden,
         sort, add_time, update_time
         )
-        values (#{id,jdbcType=BIGINT}, #{workspaceId,jdbcType=BIGINT}, #{docName,jdbcType=VARCHAR},
+        values (#{id,jdbcType=BIGINT}, #{spaceId,jdbcType=BIGINT}, #{docName,jdbcType=VARCHAR},
         #{type,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{pwd,jdbcType=VARCHAR}, #{hidden,jdbcType=BIT},
         #{sort,jdbcType=SMALLINT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
         )
@@ -53,8 +53,8 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="workspaceId != null">
-                workspace_id,
+            <if test="spaceId != null">
+                space_id,
             </if>
             <if test="docName != null">
                 doc_name,
@@ -85,8 +85,8 @@
             <if test="id != null">
                 #{id,jdbcType=BIGINT},
             </if>
-            <if test="workspaceId != null">
-                #{workspaceId,jdbcType=BIGINT},
+            <if test="spaceId != null">
+                #{spaceId,jdbcType=BIGINT},
             </if>
             <if test="docName != null">
                 #{docName,jdbcType=VARCHAR},
@@ -120,8 +120,8 @@
         -->
         update document
         <set>
-            <if test="workspaceId != null">
-                workspace_id = #{workspaceId,jdbcType=BIGINT},
+            <if test="spaceId != null">
+                space_id = #{spaceId,jdbcType=BIGINT},
             </if>
             <if test="docName != null">
                 doc_name = #{docName,jdbcType=VARCHAR},
@@ -155,7 +155,7 @@
           @create by mybatis
         -->
         update document
-        set workspace_id = #{workspaceId,jdbcType=BIGINT},
+        set space_id = #{spaceId,jdbcType=BIGINT},
         doc_name = #{docName,jdbcType=VARCHAR},
         type = #{type,jdbcType=VARCHAR},
         state = #{state,jdbcType=TINYINT},
@@ -170,7 +170,7 @@
     <select id="getBySpaceId" resultMap="BaseResultMap">
         select
         <include refid="BaseColumnList"/>
-        from document where workspace_id = #{spaceId}
+        from document where space_id = #{spaceId}
         <if test="column != null and column != ''">
             order by ${column} ${orderType}
         </if>
