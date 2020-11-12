@@ -34,8 +34,8 @@
 			<div class="list-group">
 			
 				<#if spaceList?? && spaceList?size gt 0>
-					<#list spaceList as workList>
-			   			 <a href="#" title="创建时间:${workList.addTime?string('yyyy-MM-dd')}" class="list-group-item  <#if workList.id == space.id>active <#else> list-group-item-warning </#if>">${workList.spaceName}<button class="close" type="button" onclick="$.deleteFun('','','确定要删除该工作空间吗?')">&times;</button></a>
+					<#list spaceList as space>
+			   			 <a href="#" title="创建时间:${space.addTime?string('yyyy-MM-dd')}" class="list-group-item  <#if spaceId == space.id>active <#else> list-group-item-warning </#if>">${space.title}<button class="close" type="button" onclick="$.deleteFun('','','确定要删除该工作空间吗?')">&times;</button></a>
 					</#list>
 				</#if>		
 			</div>
@@ -63,13 +63,13 @@
 					<div id="documentId" class="row">
 						<!-- 如果request中wordList集合大于0 -->
 						<#if documentList?? && documentList?size gt 0 >
-							<#list documentList as dList>
+							<#list documentList as document>
 								<div class="col-xs-2 underline">
-										<a href="#" class="thumbnail documentMenu <#if dList.isShow == 1 > hidden-backgroud</#if>" >
-										<img alt="${dList.type!'word'}" src="${cxtPath}/images/icon_${dList.type!'word'}.png" style="height: 100px;  display: block;" >
-										<span>${dList.docName}</span>
-										<input type="hidden" class="id"  value="${dList.id}" />
-										<input type="hidden" class="type" value="${dList.type}" />
+										<a href="#" class="thumbnail documentMenu <#if document.hidden == true > hidden-backgroud</#if>" >
+										<img alt="${document.type!'word'}" src="/static/images/icon_${document.type!'word'}.png" style="height: 100px;  display: block;" >
+										<span>${document.docName}</span>
+										<input type="hidden" class="id"  value="${document.id}" />
+										<input type="hidden" class="type" value="${document.type}" />
 									</a>
 								</div>
 							</#list>
@@ -89,8 +89,8 @@
 		<div class="panel-body" style="height: 640px;overflow:auto;">
 			<div class="list-group">
 				<#if friendList?? && friendList?size gt 0>
-					<#list friendList as fList>
-			   			 <a href="#" class="list-group-item list-group-item-warning">${fList.nickName}</a>
+					<#list friendList as friend>
+			   			 <a href="#" class="list-group-item list-group-item-warning">${friend.nickName}</a>
 					</#list>
 				</#if>	
 			</div>

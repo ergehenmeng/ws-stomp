@@ -38,3 +38,4 @@ project:
   captcha: false
 shiro:
   unauthorizedUrl: /index
+  loginUrl: /index
