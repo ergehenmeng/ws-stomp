@@ -143,8 +143,8 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="getFriendList" parameterType="map" resultType="com.eghm.websocket.model.User">
-        select * from user t where exists (select 1 from user_join_space r where r.user_id = t.id and r.space_id = ${spaceId})
+    <select id="getFriendList" resultMap="BaseResultMap">
+        select t.* from user t where exists (select 1 from user_join_space r where r.user_id = t.id and r.space_id = ${spaceId})
 	</select>
 
     <select id="getByMobile" resultMap="BaseResultMap">
