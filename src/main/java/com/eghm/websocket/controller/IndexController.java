@@ -49,12 +49,13 @@ public class IndexController {
         if (CollUtil.isNotEmpty(list)) {
             Long spaceId = list.get(0).getId();
             model.addAttribute("spaceId", spaceId);
-            List<User> friendList = userService.getFriendList(spaceId);
+            List<User> friendList = userService.getFriendList(user.getId(), spaceId);
             model.addAttribute("friendList", friendList);
             List<Document> documentList = documentService.getBySpaceId(spaceId, null, null);
             model.addAttribute("documentList", documentList);
         }
         model.addAttribute("spaceList", list);
+        model.addAttribute("userId", user.getId());
         model.addAttribute("nickName", user.getNickName());
         return "home";
     }

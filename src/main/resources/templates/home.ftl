@@ -90,7 +90,7 @@
 			<div class="list-group">
 				<#if friendList?? && friendList?size gt 0>
 					<#list friendList as friend>
-			   			 <a href="#" class="list-group-item list-group-item-warning">${friend.nickName}</a>
+			   			 <a href="#" class="list-group-item list-group-item-warning">${friend.nickName} <#if friend.id == userId><span class="label label-success">我</span></#if> </a>
 					</#list>
 				</#if>	
 			</div>

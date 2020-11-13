@@ -1,5 +1,6 @@
 package com.eghm.websocket.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Date;
  * @author 二哥很猛
  */
 @Data
+@Builder
 public class User implements Serializable {
 
     public static final byte LOCK = 0;

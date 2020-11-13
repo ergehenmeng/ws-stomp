@@ -1,5 +1,6 @@
 package com.eghm.websocket.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.BCrypt;
 import com.eghm.websocket.enums.ErrorCode;
@@ -10,6 +11,7 @@ import com.eghm.websocket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -40,8 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getFriendList(Long spaceId) {
-        return userMapper.getFriendList(spaceId);
+    public List<User> getFriendList(Long userId, Long spaceId) {
+        List<User> friendList = userMapper.getFriendList(spaceId);
+        if (CollUtil.isNotEmpty(friendList)) {
+            // 排序 自己排在最前面
+            friendList.sort(Comparator.comparing(user -> !user.getId().equals(userId)));
+        }
+        return friendList;
     }
 
 }
