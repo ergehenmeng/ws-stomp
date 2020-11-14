@@ -8,9 +8,9 @@
 <script src="/static/js/stomp.min.js" type="text/javascript" charset="UTF-8"></script>
 <script type="text/javascript" src="/static/js/document.js?t=201703021188"></script>
 <script type="text/javascript">
-	var spaceId = ${spaceId!};
-	var documentId = ${documentId!};
-	var userId = ${loginUser.id};
+	let spaceId = ${spaceId!};
+    let documentId = ${documentId!};
+    let userId = ${loginUser.id};
 </script>
 </head>
 <body>

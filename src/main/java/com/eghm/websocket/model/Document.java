@@ -61,6 +61,13 @@ public class Document implements Serializable {
     private Boolean hidden;
 
     /**
+     * 文档所属用户<br>
+     * 表 : document<br>
+     * 对应字段 : user_id<br>
+     */
+    private Long userId;
+
+    /**
      * 添加时间<br>
      * 表 : document<br>
      * 对应字段 : add_time<br>

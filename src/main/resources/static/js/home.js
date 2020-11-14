@@ -42,7 +42,7 @@ function createDocument(docName, type) {
 function searchDocument() {
     let docName = $("#documentName").val();
     let hidden =  window.localStorage.getItem("hidden");
-    $.post("/getDocument", {"spaceId": spaceId, "docName": docName, "hidden": hidden, "orderColumn" : getOrderKey(), "orderType": getOrderType()}, function (data) {
+    $.post("/searchDocument", {"spaceId": spaceId, "docName": docName, "hidden": hidden, "orderColumn" : getOrderKey(), "orderType": getOrderType()}, function (data) {
         if (data.code === 200) {
             loadDocument(data.msg, true);
         } else {

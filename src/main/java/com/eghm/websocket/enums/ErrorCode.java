@@ -41,6 +41,11 @@ public enum ErrorCode {
      */
     UNKNOWN_HOST_ADDRESS(605, "未获取到本机ip"),
 
+    /**
+     * 非本人文档禁止修改
+     */
+    ILLEGAL_MODIFY(606, "非本人文档禁止修改"),
+
     ;
 
     private int code;

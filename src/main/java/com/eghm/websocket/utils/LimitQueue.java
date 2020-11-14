@@ -5,11 +5,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * 存放聊天信息的Queue 限制大小
+ */
 public class LimitQueue<E> implements Queue<E> {
 
-    private Integer limit;
+    private final Integer limit;
 
-    private Queue<E> queue;
+    private final Queue<E> queue;
 
 
     public LimitQueue(int limit) {
@@ -29,7 +32,6 @@ public class LimitQueue<E> implements Queue<E> {
 
     @Override
     public boolean contains(Object o) {
-
         return queue.contains(o);
     }
 
@@ -40,25 +42,21 @@ public class LimitQueue<E> implements Queue<E> {
 
     @Override
     public Object[] toArray() {
-
         return queue.toArray();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-
         return queue.toArray(a);
     }
 
     @Override
     public boolean remove(Object o) {
-
         return queue.remove(o);
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-
         return queue.containsAll(c);
     }
 
@@ -69,13 +67,11 @@ public class LimitQueue<E> implements Queue<E> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-
         return queue.removeAll(c);
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-
         return queue.retainAll(c);
     }
 
@@ -86,7 +82,6 @@ public class LimitQueue<E> implements Queue<E> {
 
     @Override
     public boolean add(E e) {
-
         return queue.add(e);
     }
 
@@ -100,19 +95,16 @@ public class LimitQueue<E> implements Queue<E> {
 
     @Override
     public E remove() {
-
         return queue.remove();
     }
 
     @Override
     public E poll() {
-
         return queue.poll();
     }
 
     @Override
     public E element() {
-
         return queue.element();
     }
 

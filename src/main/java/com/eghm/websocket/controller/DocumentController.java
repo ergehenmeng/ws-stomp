@@ -23,10 +23,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -38,6 +35,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
+/**
+ * @author 二哥很猛
+ */
 @Controller
 @Slf4j
 public class DocumentController {
@@ -62,9 +62,9 @@ public class DocumentController {
     /**
      * 创建文档
      */
-    @RequestMapping("/createDocument")
+    @PostMapping("/createDocument")
     @ResponseBody
-    public RespBody<Object> createDocument(@PathVariable Long spaceId, String docName, FileType fileType) {
+    public RespBody<Object> createDocument(Long spaceId, String docName, FileType fileType) {
         documentService.createDocument(spaceId, docName, fileType);
         return RespBody.success();
     }
@@ -72,10 +72,9 @@ public class DocumentController {
     /**
      * 查询文档信息
      */
-    @RequestMapping("/getDocument")
+    @GetMapping("/searchDocument")
     @ResponseBody
-    public RespBody<List<Document>> getDocument(@PathVariable Long spaceId, SearchDocumentRequest request) {
-        request.setSpaceId(spaceId);
+    public RespBody<List<Document>> searchDocument(SearchDocumentRequest request) {
         List<Document> documentList = documentService.getList(request);
         return RespBody.success(documentList);
     }
@@ -83,9 +82,9 @@ public class DocumentController {
     /**
      * 删除文档
      */
-    @RequestMapping("/deleteDocument/{spaceId}")
+    @PostMapping("/deleteDocument")
     @ResponseBody
-    public RespBody<Object> deleteDocument(@PathVariable Long spaceId, Long docId) {
+    public RespBody<Object> deleteDocument(Long docId) {
         documentService.deleteById(docId);
         return RespBody.success();
     }
@@ -93,21 +92,19 @@ public class DocumentController {
     /**
      * 更新文档名称
      */
-    @PostMapping("/updateDocument/{spaceId}")
+    @PostMapping("/updateDocument")
     @ResponseBody
-    public RespBody<Object> updateDocument(@PathVariable Long spaceId, Long docId, String docName) {
-        Document document = documentService.getById(docId);
-        document.setDocName(docName);
-        documentService.updateSelective(document);
+    public RespBody<Object> updateDocument(Long docId, String docName) {
+        documentService.updateDocName(docId, docName);
         return RespBody.success();
     }
 
     /**
      * 文档加密
      */
-    @PostMapping("/createPassword/{spaceId}")
+    @PostMapping("/createPassword")
     @ResponseBody
-    public RespBody<Object> createPassword(@PathVariable Long spaceId, Long docId, String pwd) {
+    public RespBody<Object> createPassword(Long docId, String pwd) {
         documentService.setPwd(docId, pwd);
         return RespBody.success();
     }
@@ -115,9 +112,9 @@ public class DocumentController {
     /**
      * 密码验证
      */
-    @RequestMapping("/checkPassword/{spaceId}")
+    @RequestMapping("/checkPassword")
     @ResponseBody
-    public RespBody<Object> checkPassword(@PathVariable Long spaceId, Long docId, String pwd) {
+    public RespBody<Object> checkPassword(Long spaceId, Long docId, String pwd) {
         Document doc = documentService.getById(docId);
         if (StrUtil.isNotEmpty(doc.getPwd()) && !doc.getPwd().equals(pwd)) {
             return RespBody.error(ErrorCode.DOC_PWD_ERROR);

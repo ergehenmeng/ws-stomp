@@ -17,8 +17,11 @@ public interface DocumentService {
 
     /**
      * 创建文档对象
+     * @param spaceId 文档所属工作空间
+     * @param docName 文档名
+     * @param type 文档类型
      */
-    Document createDocument(Long spaceId, String docName, FileType type);
+    void createDocument(Long spaceId, String docName, FileType type);
 
     /**
      * 通过主键删除文档 逻辑删除
@@ -33,9 +36,17 @@ public interface DocumentService {
     void setPwd(Long docId, String pwd);
 
     /**
-     * 更新文档信息
+     * 不为空更新文档信息
+     * @param document document
      */
     void updateSelective(Document document);
+
+    /**
+     * 更新文档名称
+     * @param docId docId
+     * @param docName docName
+     */
+    void updateDocName(Long docId, String docName);
 
     /**
      * 主键查询
