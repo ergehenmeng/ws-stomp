@@ -1,5 +1,6 @@
 package com.eghm.websocket.service;
 
+import com.eghm.websocket.dto.request.SearchDocumentRequest;
 import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.model.Document;
 
@@ -9,12 +10,10 @@ public interface DocumentService {
 
     /**
      * 通过spaceId获取工作空间下的所有文档
-     * @param spaceId   工作空间
-     * @param orderColumn 排序字段
-     * @param orderType 排序方式
+     * @param request 查询条件
      * @return 文档
      */
-    List<Document> getBySpaceId(Long spaceId, String orderColumn, String orderType);
+    List<Document> getList(SearchDocumentRequest request);
 
     /**
      * 创建文档对象

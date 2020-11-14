@@ -7,7 +7,7 @@ $.loadMsg = function(msg){
 			});
 };
 $.deleteFun = function(url,id,msg,data,callback,value){
-	var sendData = $.extend({},data);
+	let sendData = $.extend({},data);
 	layer.confirm(msg,{icon:3,shift:5},function(yes){
 		sendData["id"] = id;
 		$.post(url,sendData,function(data){
@@ -57,10 +57,10 @@ $.password = function(title,type,func,length,data){
 };
 
 $.right = function(msg){
-	layer.alert(msg,{icon:1,shift:5});
+	layer.alert(msg,{icon:1, shift:5});
 };
 $.error = function(msg){
-	layer.alert(msg,{icon:5,shift:5});
+	layer.alert(msg,{icon:5, shift:5});
 };
 
 

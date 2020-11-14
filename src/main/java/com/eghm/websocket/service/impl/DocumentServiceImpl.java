@@ -1,5 +1,6 @@
 package com.eghm.websocket.service.impl;
 
+import com.eghm.websocket.dto.request.SearchDocumentRequest;
 import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.mapper.DocumentMapper;
 import com.eghm.websocket.model.Document;
@@ -23,8 +24,8 @@ public class DocumentServiceImpl implements DocumentService {
     private KeyGenerator keyGenerator;
 
     @Override
-    public List<Document> getBySpaceId(Long spaceId, String orderColumn, String orderType) {
-        return documentMapper.getBySpaceId(spaceId, orderColumn, orderType);
+    public List<Document> getList(SearchDocumentRequest request) {
+        return documentMapper.getList(request);
     }
 
     @Override

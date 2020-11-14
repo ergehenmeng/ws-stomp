@@ -1,5 +1,6 @@
 package com.eghm.websocket.mapper;
 
+import com.eghm.websocket.dto.request.SearchDocumentRequest;
 import com.eghm.websocket.model.Document;
 import org.apache.ibatis.annotations.Param;
 
@@ -43,10 +44,8 @@ public interface DocumentMapper {
 
     /**
      * 根据工作空间查询文档
-     * @param spaceId  spaceId
-     * @param column 排序字段
-     * @param orderType 排序类型
+     * @param request 查询条件
      * @return list
      */
-    List<Document> getBySpaceId(@Param("spaceId") Long spaceId, @Param("column") String column, @Param("orderType") String orderType);
+    List<Document> getList(SearchDocumentRequest request);
 }

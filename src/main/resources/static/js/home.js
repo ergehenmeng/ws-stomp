@@ -25,9 +25,9 @@ function reloadMenu() {
  * 创建word文档
  */
 function createDocument(docName, type) {
-    $.post("/createDocument/" + spaceId, {"docName": docName, "type": type}, function (data) {
-        if (data.result) {
-            layer.alert("创建文档成功", {icon: 1});
+    $.post("/createDocument" , {"spaceId": spaceId, "docName": docName, "type": type}, function (data) {
+        if (data.result === 200) {
+            layer.alert("创建文档成功", {icon: 6});
             loadDocument(data.msg, false);
         } else {
             $.error(data.msg);
@@ -41,15 +41,33 @@ function createDocument(docName, type) {
  */
 function searchDocument() {
     let docName = $("#documentName").val();
-    let isHidden = $("#showHideDocument").val();
-    let order = $("#orderBy").val();
-    $.post("/getDocument/" + spaceId, {"docName": docName, "hidden": isHidden, "order": order}, function (data) {
-        if (data.result) {
+    let hidden =  window.localStorage.getItem("hidden");
+    $.post("/getDocument", {"spaceId": spaceId, "docName": docName, "hidden": hidden, "orderColumn" : getOrderKey(), "orderType": getOrderType()}, function (data) {
+        if (data.code === 200) {
             loadDocument(data.msg, true);
         } else {
             $.error(data.msg);
         }
     });
+}
+
+/**
+ * 获取排序规则
+ * @return {string}
+ */
+function getOrderKey() {
+    return window.localStorage.getItem("orderColumn");
+}
+
+/**
+ * 获取下次排序规则
+ * @returns {string|string}
+ */
+function getOrderType() {
+    let orderType = window.localStorage.getItem("orderType");
+    let nextOrderType = (orderType === "ASC") ? "DESC" : "ASC";
+    window.localStorage.setItem("orderType", nextOrderType);
+    return nextOrderType;
 }
 
 
@@ -168,12 +186,12 @@ let centerMenu = [[{
         {
             text: "Word文档",
             func: function () {
-                $.showPrompt('请输入Word文档名称', createDocument, 'word');
+                $.showPrompt('请输入Word文档名称', createDocument, 'WORD');
             }
         }, {
             text: "PPT文稿",
             func: function () {
-                $.showPrompt('请输入PPT文档名称', createDocument, 'ppt');
+                $.showPrompt('请输入PPT文档名称', createDocument, 'PPT');
             }
         }
     ]]
@@ -270,12 +288,19 @@ let fileMenu = [[{
         {
             text: "Word文档",
             func: function () {
-                $.showPrompt('请输入Word文档名称', createDocument, 'word');
+                $.showPrompt('请输入Word文档名称', createDocument, 'WORD');
             }
-        }, {
+        },
+        {
+            text: "Markdown文稿",
+            func: function () {
+                $.showPrompt('请输入Markdown文档名称', createDocument, 'MD');
+            }
+        },
+        {
             text: "PPT文稿",
             func: function () {
-                $.showPrompt('请输入PPT文档名称', createDocument, 'ppt');
+                $.showPrompt('请输入PPT文档名称', createDocument, 'PPT');
             }
         }
     ]]

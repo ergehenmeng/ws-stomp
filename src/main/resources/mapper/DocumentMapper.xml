@@ -12,7 +12,6 @@
         <result column="state" jdbcType="TINYINT" property="state"/>
         <result column="pwd" jdbcType="VARCHAR" property="pwd"/>
         <result column="hidden" jdbcType="BIT" property="hidden"/>
-        <result column="sort" jdbcType="SMALLINT" property="sort"/>
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -20,7 +19,7 @@
         <!--
           @create by mybatis
         -->
-        id, space_id, doc_name, type, state, pwd, hidden, sort, add_time, update_time
+        id, space_id, doc_name, type, state, pwd, hidden, add_time, update_time
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         <!--
@@ -36,12 +35,11 @@
           @create by mybatis
         -->
         insert into document (id, space_id, doc_name,
-        type, state, pwd, hidden,
-        sort, add_time, update_time
+        type, state, pwd, hidden, add_time, update_time
         )
         values (#{id,jdbcType=BIGINT}, #{spaceId,jdbcType=BIGINT}, #{docName,jdbcType=VARCHAR},
         #{type,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{pwd,jdbcType=VARCHAR}, #{hidden,jdbcType=BIT},
-        #{sort,jdbcType=SMALLINT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
     <insert id="insertSelective" parameterType="com.eghm.websocket.model.Document" >
@@ -71,9 +69,6 @@
             <if test="hidden != null">
                 hidden,
             </if>
-            <if test="sort != null">
-                sort,
-            </if>
             <if test="addTime != null">
                 add_time,
             </if>
@@ -102,9 +97,6 @@
             </if>
             <if test="hidden != null">
                 #{hidden,jdbcType=BIT},
-            </if>
-            <if test="sort != null">
-                #{sort,jdbcType=SMALLINT},
             </if>
             <if test="addTime != null">
                 #{addTime,jdbcType=TIMESTAMP},
@@ -138,9 +130,6 @@
             <if test="hidden != null">
                 hidden = #{show,jdbcType=BIT},
             </if>
-            <if test="sort != null">
-                sort = #{sort,jdbcType=SMALLINT},
-            </if>
             <if test="addTime != null">
                 add_time = #{addTime,jdbcType=TIMESTAMP},
             </if>
@@ -161,18 +150,24 @@
         state = #{state,jdbcType=TINYINT},
         pwd = #{pwd,jdbcType=VARCHAR},
         hidden = #{hidden,jdbcType=BIT},
-        sort = #{sort,jdbcType=SMALLINT},
         add_time = #{addTime,jdbcType=TIMESTAMP},
         update_time = #{updateTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="getBySpaceId" resultMap="BaseResultMap">
-        select
-        <include refid="BaseColumnList"/>
-        from document where space_id = #{spaceId}
-        <if test="column != null and column != ''">
-            order by ${column} ${orderType}
+    <select id="getList" parameterType="com.eghm.websocket.dto.request.SearchDocumentRequest" resultMap="BaseResultMap">
+        select <include refid="BaseColumnList"/>
+        from document
+        where space_id = #{spaceId}
+        <if test="docName != null and docName != ''">
+            and doc_name like concat('%', #{docName} ,'%')
+        </if>
+        <!-- 如果选择不显示隐藏文件,则会过滤掉隐藏的图片 -->
+        <if test="showHidden == false">
+            and hidden = false
+        </if>
+        <if test="orderColumn != null and orderColumn != ''">
+            order by ${orderColumn} ${orderType}
         </if>
     </select>
 

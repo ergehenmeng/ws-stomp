@@ -1,6 +1,7 @@
 package com.eghm.websocket.controller;
 
 import cn.hutool.core.collection.CollUtil;
+import com.eghm.websocket.dto.request.SearchDocumentRequest;
 import com.eghm.websocket.model.Document;
 import com.eghm.websocket.model.Space;
 import com.eghm.websocket.model.User;
@@ -51,7 +52,9 @@ public class IndexController {
             model.addAttribute("spaceId", spaceId);
             List<User> friendList = userService.getFriendList(user.getId(), spaceId);
             model.addAttribute("friendList", friendList);
-            List<Document> documentList = documentService.getBySpaceId(spaceId, null, null);
+            SearchDocumentRequest request = new SearchDocumentRequest();
+            request.setSpaceId(spaceId);
+            List<Document> documentList = documentService.getList(request);
             model.addAttribute("documentList", documentList);
         }
         model.addAttribute("spaceList", list);

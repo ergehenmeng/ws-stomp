@@ -61,13 +61,6 @@ public class Document implements Serializable {
     private Boolean hidden;
 
     /**
-     * 排序规则<br>
-     * 表 : document<br>
-     * 对应字段 : sort<br>
-     */
-    private Integer sort;
-
-    /**
      * 添加时间<br>
      * 表 : document<br>
      * 对应字段 : add_time<br>

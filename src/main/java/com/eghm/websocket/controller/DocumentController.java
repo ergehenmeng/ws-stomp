@@ -3,6 +3,7 @@ package com.eghm.websocket.controller;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.eghm.websocket.dto.RespBody;
+import com.eghm.websocket.dto.request.SearchDocumentRequest;
 import com.eghm.websocket.enums.ErrorCode;
 import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.model.Document;
@@ -61,20 +62,21 @@ public class DocumentController {
     /**
      * 创建文档
      */
-    @RequestMapping("/createDocument/{spaceId}")
+    @RequestMapping("/createDocument")
     @ResponseBody
-    public RespBody<Object> createDocument(@PathVariable Long spaceId, String docName, FileType type) {
-        documentService.createDocument(spaceId, docName, type);
+    public RespBody<Object> createDocument(@PathVariable Long spaceId, String docName, FileType fileType) {
+        documentService.createDocument(spaceId, docName, fileType);
         return RespBody.success();
     }
 
     /**
      * 查询文档信息
      */
-    @RequestMapping("/getDocument/{spaceId}")
+    @RequestMapping("/getDocument")
     @ResponseBody
-    public RespBody<List<Document>> getDocument(@PathVariable Long spaceId) {
-        List<Document> documentList = documentService.getBySpaceId(spaceId, null, null);
+    public RespBody<List<Document>> getDocument(@PathVariable Long spaceId, SearchDocumentRequest request) {
+        request.setSpaceId(spaceId);
+        List<Document> documentList = documentService.getList(request);
         return RespBody.success(documentList);
     }
 

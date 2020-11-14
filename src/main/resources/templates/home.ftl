@@ -10,9 +10,6 @@
 </script>
 </head>
 <body>
-<input type="hidden" id="hiddenDocument" value="${hidden!'false'}"/>
-<input type="hidden" id="orderBy" value="${orderBy!''}"/>
-
 <div class="navbar navbar-default navbar-fixed-top  navbar-info">
 	<div id="navbar-responsive-collapse" class="collapse navbar-collapse">
     	<ul class="nav navbar-nav">
@@ -66,7 +63,7 @@
 							<#list documentList as document>
 								<div class="col-xs-2 underline">
 										<a href="#" class="thumbnail documentMenu <#if document.hidden == true > hidden-backgroud</#if>" >
-										<img alt="${document.type!'word'}" src="/static/images/icon_${document.type!'word'}.png" style="height: 100px;  display: block;" >
+										<img alt="${document.type!'word'}" src="/static/images/${document.type!'word'}.png" style="height: 100px;  display: block;" >
 										<span>${document.docName}</span>
 										<input type="hidden" class="id"  value="${document.id}" />
 										<input type="hidden" class="type" value="${document.type}" />
