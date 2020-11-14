@@ -1,43 +1,54 @@
 .underline a {
-	text-decoration: none;
-	color: #666;
-	text-align: center;
-	font-weight: bold;
-	font-size: 12px;
-}
-.hidden-backgroud{
-	background-color: #EEEEEE;
-}
-.center-vertical{
-    height:400px;
-    line-height:400px;
+    text-decoration: none;
+    color: #666;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
 }
 
-.search-document input[type="submit"]{
-	background: url("../images/img-sprite.png") no-repeat -2px -4px;
-	border: none;
-	height: 20px;
-	width: 20px;
-	position: absolute;
-	outline: none;
-	top: 6px;
-	right: 20px;
+.hidden-backgroud {
+    background-color: #EEEEEE;
 }
-#chatRoom p{
-	margin:0;
-	line-height: 1.4;
-	font-size: 12px;
+
+.center-vertical {
+    height: 400px;
+    line-height: 400px;
 }
-.p_active{
-	color: #008040;
+
+input, button, select, textarea {
+    outline: none
 }
-.p_noactive{
-	color: blue;
+
+.search-document input[type="submit"] {
+    background: url("../images/img-sprite.png") no-repeat -2px -4px;
+    border: none;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    outline: none;
+    top: 6px;
+    right: 20px;
 }
-.chatContent:hover{
-	background-color:#F6F6F6;
+
+#chatRoom p {
+    margin: 0;
+    line-height: 1.4;
+    font-size: 12px;
 }
-.chatContent{
-	text-indent: 1em;
+
+.p_active {
+    color: #008040;
+}
+
+.p_noactive {
+    color: blue;
+}
+
+.chatContent:hover {
+    background-color: #F6F6F6;
+}
+
+.chatContent {
+    text-indent: 1em;
 }
 

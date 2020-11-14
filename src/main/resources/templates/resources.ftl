@@ -7,7 +7,7 @@
 <script src="/static/js/ueditor/ueditor.config.js" type="text/javascript" charset="UTF-8"></script>
 <script src="/static/js/ueditor/ueditor.all.min.js" type="text/javascript" charset="UTF-8"></script>
 <script src="/static/js/jquery-smartMenu.js" type="text/javascript" charset="UTF-8"></script>
-<script src="/static/js/layer/layer.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/static/js/layer3.1.1/layer.js" type="text/javascript" charset="UTF-8"></script>
 <script src="/static/js/common.js?t=20170301" type="text/javascript" charset="UTF-8"></script>
 <script src="/static/js/bootstrap.min.js" type="text/javascript" charset="UTF-8"></script>
 
