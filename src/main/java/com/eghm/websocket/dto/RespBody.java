@@ -8,7 +8,7 @@ import com.eghm.websocket.enums.ErrorCode;
  */
 public class RespBody<T> {
 
-    private T date;
+    private T data;
 
     private int code = 200;
 
@@ -20,7 +20,7 @@ public class RespBody<T> {
 
     public static <T> RespBody<T> success(T data) {
         RespBody<T> respBody = new RespBody<>();
-        respBody.setDate(data);
+        respBody.setData(data);
         return respBody;
     }
 
@@ -39,9 +39,6 @@ public class RespBody<T> {
         return respBody;
     }
 
-    public void setDate(T date) {
-        this.date = date;
-    }
 
     public void setCode(int code) {
         this.code = code;
@@ -51,15 +48,19 @@ public class RespBody<T> {
         this.msg = msg;
     }
 
-    public T getDate() {
-        return date;
-    }
-
     public int getCode() {
         return code;
     }
 
     public String getMsg() {
         return msg;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }

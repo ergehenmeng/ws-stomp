@@ -13,7 +13,7 @@ $(function () {
  */
 function reloadMenu() {
     $("#centerMenu").smartMenu(centerMenu, {name: "centerMenu"});
-    $(".documentMenu").smartMenu(fileMenu, {name: "fileMenu"});
+    $(".documentMenu").smartMenu(fileMenu, {name: "fileMenu",textLimit:10});
     $(".friendMenu").smartMenu(friendMenu, {name: "friendMenu"});
 }
 
@@ -40,18 +40,22 @@ function createDocument(docName, data) {
  */
 function searchDocument() {
     let docName = $("#documentName").val();
-    let hidden = window.localStorage.getItem("hidden");
-    $.post("/searchDocument", {
-        "spaceId": spaceId,
-        "docName": docName,
-        "hidden": hidden,
-        "orderColumn": getOrderKey(),
-        "orderType": getOrderType()
-    }, function (data) {
-        if (data.code === 200) {
-            loadDocument(data.msg, true);
-        } else {
-            $.error(data.msg);
+    let showHidden = window.localStorage.getItem("showHidden");
+    $.ajax("/searchDocument", {
+        "type": "get",
+        "data":{
+            "spaceId": spaceId,
+            "docName": docName,
+            "showHidden": showHidden,
+            "orderColumn": getOrderKey(),
+            "orderType": getOrderType()
+        },
+        "success":function (data) {
+            if (data.code === 200) {
+                loadDocument(data.msg, true);
+            } else {
+                $.error(data.msg);
+            }
         }
     });
 }
@@ -190,25 +194,26 @@ let centerMenu = [[{
         {
             text: "Word文档",
             func: function () {
-                $.showPrompt('请输入Word文档名称', createDocument, 'WORD');
+                $.showPrompt('请输入Word文档名称', '', {'fileType':'WORD'}, createDocument);
             }
         }, {
             text: "PPT文稿",
             func: function () {
-                $.showPrompt('请输入PPT文档名称', createDocument, 'PPT');
+                $.showPrompt('请输入PPT文档名称', '', {'fileType':'PPT'}, createDocument);
+            }
+        }, {
+            text: "Markdown文档",
+            func: function () {
+                $.showPrompt('请输入Markdown文档名称','', {'fileType':'MD'}, createDocument);
             }
         }
     ]]
 }, {
-    text: "显示隐藏",
+    text: "显示/隐藏",
     func: function () {
-        let $hiddenDocument = $("#hiddenDocument");
-        let hidden = $hiddenDocument.val();
-        if (hidden) {
-            $hiddenDocument.val(false);
-        } else {
-            $hiddenDocument.val(true);
-        }
+        let showHidden = window.localStorage.getItem("showHidden");
+        let nextAction = showHidden === 'false' ? 'true' : 'false';
+        window.localStorage.setItem("showHidden", nextAction);
         searchDocument();
     }
 }]];
