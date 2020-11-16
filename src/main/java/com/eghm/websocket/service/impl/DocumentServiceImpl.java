@@ -4,6 +4,7 @@ import com.eghm.websocket.dto.request.SearchDocumentRequest;
 import com.eghm.websocket.enums.ErrorCode;
 import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.exception.SystemException;
+import com.eghm.websocket.mapper.DocumentMapper;
 import com.eghm.websocket.model.Document;
 import com.eghm.websocket.service.DocumentService;
 import com.eghm.websocket.utils.KeyGenerator;
