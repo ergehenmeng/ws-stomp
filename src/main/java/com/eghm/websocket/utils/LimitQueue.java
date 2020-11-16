@@ -7,6 +7,8 @@ import java.util.Queue;
 
 /**
  * 存放聊天信息的Queue 限制大小
+ * @param <E> E
+ * @author 二哥很猛
  */
 public class LimitQueue<E> implements Queue<E> {
 

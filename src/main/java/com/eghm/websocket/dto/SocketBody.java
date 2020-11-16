@@ -3,12 +3,14 @@ package com.eghm.websocket.dto;
 import com.eghm.websocket.enums.ActionType;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author 殿小二
  * @date 2020/11/11
  */
 @Data
-public class SocketBody<T> {
+public class SocketBody<T> implements Serializable {
 
     /**
      * 数据

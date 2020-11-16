@@ -1,13 +1,12 @@
 let load = null;
 let ueditor = null;
 let stompClient;
-let $chatMessage = $("#chatMessage");
 let $pageId = $("#pageId");
 $(function () {
     ueditor = UE.getEditor("container");
     load = $.loadMsg("服务器连接中...");
     connectServer("/serverChat", 1);
-    $chatMessage.on("keypress", function (event) {
+    $("#chatMessage").on("keypress", function (event) {
         if (event.keyCode === 13) {
             sendMsg();
         }
@@ -191,10 +190,11 @@ function forEachChat(data) {
  * 发送和接收聊天信息
  */
 function sendMsg() {
+    let $chatMessage = $("#chatMessage");
     let msg = $.trim($chatMessage.val());
     if (msg) {
         send("/websocket/sendGroupMsg", {
-            'chatContent': encodeURIComponent(msg),
+            'content': encodeURIComponent(msg),
             'documentId': documentId,
             'spaceId': spaceId
         });
@@ -232,7 +232,7 @@ function showChat(data) {
     let active = "p_noactive";
     if (data.id === userId) {
         active = "p_active";
-        $chatMessage.val("");
+        $("#chatMessage").val("");
     }
     $("#chatRoom").append(contentHtml(data.nickName, data.createTime, data.chatContent, active));
     let div = document.getElementById("chatRoom");

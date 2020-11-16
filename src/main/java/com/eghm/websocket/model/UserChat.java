@@ -3,12 +3,14 @@ package com.eghm.websocket.model;
 import com.eghm.websocket.enums.MsgType;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 用户聊天记录
  * @author 二哥很猛
  */
 @Data
-public class UserChat {
+public class UserChat implements Serializable {
 
     /**
      * 用户id

@@ -18,9 +18,9 @@ public class SocketConstant {
     public static final String DOCUMENT_PREFIX = "/document/{0}/{1}";
 
     /**
-     * 存放socket中的sessionUser
+     * 存放socket中的user
      */
-    public static final String SESSION_USER = "sessionUser";
+    public static final String SOCKET_USER = "socketUser";
 }
 
 

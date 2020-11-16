@@ -12,7 +12,9 @@ import com.eghm.websocket.utils.CommonConstant;
 import com.eghm.websocket.utils.LimitQueue;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
@@ -48,14 +50,14 @@ public class ChatController {
      * 初始化某个文档
      */
     @SubscribeMapping("/chatRoom/{spaceId}/{documentId}")
-    public SocketBody<LimitQueue<UserChat>> initDocument(Long spaceId, Long documentId) {
+    public SocketBody<LimitQueue<UserChat>> chatRoom(@DestinationVariable("spaceId") Long spaceId, @DestinationVariable("documentId") Long documentId) {
         log.info("chatRoom被订阅:[{}]-[{}]", spaceId, documentId);
         //空间缓存不存在,则创建
         if (!cacheChat.containsKey(documentId)) {
             cacheChat.put(documentId, new LimitQueue<>(100));
         }
         LimitQueue<UserChat> userChats = cacheChat.get(documentId);
-        return SocketBody.success(ActionType.SUBSCRIBE_CHAT,userChats);
+        return SocketBody.success(ActionType.SUBSCRIBE_CHAT, userChats);
     }
 
     /**
@@ -65,10 +67,10 @@ public class ChatController {
      * @param userChat 接收和要转发的信息
      */
     @MessageMapping("/sendGroupMsg")
-    public void sendGroupMsg(SimpMessageHeaderAccessor accessor, UserChat userChat) {
+    public void sendGroupMsg(SimpMessageHeaderAccessor accessor, @Payload UserChat userChat) {
         Map<String, Object> map = accessor.getSessionAttributes();
         if (CollUtil.isNotEmpty(map)) {
-            User user = (User) map.get(CommonConstant.SESSION_USER);
+            User user = (User) map.get(SocketConstant.SOCKET_USER);
             userChat.setId(user.getId());
             try {
                 userChat.setContent(HtmlUtils.htmlEscape(URLDecoder.decode(userChat.getContent(), "UTF-8")));
