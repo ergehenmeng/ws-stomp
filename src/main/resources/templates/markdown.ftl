@@ -6,7 +6,7 @@
 <#include "resources.ftl">
 <script src="/static/js/sockjs.min.js" type="text/javascript" charset="UTF-8"></script>
 <script src="/static/js/stomp.min.js" type="text/javascript" charset="UTF-8"></script>
-<script type="text/javascript" src="/static/js/wangEditor.min.js?t=201703021188"></script>
+<script type="text/javascript" src="/static/js/wangEditor.min.js?t=201703021388"></script>
 <script type="text/javascript" src="/static/js/document.js?t=201703021188"></script>
 <script type="text/javascript">
 	let spaceId = ${spaceId!};
@@ -22,7 +22,7 @@
 			<div class="panel-heading">
 				<span class="text-center">幻灯片列表</span>
 			</div>
-			<div class="panel-body" style="height: 720px;overflow:auto;" id="leftFileList">
+			<div class="panel-body" style="height: 620px;overflow:auto;" id="leftFileList">
 			</div>
 			<div class="panel-footer">
 				<div class="btn-group btn-group-justified">
@@ -32,19 +32,20 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xs-8" >
+	<div class="col-xs-7" >
 		<br>
-		<div id="wangEditorDiv"></div>
+		<!-- 加载编辑器的容器 -->
+		<script id="container" name="content" type="text/plain" style="height: 590px;"></script>
 		<input type="hidden" id="fileId" />
 	</div>
 	
-	<div class="col-xs-2">
+	<div class="col-xs-3">
 		<br>
 		<div class="panel panel-success" >
 				<div class="panel-heading">
 					<span class="text-center">聊天室</span>
 				</div>
-		    	<div class="panel-body" id="chatRoom" style="height: 720px;overflow:auto;">
+		    	<div class="panel-body" id="chatRoom" style="height: 620px;overflow:auto;">
 		    		
 				</div>
 				<div class="panel-footer">

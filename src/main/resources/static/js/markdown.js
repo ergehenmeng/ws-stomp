@@ -2,7 +2,7 @@ let load = null;
 let ueditor = null;
 let stompClient;
 $(function () {
-    initEditor();
+    ueditor = UE.getEditor("container");
     load = $.loadMsg("服务器连接中...");
     connectServer("/serverChat", 1);
     $("#chatMessage").on("keypress", function (event) {
@@ -11,10 +11,6 @@ $(function () {
         }
     });
 });
-
-
-
-
 
 
 /**
@@ -262,14 +258,4 @@ $.isEmpty = function (obj) {
     return !obj || $.isEmptyObject(obj);
 };
 
-
-/**
- * 初始化编辑器
- */
-function initEditor() {
-    const E = window.wangEditor;
-    const editor = new E('#wangEditorDiv');
-    editor.config.height = 778;
-    editor.create();
-}
 
