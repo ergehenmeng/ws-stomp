@@ -9,13 +9,13 @@ public class SocketConstant {
     /**
      * 聊天室前缀 0:spaceId 1:documentId
      */
-    public static final String CHAT_ROOM_PREFIX = "/chatRoom/{1}/{2}";
+    public static final String CHAT_ROOM_PREFIX = "/websocket/chatRoom/{0}/{1}";
 
 
     /**
      * 文档编辑前缀 0:spaceId 1:documentId
      */
-    public static final String DOCUMENT_PREFIX = "/document/{0}/{1}";
+    public static final String DOCUMENT_PREFIX = "/websocket/document/{0}/{1}";
 
     /**
      * 存放socket中的user

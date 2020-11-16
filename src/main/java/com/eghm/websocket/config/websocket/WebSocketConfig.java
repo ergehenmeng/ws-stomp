@@ -24,7 +24,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // 客户端发送的消息前缀
+        // 客户端发送的消息前缀 此处主要用于与普通http请求的区分
         registry.setApplicationDestinationPrefixes("/websocket");
         registry.enableSimpleBroker("");
     }

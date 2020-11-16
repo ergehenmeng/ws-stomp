@@ -51,7 +51,7 @@ public class ChatController {
      */
     @SubscribeMapping("/chatRoom/{spaceId}/{documentId}")
     public SocketBody<LimitQueue<UserChat>> chatRoom(@DestinationVariable("spaceId") Long spaceId, @DestinationVariable("documentId") Long documentId) {
-        log.info("chatRoom被订阅:[{}]-[{}]", spaceId, documentId);
+        log.info("chatRoom被订阅 spaceId:[{}] documentId:[{}]", spaceId, documentId);
         //空间缓存不存在,则创建
         if (!cacheChat.containsKey(documentId)) {
             cacheChat.put(documentId, new LimitQueue<>(100));
