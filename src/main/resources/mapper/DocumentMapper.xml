@@ -22,14 +22,14 @@
         -->
         id, space_id, doc_name, type, state, pwd, hidden, user_id, add_time, update_time
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         <!--
           @create by mybatis
         -->
         select
         <include refid="BaseColumnList"/>
         from document
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </select>
     <insert id="insert" parameterType="com.eghm.websocket.model.Document">
         <!--

@@ -7,8 +7,12 @@ import com.eghm.websocket.config.websocket.handler.UnSubscribeHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * websocket事件监听
+ * @author 二哥很猛
+ */
 @Configuration
-public class WebSocketHandlersConfig {
+public class WebSocketEventConfig {
 	
 	@Bean
 	public ConnectHandler connectHandler(){
