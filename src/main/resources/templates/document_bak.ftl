@@ -16,12 +16,29 @@
 </head>
 <body>
 <div>
-	<div class="col-xs-9" >
+	<div class="col-xs-2">
+		<br>
+		<div class="panel panel-info" >
+			<div class="panel-heading">
+				<span class="text-center">幻灯片列表</span>
+			</div>
+			<div class="panel-body" style="height: 720px;overflow:auto;" id="leftFileList">
+			</div>
+			<div class="panel-footer">
+				<div class="btn-group btn-group-justified">
+					<a class="btn btn-default " title="添加幻灯片" href="javascript:void(0)" onclick="connect();"><span class="glyphicon glyphicon-plus"></span></a>
+					<a class="btn btn-default" title="播放幻灯片"><span class="glyphicon glyphicon-play-circle"></span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-8" >
 		<br>
 		<div id="wangEditorDiv"></div>
 		<input type="hidden" id="fileId" />
 	</div>
-	<div class="col-xs-3">
+	
+	<div class="col-xs-2">
 		<br>
 		<div class="panel panel-success" >
 				<div class="panel-heading">

@@ -6,11 +6,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 文档信息表
  * @author 二哥很猛
  */
 @Data
 public class Document implements Serializable {
-
     /**
      * 主键<br>
      * 表 : document<br>
@@ -26,14 +26,14 @@ public class Document implements Serializable {
     private Long spaceId;
 
     /**
-     * <br>
+     * 文档名称<br>
      * 表 : document<br>
      * 对应字段 : doc_name<br>
      */
     private String docName;
 
     /**
-     * 文档类型 word md<br>
+     * 文档类型 DOC PPT<br>
      * 表 : document<br>
      * 对应字段 : type<br>
      */
@@ -54,7 +54,7 @@ public class Document implements Serializable {
     private String pwd;
 
     /**
-     * 是否显示 true:显示 false:隐藏<br>
+     * 文件隐藏状态 true:隐藏 false:正常<br>
      * 表 : document<br>
      * 对应字段 : hidden<br>
      */
@@ -81,5 +81,13 @@ public class Document implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * 文档内容<br>
+     * 表 : document<br>
+     * 对应字段 : content<br>
+     */
+    private String content;
+
     private static final long serialVersionUID = 1L;
+
 }

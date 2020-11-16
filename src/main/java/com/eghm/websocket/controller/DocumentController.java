@@ -1,34 +1,27 @@
 package com.eghm.websocket.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.eghm.websocket.constant.SocketConstant;
 import com.eghm.websocket.dto.RespBody;
+import com.eghm.websocket.dto.SendChat;
+import com.eghm.websocket.dto.SocketBody;
 import com.eghm.websocket.dto.request.SearchDocumentRequest;
+import com.eghm.websocket.enums.ActionType;
 import com.eghm.websocket.enums.ErrorCode;
 import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.model.Document;
-import com.eghm.websocket.model.Page;
-import com.eghm.websocket.model.User;
-import com.eghm.websocket.dto.SendChat;
 import com.eghm.websocket.service.DocumentService;
-import com.eghm.websocket.service.PageService;
-import com.eghm.websocket.utils.CommonConstant;
 import com.eghm.websocket.utils.LimitQueue;
 import com.eghm.websocket.utils.ShiroUtil;
 import com.eghm.websocket.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,9 +37,6 @@ public class DocumentController {
 
     @Autowired
     private DocumentService documentService;
-
-    @Autowired
-    private PageService pageService;
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -133,53 +123,13 @@ public class DocumentController {
 
 
     /**
-     * 默认被调用一次
-     * 初始化某个文档
+     * 订阅文档接口
      */
-    @SubscribeMapping("/initDocument/{spaceId}/{documentId}")
-    public Map<String, Object> initDocument(SimpMessageHeaderAccessor accessor, @DestinationVariable Long spaceId, @DestinationVariable Long documentId) {
-        log.debug("文档空间: 工作空间ID: " + spaceId + " 文档ID " + documentId);
+    @SubscribeMapping("/document/{spaceId}/{documentId}")
+    public SocketBody<String> document(@DestinationVariable("spaceId") Long spaceId, @DestinationVariable("documentId") Long documentId) {
+        log.info("document被订阅 spaceId:[{}] documentId:[{}]", spaceId, documentId);
         Document document = documentService.getById(documentId);
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("document", document);
-        //空间缓存不存在,则创建
-        if (!cacheChat.containsKey(documentId)) {
-            cacheChat.put(documentId, new LimitQueue<>(50));
-        }
-        result.put("chat", cacheChat.get(documentId));
-
-        return result;
+        return SocketBody.success(ActionType.SUBSCRIBE_DOC, document.getContent());
     }
-
-
-
-    /**
-     * 切换页
-     */
-    @RequestMapping("/changePage")
-    @ResponseBody
-    public RespBody<Page> changePage(Long id) {
-        Page page = pageService.getById(id);
-        return RespBody.success(page);
-    }
-
-    /**
-     * 文档内容改变后同步
-     */
-    @MessageMapping("/updatePage")
-    public void updatePage(SimpMessageHeaderAccessor accessor, Page page) {
-        Map<String, Object> map = accessor.getSessionAttributes();
-        User user = (User) map.get(CommonConstant.SESSION_USER);
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (user != null) {
-            result.put("id", page.getId());
-            result.put("userId", user.getId());
-            result.put("content", page.getContent());
-            result.put("type", 2);
-            messagingTemplate.convertAndSend(MessageFormat.format(SocketConstant.DOCUMENT_PREFIX, page.getSpaceId(), page.getDocumentId()) , result);
-            pageService.updatePage(page.getId(), page.getContent());
-        }
-    }
-
 
 }

@@ -16,18 +16,32 @@
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.eghm.websocket.model.Document">
+        <!--
+          @create by mybatis
+        -->
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
     <sql id="BaseColumnList">
         <!--
           @create by mybatis
         -->
         id, space_id, doc_name, type, state, pwd, hidden, user_id, add_time, update_time
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <sql id="BlobColumnList">
+        <!--
+          @create by mybatis
+        -->
+        content
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         <!--
           @create by mybatis
         -->
         select
         <include refid="BaseColumnList"/>
+        ,
+        <include refid="BlobColumnList"/>
         from document
         where id = #{id,jdbcType=BIGINT}
     </select>
@@ -37,14 +51,14 @@
         -->
         insert into document (id, space_id, doc_name,
         type, state, pwd, hidden,
-        user_id, add_time, update_time
-        )
+        user_id, add_time, update_time,
+        content)
         values (#{id,jdbcType=BIGINT}, #{spaceId,jdbcType=BIGINT}, #{docName,jdbcType=VARCHAR},
         #{type,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{pwd,jdbcType=VARCHAR}, #{hidden,jdbcType=BIT},
-        #{userId,jdbcType=BIGINT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-        )
+        #{userId,jdbcType=BIGINT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{content,jdbcType=LONGVARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.eghm.websocket.model.Document" >
+    <insert id="insertSelective" parameterType="com.eghm.websocket.model.Document">
         <!--
           @create by mybatis
         -->
@@ -80,6 +94,9 @@
             <if test="updateTime != null">
                 update_time,
             </if>
+            <if test="content != null">
+                content,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -112,6 +129,9 @@
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.eghm.websocket.model.Document">
@@ -136,7 +156,7 @@
                 pwd = #{pwd,jdbcType=VARCHAR},
             </if>
             <if test="hidden != null">
-                hidden = #{show,jdbcType=BIT},
+                hidden = #{hidden,jdbcType=BIT},
             </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=BIGINT},
@@ -147,7 +167,27 @@
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
         </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithText" parameterType="com.eghm.websocket.model.Document">
+        <!--
+          @create by mybatis
+        -->
+        update document
+        set space_id = #{spaceId,jdbcType=BIGINT},
+        doc_name = #{docName,jdbcType=VARCHAR},
+        type = #{type,jdbcType=VARCHAR},
+        state = #{state,jdbcType=TINYINT},
+        pwd = #{pwd,jdbcType=VARCHAR},
+        hidden = #{hidden,jdbcType=BIT},
+        user_id = #{userId,jdbcType=BIGINT},
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        content = #{content,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.eghm.websocket.model.Document">
@@ -166,7 +206,6 @@
         update_time = #{updateTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}
     </update>
-
     <select id="getList" parameterType="com.eghm.websocket.dto.request.SearchDocumentRequest" resultMap="BaseResultMap">
         select <include refid="BaseColumnList"/>
         from document
@@ -182,5 +221,4 @@
             order by ${orderColumn} ${orderType}
         </if>
     </select>
-
 </mapper>

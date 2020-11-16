@@ -54,21 +54,6 @@
             enableDeleteByExample="false" enableSelectByExample="false"
             selectByExampleQueryId="false" enableDeleteByPrimaryKey="false">
         </table>
-        <table tableName="page" domainObjectName="Page"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" enableDeleteByPrimaryKey="false">
-        </table>
-        <table tableName="user" domainObjectName="User"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" enableDeleteByPrimaryKey="false">
-        </table>
-        <table tableName="space" domainObjectName="space"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" enableDeleteByPrimaryKey="false">
-        </table>
 
     </context>
 
