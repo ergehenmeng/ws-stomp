@@ -107,8 +107,8 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Document getCacheById(Long docId) {
-        return loadingCache.getIfPresent(docId);
+    public Document getCacheById(Long docId) throws ExecutionException {
+        return loadingCache.get(docId);
     }
 
     @Override

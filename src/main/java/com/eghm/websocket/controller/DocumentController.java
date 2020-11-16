@@ -31,6 +31,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -107,7 +108,7 @@ public class DocumentController {
     @RequestMapping("/checkPassword")
     @ResponseBody
     public RespBody<Object> checkPassword(Long spaceId, Long docId, String pwd) {
-        Document doc = documentService.getCacheById(docId);
+        Document doc = documentService.getById(docId);
         if (StrUtil.isNotEmpty(doc.getPwd()) && !doc.getPwd().equals(pwd)) {
             return RespBody.error(ErrorCode.DOC_PWD_ERROR);
         }
@@ -121,7 +122,7 @@ public class DocumentController {
     public String document(@PathVariable Long spaceId, @PathVariable Long documentId, Model model) {
         model.addAttribute("spaceId", spaceId);
         model.addAttribute("documentId", documentId);
-        Document document = documentService.getCacheById(documentId);
+        Document document = documentService.getById(documentId);
         Long userId = ShiroUtil.getUserId();
         model.addAttribute("userId", StringUtil.encryptNumber(userId));
         model.addAttribute("editable", userId.equals(document.getId()));
@@ -143,7 +144,7 @@ public class DocumentController {
      * 同步文档信息
      */
     @MessageMapping("/syncDocument")
-    public void syncDocument(SimpMessageHeaderAccessor accessor, @Payload SendDoc doc) {
+    public void syncDocument(SimpMessageHeaderAccessor accessor, @Payload SendDoc doc) throws ExecutionException{
         Map<String, Object> attributes = accessor.getSessionAttributes();
         if (CollUtil.isNotEmpty(attributes)) {
             User user = (User) attributes.get(SocketConstant.SOCKET_USER);

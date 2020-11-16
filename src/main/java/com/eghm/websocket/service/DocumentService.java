@@ -54,8 +54,9 @@ public interface DocumentService {
      * 主键查询
      * @param docId 主键
      * @return doc
+     * @throws ExecutionException 缓存异常
      */
-    Document getCacheById(Long docId);
+    Document getCacheById(Long docId) throws ExecutionException;
 
     /**
      * 主键查询
