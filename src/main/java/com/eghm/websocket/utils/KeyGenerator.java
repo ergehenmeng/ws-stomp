@@ -1,6 +1,5 @@
 package com.eghm.websocket.utils;
 
-import com.eghm.websocket.model.Space;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

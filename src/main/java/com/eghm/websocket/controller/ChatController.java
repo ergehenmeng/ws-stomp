@@ -9,6 +9,7 @@ import com.eghm.websocket.dto.SocketBody;
 import com.eghm.websocket.enums.ActionType;
 import com.eghm.websocket.enums.MsgType;
 import com.eghm.websocket.model.User;
+import com.eghm.websocket.utils.KeyGenerator;
 import com.eghm.websocket.utils.LimitQueue;
 import com.eghm.websocket.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,9 @@ public class ChatController {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    private KeyGenerator keyGenerator;
 
     /**
      * 聊天记录缓存
@@ -72,6 +76,7 @@ public class ChatController {
         Map<String, Object> map = accessor.getSessionAttributes();
         if (CollUtil.isNotEmpty(map)) {
             ChatMessage message = new ChatMessage();
+            message.setId(keyGenerator.generateKey().longValue());
             message.setContent(sendChat.getContent());
             User user = (User) map.get(SocketConstant.SOCKET_USER);
             message.setUserId(StringUtil.encryptNumber(user.getId()));

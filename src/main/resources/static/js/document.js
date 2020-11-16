@@ -63,7 +63,7 @@ let initChat = function() {
                 // 聊天信息内容
                 forEachChat(json.data);
                 break;
-            case 2:
+            case 'CHAT_MSG':
                 // 编辑器内容同步
                 showChat(json.data);
                 break;
@@ -230,11 +230,11 @@ let send = function (sendUrl, json) {
  */
 function showChat(data) {
     let active = "p_noactive";
-    if (data.id === userId) {
+    if (data.userId === userId) {
         active = "p_active";
         $("#chatMessage").val("");
     }
-    $("#chatRoom").append(contentHtml(data.nickName, data.createTime, data.chatContent, active));
+    $("#chatRoom").append(contentHtml(data.nickName, data.createTime, data.content, active));
     let div = document.getElementById("chatRoom");
     div.scrollTop = div.scrollHeight;
 }

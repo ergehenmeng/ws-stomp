@@ -1,10 +1,12 @@
 package com.eghm.websocket.config.websocket.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 
+@Slf4j
 public class UnSubscribeHandler implements ApplicationListener<SessionUnsubscribeEvent> {
 
 	@Override
@@ -12,7 +14,6 @@ public class UnSubscribeHandler implements ApplicationListener<SessionUnsubscrib
 		MessageHeaders headers = event.getMessage().getHeaders();
 		String subscriptionId = SimpMessageHeaderAccessor.getSubscriptionId(headers);
 		String sessionId = SimpMessageHeaderAccessor.getSessionId(headers);
-		System.out.println("subscriptionId取消订阅------------------------:" + subscriptionId);
-		System.out.println("sessionId取消订阅-----------------------------:" + sessionId);
+		log.info("取消订阅 sessionId:[{}] subscriptionId:[{}]", sessionId, subscriptionId);
 	}
 }
