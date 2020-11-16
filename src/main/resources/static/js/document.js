@@ -48,15 +48,8 @@ let connectServer = function(endpoint, num) {
 let initDoc = function () {
     subscribe("/websocket/document/" + spaceId + "/" + documentId, function (json) {
         let action = json.action;
-        switch (action) {
-            case 'SUBSCRIBE_DOC':
-                showContent(json.data);
-                break;
-            case 'SYNC_CONTENT':
-                systemEditor.txt.html(json.data.content);
-                break;
-            default:
-                break;
+        if (action === 'SYNC_CONTENT') {
+            systemEditor.txt.html(json.data.content);
         }
     });
 };
@@ -145,19 +138,21 @@ function sendMsg() {
 
 /**
  * 发送文档内容
- * @param id
- * @param msg 文档内容
+ * @param content 文档内容
  */
-function updatePageContent(id, msg) {
-    send("/app/updatePage",{
-        'content': encodeURIComponent(msg),
-        'id': id,
-        "documentId": documentId,
-        "spaceId": spaceId
+function updateContent(content) {
+    send("/websocket/updateContent",{
+        'content': encodeURIComponent(content),
+        "documentId": documentId
     })
 }
 
-let send = function (sendUrl, json) {
+/**
+ * 发送websocket信息到后天
+ * @param sendUrl 发送地址
+ * @param json 发送的内容 json
+ */
+let send = function(sendUrl, json) {
     if (stompClient) {
         stompClient.send(sendUrl, {}, JSON.stringify(json));
     } else {
@@ -208,6 +203,8 @@ function initEditor() {
     const E = window.wangEditor;
     const editor = new E('#wangEditorDiv');
     editor.config.height = 778;
+    editor.config.onchangeTimeout = 500;
+    editor.config.onchange = updateContent;
     editor.create();
     return editor;
 }

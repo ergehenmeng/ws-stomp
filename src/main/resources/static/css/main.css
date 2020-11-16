@@ -51,4 +51,6 @@ input, button, select, textarea {
 .chatContent {
     text-indent: 1em;
 }
-
+.selectActive{
+    border-color: #428bca;
+}

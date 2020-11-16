@@ -122,8 +122,12 @@ public class DocumentController {
     public String document(@PathVariable Long spaceId, @PathVariable Long documentId, Model model) {
         model.addAttribute("spaceId", spaceId);
         model.addAttribute("documentId", documentId);
+        Document document = documentService.getById(documentId);
         Long userId = ShiroUtil.getUserId();
         model.addAttribute("userId", StringUtil.encryptNumber(userId));
+        model.addAttribute("editable", userId.equals(document.getId()));
+        model.addAttribute("content", document.getContent());
+        model.addAttribute("title", document.getDocName());
         return "document";
     }
 
@@ -132,17 +136,8 @@ public class DocumentController {
      * 订阅文档接口
      */
     @SubscribeMapping("/document/{spaceId}/{documentId}")
-    public SocketBody<SubscribeDoc> document(SimpMessageHeaderAccessor accessor, @DestinationVariable("spaceId") Long spaceId, @DestinationVariable("documentId") Long documentId) {
+    public void document(SimpMessageHeaderAccessor accessor, @DestinationVariable("spaceId") Long spaceId, @DestinationVariable("documentId") Long documentId) {
         log.info("document被订阅 spaceId:[{}] documentId:[{}]", spaceId, documentId);
-        Document document = documentService.getById(documentId);
-        SubscribeDoc doc = new SubscribeDoc();
-        doc.setContent(document.getContent());
-        Map<String, Object> attributes = accessor.getSessionAttributes();
-        if (CollUtil.isNotEmpty(attributes)) {
-            User user = (User) attributes.get(SocketConstant.SOCKET_USER);
-            doc.setUserId(StringUtil.encryptNumber(user.getId()));
-        }
-        return SocketBody.success(ActionType.SUBSCRIBE_DOC, doc);
     }
 
 }

@@ -86,7 +86,7 @@ public class ChatController {
                 log.warn("URL解析失败 [{}]", sendChat.getContent(), e);
             }
             message.setNickName(user.getNickName());
-            message.setCreateTime(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            message.setCreateTime(DateUtil.format(new Date(), "HH:mm:ss"));
             message.setMsgType(MsgType.TEXT);
             LimitQueue<ChatMessage> limit = cacheChat.get(sendChat.getDocumentId());
             limit.offer(message);
