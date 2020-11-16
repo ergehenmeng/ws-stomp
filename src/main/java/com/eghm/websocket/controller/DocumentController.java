@@ -1,6 +1,5 @@
 package com.eghm.websocket.controller;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.eghm.websocket.constant.SocketConstant;
 import com.eghm.websocket.dto.RespBody;
@@ -10,7 +9,7 @@ import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.model.Document;
 import com.eghm.websocket.model.Page;
 import com.eghm.websocket.model.User;
-import com.eghm.websocket.model.UserChat;
+import com.eghm.websocket.dto.SendChat;
 import com.eghm.websocket.service.DocumentService;
 import com.eghm.websocket.service.PageService;
 import com.eghm.websocket.utils.CommonConstant;
@@ -27,12 +26,8 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.HtmlUtils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +54,7 @@ public class DocumentController {
     /**
      * 聊天记录缓存
      */
-    private Map<Long, LimitQueue<UserChat>> cacheChat = new ConcurrentHashMap<>();
+    private Map<Long, LimitQueue<SendChat>> cacheChat = new ConcurrentHashMap<>();
 
 
     /**

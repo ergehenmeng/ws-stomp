@@ -3,13 +3,14 @@ package com.eghm.websocket.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import com.eghm.websocket.constant.SocketConstant;
+import com.eghm.websocket.dto.ChatMessage;
+import com.eghm.websocket.dto.SendChat;
 import com.eghm.websocket.dto.SocketBody;
 import com.eghm.websocket.enums.ActionType;
 import com.eghm.websocket.enums.MsgType;
 import com.eghm.websocket.model.User;
-import com.eghm.websocket.model.UserChat;
-import com.eghm.websocket.utils.CommonConstant;
 import com.eghm.websocket.utils.LimitQueue;
+import com.eghm.websocket.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -42,7 +43,7 @@ public class ChatController {
     /**
      * 聊天记录缓存
      */
-    private final Map<Long, LimitQueue<UserChat>> cacheChat = new ConcurrentHashMap<>();
+    private final Map<Long, LimitQueue<ChatMessage>> cacheChat = new ConcurrentHashMap<>();
 
 
     /**
@@ -50,13 +51,13 @@ public class ChatController {
      * 初始化某个文档
      */
     @SubscribeMapping("/chatRoom/{spaceId}/{documentId}")
-    public SocketBody<LimitQueue<UserChat>> chatRoom(@DestinationVariable("spaceId") Long spaceId, @DestinationVariable("documentId") Long documentId) {
+    public SocketBody<LimitQueue<ChatMessage>> chatRoom(@DestinationVariable("spaceId") Long spaceId, @DestinationVariable("documentId") Long documentId) {
         log.info("chatRoom被订阅 spaceId:[{}] documentId:[{}]", spaceId, documentId);
         //空间缓存不存在,则创建
         if (!cacheChat.containsKey(documentId)) {
             cacheChat.put(documentId, new LimitQueue<>(100));
         }
-        LimitQueue<UserChat> userChats = cacheChat.get(documentId);
+        LimitQueue<ChatMessage> userChats = cacheChat.get(documentId);
         return SocketBody.success(ActionType.SUBSCRIBE_CHAT, userChats);
     }
 
@@ -64,26 +65,28 @@ public class ChatController {
      * 接收聊天消息并转发聊天室
      *
      * @param accessor 获取用户sessionId等信息
-     * @param userChat 接收和要转发的信息
+     * @param sendChat 接收和要转发的信息
      */
     @MessageMapping("/sendGroupMsg")
-    public void sendGroupMsg(SimpMessageHeaderAccessor accessor, @Payload UserChat userChat) {
+    public void sendGroupMsg(SimpMessageHeaderAccessor accessor, @Payload SendChat sendChat) {
         Map<String, Object> map = accessor.getSessionAttributes();
         if (CollUtil.isNotEmpty(map)) {
+            ChatMessage message = new ChatMessage();
+            message.setContent(sendChat.getContent());
             User user = (User) map.get(SocketConstant.SOCKET_USER);
-            userChat.setId(user.getId());
+            message.setUserId(StringUtil.encryptNumber(user.getId()));
             try {
-                userChat.setContent(HtmlUtils.htmlEscape(URLDecoder.decode(userChat.getContent(), "UTF-8")));
+                message.setContent(HtmlUtils.htmlEscape(URLDecoder.decode(sendChat.getContent(), "UTF-8")));
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                log.warn("URL解析失败 [{}]", sendChat.getContent(), e);
             }
-            userChat.setNickName(user.getNickName());
-            userChat.setCreateTime(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            userChat.setMsgType(MsgType.TEXT);
-            LimitQueue<UserChat> limit = cacheChat.get(userChat.getDocumentId());
-            limit.offer(userChat);
+            message.setNickName(user.getNickName());
+            message.setCreateTime(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            message.setMsgType(MsgType.TEXT);
+            LimitQueue<ChatMessage> limit = cacheChat.get(sendChat.getDocumentId());
+            limit.offer(message);
             // 向所有订阅该接口的用户发送聊天信息
-            messagingTemplate.convertAndSend(MessageFormat.format(SocketConstant.CHAT_ROOM_PREFIX, userChat.getSpaceId(), userChat.getDocumentId()), SocketBody.success(ActionType.CHAT_MSG, userChat));
+            messagingTemplate.convertAndSend(MessageFormat.format(SocketConstant.CHAT_ROOM_PREFIX, sendChat.getSpaceId(), sendChat.getDocumentId()), SocketBody.success(ActionType.CHAT_MSG, message));
         }
     }
 }
