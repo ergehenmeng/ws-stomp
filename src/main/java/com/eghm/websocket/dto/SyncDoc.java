@@ -7,15 +7,16 @@ import lombok.Data;
  * @date 2020/11/16
  */
 @Data
-public class SubscribeDoc {
+public class SyncDoc {
 
     /**
-     * 当前用户id
+     * 文档作者id
      */
-    private String userId;
+    private String author;
 
     /**
      * 文档内容
      */
     private String content;
+
 }

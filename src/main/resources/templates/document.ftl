@@ -19,14 +19,14 @@
 	let spaceId = ${spaceId!};
     let documentId = ${documentId!};
     let userId = '${userId}';
-    let editable = ${editable};
+    let editable = ${editable?string('true', 'false')};
 </script>
 </head>
 <body>
 <div>
 	<div class="col-xs-9" >
 		<br>
-		<div id="wangEditorDiv">${content}</div>
+		<div id="wangEditorDiv">${content!}</div>
 		<input type="hidden" id="fileId" />
 	</div>
 	<div class="col-xs-3">

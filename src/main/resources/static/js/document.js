@@ -49,20 +49,16 @@ let initDoc = function () {
     subscribe("/websocket/document/" + spaceId + "/" + documentId, function (json) {
         let action = json.action;
         if (action === 'SYNC_CONTENT') {
-            systemEditor.txt.html(json.data.content);
+            let userId = json.data['author'];
+            if (userId !== userId) {
+                systemEditor.txt.html(json.data.content);
+            }
         }
     });
 };
 
 
-let showContent = function (json) {
-    if (json.userId === userId) {
-        systemEditor.enable();
-    } else {
-        systemEditor.disable();
-    }
-    systemEditor.txt.html(json.content)
-};
+
 
 /**
  * 初始化聊天信息
@@ -140,10 +136,11 @@ function sendMsg() {
  * 发送文档内容
  * @param content 文档内容
  */
-function updateContent(content) {
-    send("/websocket/updateContent",{
+function syncDocument(content) {
+    send("/websocket/syncDocument",{
         'content': encodeURIComponent(content),
-        "documentId": documentId
+        "documentId": documentId,
+        "spaceId": spaceId,
     })
 }
 
@@ -203,8 +200,11 @@ function initEditor() {
     const E = window.wangEditor;
     const editor = new E('#wangEditorDiv');
     editor.config.height = 778;
+    if (editable === 'false') {
+        editor.disable();
+    }
     editor.config.onchangeTimeout = 500;
-    editor.config.onchange = updateContent;
+    editor.config.onchange = syncDocument;
     editor.create();
     return editor;
 }

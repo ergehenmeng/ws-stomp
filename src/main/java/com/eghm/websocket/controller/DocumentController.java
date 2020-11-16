@@ -3,10 +3,7 @@ package com.eghm.websocket.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.eghm.websocket.constant.SocketConstant;
-import com.eghm.websocket.dto.RespBody;
-import com.eghm.websocket.dto.SendChat;
-import com.eghm.websocket.dto.SocketBody;
-import com.eghm.websocket.dto.SubscribeDoc;
+import com.eghm.websocket.dto.*;
 import com.eghm.websocket.dto.request.SearchDocumentRequest;
 import com.eghm.websocket.enums.ActionType;
 import com.eghm.websocket.enums.ErrorCode;
@@ -14,12 +11,15 @@ import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.model.Document;
 import com.eghm.websocket.model.User;
 import com.eghm.websocket.service.DocumentService;
+import com.eghm.websocket.service.DocumentTask;
 import com.eghm.websocket.utils.LimitQueue;
 import com.eghm.websocket.utils.ShiroUtil;
 import com.eghm.websocket.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
@@ -27,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,10 +47,8 @@ public class DocumentController {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    /**
-     * 聊天记录缓存
-     */
-    private Map<Long, LimitQueue<SendChat>> cacheChat = new ConcurrentHashMap<>();
+    @Autowired
+    private DocumentTask documentTask;
 
 
     /**
@@ -108,7 +107,7 @@ public class DocumentController {
     @RequestMapping("/checkPassword")
     @ResponseBody
     public RespBody<Object> checkPassword(Long spaceId, Long docId, String pwd) {
-        Document doc = documentService.getById(docId);
+        Document doc = documentService.getCacheById(docId);
         if (StrUtil.isNotEmpty(doc.getPwd()) && !doc.getPwd().equals(pwd)) {
             return RespBody.error(ErrorCode.DOC_PWD_ERROR);
         }
@@ -122,7 +121,7 @@ public class DocumentController {
     public String document(@PathVariable Long spaceId, @PathVariable Long documentId, Model model) {
         model.addAttribute("spaceId", spaceId);
         model.addAttribute("documentId", documentId);
-        Document document = documentService.getById(documentId);
+        Document document = documentService.getCacheById(documentId);
         Long userId = ShiroUtil.getUserId();
         model.addAttribute("userId", StringUtil.encryptNumber(userId));
         model.addAttribute("editable", userId.equals(document.getId()));
@@ -136,8 +135,31 @@ public class DocumentController {
      * 订阅文档接口
      */
     @SubscribeMapping("/document/{spaceId}/{documentId}")
-    public void document(SimpMessageHeaderAccessor accessor, @DestinationVariable("spaceId") Long spaceId, @DestinationVariable("documentId") Long documentId) {
+    public void document(@DestinationVariable("spaceId") Long spaceId, @DestinationVariable("documentId") Long documentId) {
         log.info("document被订阅 spaceId:[{}] documentId:[{}]", spaceId, documentId);
     }
+
+    /**
+     * 同步文档信息
+     */
+    @MessageMapping("/syncDocument")
+    public void syncDocument(SimpMessageHeaderAccessor accessor, @Payload SendDoc doc) {
+        Map<String, Object> attributes = accessor.getSessionAttributes();
+        if (CollUtil.isNotEmpty(attributes)) {
+            User user = (User) attributes.get(SocketConstant.SOCKET_USER);
+            Document document = documentService.getCacheById(doc.getDocumentId());
+            // 将文档通给所有人 不包含作者本人(因为该动作就是他自己触发的)
+            if (document.getUserId().equals(user.getId())) {
+                documentTask.syncContent(doc);
+                SyncDoc syncDoc = new SyncDoc();
+                syncDoc.setContent(doc.getContent());
+                syncDoc.setAuthor(StringUtil.encryptNumber(user.getId()));
+                messagingTemplate.convertAndSend(MessageFormat.format(SocketConstant.DOCUMENT_PREFIX, doc.getSpaceId(), doc.getDocumentId()), SocketBody.success(ActionType.SYNC_CONTENT, syncDoc));
+            }
+            log.warn("非创建人无法操作该文档 author: [{}] userId:[{}}", document.getUserId(), user.getId());
+        }
+    }
+
+
 
 }

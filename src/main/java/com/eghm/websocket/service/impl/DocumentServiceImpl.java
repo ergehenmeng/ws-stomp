@@ -9,11 +9,17 @@ import com.eghm.websocket.model.Document;
 import com.eghm.websocket.service.DocumentService;
 import com.eghm.websocket.utils.KeyGenerator;
 import com.eghm.websocket.utils.ShiroUtil;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 二哥很猛
@@ -27,8 +33,21 @@ public class DocumentServiceImpl implements DocumentService {
     @Autowired
     private KeyGenerator keyGenerator;
 
+    private LoadingCache<Long, Document> loadingCache = CacheBuilder.newBuilder()
+            .concurrencyLevel(8)
+            .maximumSize(100)
+            .expireAfterWrite(600, TimeUnit.SECONDS)
+            .build(new CacheLoader<Long, Document>() {
+                @Override
+                public Document load(@NonNull Long key) {
+                    return documentMapper.selectByPrimaryKey(key);
+                }
+            });
+
+
     @Override
     public List<Document> getList(SearchDocumentRequest request) {
+
         return documentMapper.getList(request);
     }
 
@@ -62,7 +81,10 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public void updateSelective(Document document) {
+    public void updateContent(Long docId, String content) {
+        Document document = new Document();
+        document.setId(docId);
+        document.setContent(content);
         documentMapper.updateByPrimaryKeySelective(document);
     }
 
@@ -82,6 +104,11 @@ public class DocumentServiceImpl implements DocumentService {
             throw new SystemException(ErrorCode.ILLEGAL_MODIFY);
         }
         return document;
+    }
+
+    @Override
+    public Document getCacheById(Long docId) {
+        return loadingCache.getIfPresent(docId);
     }
 
     @Override

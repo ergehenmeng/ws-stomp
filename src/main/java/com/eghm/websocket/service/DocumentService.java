@@ -5,6 +5,7 @@ import com.eghm.websocket.enums.FileType;
 import com.eghm.websocket.model.Document;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface DocumentService {
 
@@ -37,9 +38,10 @@ public interface DocumentService {
 
     /**
      * 不为空更新文档信息
-     * @param document document
+     * @param docId 文档id
+     * @param content 文档内容
      */
-    void updateSelective(Document document);
+    void updateContent(Long docId, String content);
 
     /**
      * 更新文档名称
@@ -53,7 +55,12 @@ public interface DocumentService {
      * @param docId 主键
      * @return doc
      */
+    Document getCacheById(Long docId);
+
+    /**
+     * 主键查询
+     * @param docId 主键
+     * @return doc
+     */
     Document getById(Long docId);
-
-
 }

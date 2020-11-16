@@ -46,6 +46,11 @@ public enum ErrorCode {
      */
     ILLEGAL_MODIFY(606, "非本人文档禁止修改"),
 
+    /**
+     * Spring尚未初始化
+     */
+    SPRING_NOT_INIT(607, "Spring尚未初始化"),
+
     ;
 
     private int code;

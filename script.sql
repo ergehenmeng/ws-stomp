@@ -11,7 +11,7 @@
  Target Server Version : 50729
  File Encoding         : 65001
 
- Date: 14/11/2020 15:00:46
+ Date: 16/11/2020 21:40:48
 */
 
 SET NAMES utf8mb4;
@@ -24,39 +24,24 @@ DROP TABLE IF EXISTS `document`;
 CREATE TABLE `document`  (
                              `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
                              `space_id` bigint(20) NULL DEFAULT NULL COMMENT '工作空间id',
-                             `doc_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+                             `doc_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文档名称',
                              `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文档类型 DOC PPT',
                              `state` tinyint(1) NULL DEFAULT 1 COMMENT '状态 1:正常 0:删除',
                              `pwd` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文档密码',
+                             `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '文档内容',
                              `hidden` bit(1) NULL DEFAULT b'0' COMMENT '文件隐藏状态 true:隐藏 false:正常',
+                             `user_id` bigint(20) NULL DEFAULT NULL COMMENT '文档所属用户',
                              `add_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间',
                              `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
                              PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文档信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 338730027934343169 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文档信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of document
 -- ----------------------------
-INSERT INTO `document` VALUES (1, 1, '我个是文档', 'WORD', 1, NULL, b'0', '2020-11-12 21:08:23', '2020-11-14 14:59:44');
-INSERT INTO `document` VALUES (2, 1, '我是个MD', 'MD', 1, NULL, b'0', '2020-11-14 14:59:55', '2020-11-14 14:59:58');
-
--- ----------------------------
--- Table structure for page
--- ----------------------------
-DROP TABLE IF EXISTS `page`;
-CREATE TABLE `page`  (
-                         `id` bigint(20) NOT NULL,
-                         `document_id` bigint(20) NULL DEFAULT NULL COMMENT '文档id',
-                         `space_id` bigint(20) NULL DEFAULT NULL COMMENT '文档所属空间id',
-                         `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '内容信息',
-                         `add_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间',
-                         `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-                         PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文档页信息' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of page
--- ----------------------------
+INSERT INTO `document` VALUES (1, 1, '我个是文档', 'WORD', 1, NULL, NULL, b'0', NULL, '2020-11-12 21:08:23', '2020-11-14 14:59:44');
+INSERT INTO `document` VALUES (2, 1, '我是个MD', 'MD', 1, NULL, NULL, b'0', NULL, '2020-11-14 14:59:55', '2020-11-14 14:59:58');
+INSERT INTO `document` VALUES (338730027934343168, 1, '二哥胜多负少', 'PPT', 1, NULL, NULL, b'0', 1, '2020-11-14 17:12:11', '2020-11-14 17:12:11');
 
 -- ----------------------------
 -- Table structure for space
