@@ -58,14 +58,17 @@ let initDoc = function () {
  */
 let initChat = function() {
     subscribe("/websocket/chatRoom/" + spaceId + "/" + documentId, function (json) {
-        let type = json.type;
-        switch (type) {
-            case 1: // 聊天信息内容
+        let action = json.action;
+        switch (action) {
+            case 'SUBSCRIBE_CHAT':
+                // 聊天信息内容
+                forEachChat(json.data);
+                break;
+            case 2:
+                // 编辑器内容同步
                 showChat(json.data);
                 break;
-            case 2: // 编辑器内容同步
-                updateContent(json.data);
-                break;
+            default: break;
         }
     });
 };
@@ -77,10 +80,11 @@ let initChat = function() {
  */
 let subscribe = function(subscribeUrl, callback) {
     if (stompClient) {
-        stompClient.subscribe(subscribeUrl, function (data) {
-            console.log("subscribeResp:" + data.body);
+        stompClient.subscribe(subscribeUrl, function (response) {
+            // body为stomp的body体
+            console.log("subscribeResp:" + response.body);
             if (typeof callback === "function" ) {
-                let jsonResult = JSON.parse(data.body);
+                let jsonResult = JSON.parse(response.body);
                 callback(jsonResult);
             }
         });

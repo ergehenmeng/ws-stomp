@@ -78,10 +78,10 @@ public class ChatController {
             userChat.setNickName(user.getNickName());
             userChat.setCreateTime(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
             userChat.setMsgType(MsgType.TEXT);
-            messagingTemplate.convertAndSend(MessageFormat.format(SocketConstant.CHAT_ROOM_PREFIX, userChat.getSpaceId(), userChat.getDocumentId()), userChat);
             LimitQueue<UserChat> limit = cacheChat.get(userChat.getDocumentId());
             limit.offer(userChat);
+            // 向所有订阅该接口的用户发送聊天信息
+            messagingTemplate.convertAndSend(MessageFormat.format(SocketConstant.CHAT_ROOM_PREFIX, userChat.getSpaceId(), userChat.getDocumentId()), SocketBody.success(ActionType.CHAT_MSG, userChat));
         }
     }
-
 }

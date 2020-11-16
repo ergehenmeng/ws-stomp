@@ -15,4 +15,11 @@ public enum ActionType {
      * 文档订阅成功
      */
     SUBSCRIBE_DOC,
+
+    /**
+     * 聊天信息
+     */
+    CHAT_MSG,
+
+
 }

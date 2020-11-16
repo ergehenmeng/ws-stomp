@@ -13,17 +13,17 @@ public class SocketBody<T> {
     /**
      * 数据
      */
-    private T date;
+    private T data;
 
     /**
      * 动作类型
      */
-    private ActionType type;
+    private ActionType action;
 
     public static <T> SocketBody<T> success(ActionType type, T data) {
         SocketBody<T> socketBody = new SocketBody<>();
-        socketBody.setType(type);
-        socketBody.setDate(data);
+        socketBody.setAction(type);
+        socketBody.setData(data);
         return socketBody;
     }
 }
