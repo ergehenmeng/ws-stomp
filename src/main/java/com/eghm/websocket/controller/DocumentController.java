@@ -14,6 +14,8 @@ import com.eghm.websocket.service.DocumentService;
 import com.eghm.websocket.service.PageService;
 import com.eghm.websocket.utils.CommonConstant;
 import com.eghm.websocket.utils.LimitQueue;
+import com.eghm.websocket.utils.ShiroUtil;
+import com.eghm.websocket.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -22,7 +24,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
@@ -126,9 +128,10 @@ public class DocumentController {
      * 文档管理页面
      */
     @RequestMapping("/document/{spaceId}/{documentId}")
-    public String document(@PathVariable Long spaceId, @PathVariable Long documentId, ModelMap model) {
+    public String document(@PathVariable Long spaceId, @PathVariable Long documentId, Model model) {
         model.addAttribute("spaceId", spaceId);
         model.addAttribute("documentId", documentId);
+        model.addAttribute("userId", StringUtil.encryptNumber(ShiroUtil.getUserId()));
         return "document";
     }
 

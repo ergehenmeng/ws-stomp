@@ -10,7 +10,7 @@
 <script type="text/javascript">
 	let spaceId = ${spaceId!};
     let documentId = ${documentId!};
-    let userId = ${loginUser.id};
+    let userId = ${userId};
 </script>
 </head>
 <body>
@@ -22,7 +22,6 @@
 				<span class="text-center">幻灯片列表</span>
 			</div>
 			<div class="panel-body" style="height: 620px;overflow:auto;" id="leftFileList">
-				
 			</div>
 			<div class="panel-footer">
 				<div class="btn-group btn-group-justified">

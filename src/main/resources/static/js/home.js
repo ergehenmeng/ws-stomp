@@ -52,7 +52,7 @@ function searchDocument() {
         },
         "success":function (data) {
             if (data.code === 200) {
-                loadDocument(data.msg, true);
+                loadDocument(data.data, true);
             } else {
                 $.error(data.msg);
             }
@@ -83,12 +83,12 @@ function getOrderType() {
 /**
  * 添加文档
  * @param entity
- * @param list 是否为列表
+ * @param isList 是否为列表
  */
-function loadDocument(entity, list) {
+function loadDocument(entity, isList) {
     let html = "";
     if (entity != null && !$.isEmptyObject(entity)) {
-        if (list) {
+        if (isList) {
             $.each(entity, function (i, v) {
                 html += formatHtml(v);
             });
@@ -107,9 +107,8 @@ function loadDocument(entity, list) {
 function formatHtml(entity) {
     let html = '<div class="col-xs-2 underline">';
     html += '<a href="#" class="thumbnail documentMenu ' + (entity.hidden ? "hidden-backgroud" : "") + '" >';
-    html += '<img alt="' + entity.type + '" src="./images/icon_' + entity.type + '.png" style="height: 100px;  display: block;" >';
+    html += '<img alt="' + entity.type + '" src="./images/' + entity.type + '.png" style="height: 100px;  display: block;" >';
     html += '<span>' + entity.docName + '</span> <input type="hidden" value="' + entity.id + '" class="id" /></a> <input type="hidden" value="' + entity.type + '" class="type" /></a></div>';
-
     return html;
 }
 
