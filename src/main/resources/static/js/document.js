@@ -44,7 +44,7 @@ let connectServer = function(endpoint, num) {
  * 初始化文档编辑
  */
 let initDoc = function () {
-    subscribe("/websocket/initDocument/" + spaceId + "/" + documentId, function (json) {
+    subscribe("/websocket/document/" + spaceId + "/" + documentId, function (json) {
         loadLeftFileList(json.document.documentFiles);
         let canWrite = (json.document.userId === userId);
         loadCenterFile(json.document.documentFiles[0], canWrite);
@@ -57,7 +57,7 @@ let initDoc = function () {
  * 订阅编辑信息
  */
 let initChat = function() {
-    subscribe("/document/" + spaceId + "/" + documentId, function (json) {
+    subscribe("/websocket/chatRoom/" + spaceId + "/" + documentId, function (json) {
         let type = json.type;
         switch (type) {
             case 1: // 聊天信息内容
@@ -189,7 +189,7 @@ function forEachChat(data) {
 function sendMsg() {
     let msg = $.trim($chatMessage.val());
     if (msg) {
-        send("/app/userChat", {
+        send("/websocket/sendGroupMsg", {
             'chatContent': encodeURIComponent(msg),
             'documentId': documentId,
             'spaceId': spaceId

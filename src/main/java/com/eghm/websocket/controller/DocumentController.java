@@ -2,6 +2,7 @@ package com.eghm.websocket.controller;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.eghm.websocket.constant.SocketConstant;
 import com.eghm.websocket.dto.RespBody;
 import com.eghm.websocket.dto.request.SearchDocumentRequest;
 import com.eghm.websocket.enums.ErrorCode;
@@ -30,6 +31,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +46,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class DocumentController {
 
-    private static final String DEST_DOCUMENT_URL = "/document/";
 
     @Autowired
     private DocumentService documentService;
@@ -156,31 +157,6 @@ public class DocumentController {
     }
 
 
-    /**
-     * 接收并转发聊天室的消息
-     *
-     * @param accessor 获取用户sessionId等信息
-     * @param userChat 接收和要转发的信息
-     */
-    @MessageMapping("/userChat")
-    public void sendMessage(SimpMessageHeaderAccessor accessor, UserChat userChat) {
-        Map<String, Object> map = accessor.getSessionAttributes();
-        User user = (User) map.get(CommonConstant.SESSION_USER);
-        if (user != null) {
-            userChat.setId(user.getId());
-            try {
-                userChat.setChatContent(HtmlUtils.htmlEscape(URLDecoder.decode(userChat.getChatContent(), "utf-8")));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            userChat.setNickName(user.getNickName());
-            userChat.setCreateTime(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            userChat.setType(1);
-            messagingTemplate.convertAndSend(DEST_DOCUMENT_URL + userChat.getSpaceId() + "/" + userChat.getDocumentId(), userChat);
-            LimitQueue<UserChat> limit = cacheChat.get(userChat.getDocumentId());
-            limit.offer(userChat);
-        }
-    }
 
     /**
      * 切换页
@@ -205,7 +181,7 @@ public class DocumentController {
             result.put("userId", user.getId());
             result.put("content", page.getContent());
             result.put("type", 2);
-            messagingTemplate.convertAndSend(DEST_DOCUMENT_URL + page.getSpaceId() + "/" + page.getDocumentId(), result);
+            messagingTemplate.convertAndSend(MessageFormat.format(SocketConstant.DOCUMENT_PREFIX, page.getSpaceId(), page.getDocumentId()) , result);
             pageService.updatePage(page.getId(), page.getContent());
         }
     }

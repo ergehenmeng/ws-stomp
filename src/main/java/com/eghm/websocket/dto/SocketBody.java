@@ -1,5 +1,6 @@
 package com.eghm.websocket.dto;
 
+import com.eghm.websocket.enums.ActionType;
 import lombok.Data;
 
 /**
@@ -17,9 +18,9 @@ public class SocketBody<T> {
     /**
      * 动作类型
      */
-    private int type;
+    private ActionType type;
 
-    public static <T> SocketBody<T> success(int type, T data) {
+    public static <T> SocketBody<T> success(ActionType type, T data) {
         SocketBody<T> socketBody = new SocketBody<>();
         socketBody.setType(type);
         socketBody.setDate(data);

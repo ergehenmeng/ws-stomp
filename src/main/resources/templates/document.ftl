@@ -10,7 +10,7 @@
 <script type="text/javascript">
 	let spaceId = ${spaceId!};
     let documentId = ${documentId!};
-    let userId = ${userId};
+    let userId = '${userId}';
 </script>
 </head>
 <body>
