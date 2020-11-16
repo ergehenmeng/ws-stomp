@@ -12,6 +12,7 @@
 	let spaceId = ${spaceId!};
     let documentId = ${documentId!};
     let userId = '${userId}';
+    let canEdit = ${canEdit};
 </script>
 </head>
 <body>

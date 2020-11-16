@@ -1,8 +1,8 @@
 let load = null;
-let ueditor = null;
 let stompClient;
+let systemEditor;
 $(function () {
-    initEditor();
+    systemEditor = initEditor();
     load = $.loadMsg("服务器连接中...");
     connectServer("/serverChat", 1);
     $("#chatMessage").on("keypress", function (event) {
@@ -47,11 +47,28 @@ let connectServer = function(endpoint, num) {
  */
 let initDoc = function () {
     subscribe("/websocket/document/" + spaceId + "/" + documentId, function (json) {
-        loadLeftFileList(json.document.documentFiles);
-        let canWrite = (json.document.userId === userId);
-        loadCenterFile(json.document.documentFiles[0], canWrite);
-        forEachChat(json.chat);
+        let action = json.action;
+        switch (action) {
+            case 'SUBSCRIBE_DOC':
+                showContent(json.data);
+                break;
+            case 'SYNC_CONTENT':
+                systemEditor.txt.html(json.data.content);
+                break;
+            default:
+                break;
+        }
     });
+};
+
+
+let showContent = function (json) {
+    if (json.userId === userId) {
+        systemEditor.enable();
+    } else {
+        systemEditor.disable();
+    }
+    systemEditor.txt.html(json.content)
 };
 
 /**
@@ -96,85 +113,6 @@ let subscribe = function(subscribeUrl, callback) {
 };
 
 
-/**
- * 加载左侧列表
- * @param obj 要加载的列表 Array
- */
-function loadLeftFileList(obj) {
-    $.each(obj, function (i, v) {
-        if (i === 0) {
-            $("#leftFileList").append('<div class="col-xs-12"><a class="thumbnail selectActive" onclick="changePage(this,' + v.id + ');" href="javascript:void(0)"><img alt="" src="/images/ppt_fanye.png" style="height: 100px;  display: block;"></a></div>');
-            $("#pageId").val(v.id);
-        } else {
-            $("#leftFileList").append('<div class="col-xs-12"><a class="thumbnail" onclick="changePage(this,' + v.id + ');" href="javascript:void(0)"><img alt="" src="/images/ppt_fanye.png" style="height: 100px;  display: block;"></a></div>');
-        }
-    });
-}
-
-/**
- * 添加事件监听
- */
-function addEvent() {
-    ueditor.addListener("contentChange", sendContentMsg);
-}
-
-function removeEvent() {
-    ueditor.removeListener("contentChange", sendContentMsg);
-}
-
-function sendContentMsg() {
-    updatePageContent($("#pageId").val(), ueditor.getContent());
-}
-
-/**
- * 切换文档页事件
- * @param id
- * @param obj
- */
-function changePage(obj, id) {
-    let fileId = $("#pageId").val();
-    if (fileId !== id) {
-        $("#pageId").val(id);
-        $.post("/changePage", {"id": id}, function (data) {
-            removeEvent();
-            ueditor.setContent(data.content);
-            $("#leftFileList a").removeClass("selectActive");
-            $(obj).addClass("selectActive");
-            addEvent();
-        });
-    }
-}
-
-/**
- * 初始编辑器内容
- * @param obj
- * @param canWrite 是否可以编辑文档
- */
-
-function loadCenterFile(obj, canWrite) {
-    ueditor.setContent(obj.content);
-    if (canWrite) {
-        ueditor.setEnabled();
-        addEvent();
-    } else {
-        ueditor.setDisabled(["fullscreen", "preview"]);
-    }
-
-}
-
-
-/**
- * 订阅文档编辑空间(中)
- * @param data 服务端响应信息
- */
-function updateContent(data) {
-    let fileId = $("#fileId").val();
-    if (userId !== data.userId && fileId === data.id) {
-        removeEvent();
-        ueditor.setContent(data.content);
-        addEvent();
-    }
-}
 
 
 /**
@@ -271,5 +209,6 @@ function initEditor() {
     const editor = new E('#wangEditorDiv');
     editor.config.height = 778;
     editor.create();
+    return editor;
 }
 

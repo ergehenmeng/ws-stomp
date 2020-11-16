@@ -21,5 +21,8 @@ public enum ActionType {
      */
     CHAT_MSG,
 
-
+    /**
+     * 同步内容信息
+     */
+    SYNC_CONTENT,
 }
