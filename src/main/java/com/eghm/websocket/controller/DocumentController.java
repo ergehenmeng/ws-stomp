@@ -156,6 +156,7 @@ public class DocumentController {
                 syncDoc.setContent(doc.getContent());
                 syncDoc.setAuthor(StringUtil.encryptNumber(user.getId()));
                 messagingTemplate.convertAndSend(MessageFormat.format(SocketConstant.DOCUMENT_PREFIX, doc.getSpaceId(), doc.getDocumentId()), SocketBody.success(ActionType.SYNC_CONTENT, syncDoc));
+                return;
             }
             log.warn("非创建人无法操作该文档 author: [{}] userId:[{}}", document.getUserId(), user.getId());
         }
