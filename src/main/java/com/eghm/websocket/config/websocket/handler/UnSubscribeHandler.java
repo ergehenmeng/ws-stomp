@@ -6,6 +6,9 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 
+/**
+ * @author 二哥很猛
+ */
 @Slf4j
 public class UnSubscribeHandler implements ApplicationListener<SessionUnsubscribeEvent> {
 
