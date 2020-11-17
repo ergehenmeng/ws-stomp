@@ -12,10 +12,13 @@ $(function () {
     });
 });
 
-
-
-
-
+let disconnectServer = function() {
+  if (stompClient) {
+      stompClient.disconnect(function () {
+          console.log("断开链接");
+      });
+  }
+};
 
 /**
  * websocket首次建立连接
@@ -29,6 +32,7 @@ let connectServer = function(endpoint, num) {
     }
     let socket = new SockJS(endpoint);
     stompClient = Stomp.over(socket);
+    stompClient.heartbeat.incoming = 10000;
     stompClient.connect({}, function (frame) {
         if (load != null) {
             layer.close(load);
@@ -161,11 +165,11 @@ let send = function(sendUrl, json) {
  */
 function showChat(data) {
     let active = "p_noactive";
-    if (data.userId === userId) {
+    if (data['userId'] === userId) {
         active = "p_active";
         $("#chatMessage").val("");
     }
-    $("#chatRoom").append(contentHtml(data.nickName, data.createTime, data.content, active));
+    $("#chatRoom").append(contentHtml(data['nickName'], data['createTime'], data['content'], active));
     let div = document.getElementById("chatRoom");
     div.scrollTop = div.scrollHeight;
 }
@@ -198,7 +202,7 @@ function initEditor() {
     const E = window.wangEditor;
     const editor = new E('#wangEditorDiv');
     editor.config.height = 778;
-    if (editable === 'false') {
+    if (editable) {
         editor.disable();
     } else {
         // 只有可编辑时需要出发同步操作

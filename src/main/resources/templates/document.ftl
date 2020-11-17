@@ -22,7 +22,7 @@
     let editable = ${editable?string('true', 'false')};
 </script>
 </head>
-<body>
+<body onbeforeunload="disconnectServer()">
 <div>
 	<div class="col-xs-9" >
 		<br>
