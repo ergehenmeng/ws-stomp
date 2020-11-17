@@ -12,11 +12,12 @@
 </head>
 <body>
 <div class="navbar navbar-default navbar-fixed-top  navbar-info">
-    <div id="navbar-responsive-collapse" class="collapse navbar-collapse">
+    <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
             <li class="active"><a href="#">网站首页</a></li>
             <li><a href="#">欢迎您:${nickName!}</a></li>
         </ul>
+        <p class="navbar-text navbar-right"><a href="#" class="navbar-link" id="logout">退出</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
     </div>
 </div>
 <br>
@@ -111,9 +112,6 @@
         </div>
     </div>
 </div>
-<form action="" method="post" name="document" id="document">
-    <input type="hidden" value="" id="docPassword" name="docPassword"/>
-</form>
 </body>
 
 </html>

@@ -5,15 +5,23 @@ $(function () {
             searchDocument();
         }
     });
-
+    $("#logout").on("click", function () {
+        $.post("/logout",{}, function (data) {
+            if (data.code === 200) {
+                window.location.href="/index";
+            } else {
+                $.error(data.msg);
+            }
+        })
+    });
 });
 
 /**
  * 加载右键菜单
  */
 function reloadMenu() {
-    $("#centerMenu").smartMenu(centerMenu, {name: "centerMenu"});
-    $(".documentMenu").smartMenu(fileMenu, {name: "fileMenu",textLimit:10});
+    $("#centerMenu").smartMenu(centerMenu, {name: "centerMenu", textLimit: 10});
+    $(".documentMenu").smartMenu(fileMenu, {name: "fileMenu", textLimit: 10});
     $(".friendMenu").smartMenu(friendMenu, {name: "friendMenu"});
 }
 
@@ -43,14 +51,14 @@ function searchDocument() {
     let showHidden = window.localStorage.getItem("showHidden");
     $.ajax("/searchDocument", {
         "type": "get",
-        "data":{
+        "data": {
             "spaceId": spaceId,
             "docName": docName,
             "showHidden": showHidden,
             "orderColumn": getOrderKey(),
             "orderType": getOrderType()
         },
-        "success":function (data) {
+        "success": function (data) {
             if (data.code === 200) {
                 loadDocument(data.data, true);
             } else {
@@ -113,9 +121,10 @@ function formatHtml(entity) {
 }
 
 
-function updateDocument(newValue, id) {
-    $.post("/updateDocument/" + spaceId, {"docName": newValue, "id": id}, function (data) {
-        if (data.result) {
+function updateDocument(newValue, json) {
+    json["docName"] = newValue;
+    $.post("/updateDocument/" + spaceId, json, function (data) {
+        if (data.result === 200) {
             $.right(data.msg);
             searchDocument();
         } else {
@@ -128,13 +137,12 @@ function updateDocument(newValue, id) {
 /**
  * 加密
  * @param value 加密数据
- * @param message 附加信息
+ * @param json json串
  */
-function addPassword(value, message) {
-    let sendData = $.extend({}, message);
-    sendData["docPassword"] = value;
-    $.post("/createPassword/" + spaceId, sendData, function (data) {
-        if (data.result) {
+function addPassword(value, json) {
+    json["pwd"] = value;
+    $.post("/createPassword/" + spaceId, json, function (data) {
+        if (data.result === 200) {
             $.right(data.msg);
         } else {
             $.error(data.msg);
@@ -148,37 +156,19 @@ let centerMenu = [[{
     data: [[{
         text: "名称",
         func: function () {
-            let $orderBy = $("#orderBy");
-            let orderBy = $orderBy.val();
-            if (orderBy === "docName,asc") {
-                $orderBy.val("docName,desc");
-            } else {
-                $orderBy.val("docName,asc");
-            }
+            window.localStorage.setItem("orderColumn", "docName");
             searchDocument();
         }
     }, {
         text: "修改时间",
         func: function () {
-            let $orderBy = $("#orderBy");
-            let orderBy = $orderBy.val();
-            if (orderBy === "updateDate,asc") {
-                $orderBy.val("updateDate,desc");
-            } else {
-                $orderBy.val("updateDate,asc");
-            }
+            window.localStorage.setItem("orderColumn", "updateTime");
             searchDocument();
         }
     }, {
         text: "类型",
         func: function () {
-            let $orderBy = $("#orderBy");
-            let orderBy = $orderBy.val();
-            if (orderBy === "type,asc") {
-                $orderBy.val("type,desc");
-            } else {
-                $orderBy.val("type,asc");
-            }
+            window.localStorage.setItem("orderColumn", "type");
             searchDocument();
         }
     }]]
@@ -193,17 +183,17 @@ let centerMenu = [[{
         {
             text: "Word文档",
             func: function () {
-                $.showPrompt('请输入Word文档名称', '', {'fileType':'WORD'}, createDocument);
+                $.showPrompt('请输入Word文档名称', '', {'fileType': 'WORD'}, createDocument);
             }
         }, {
             text: "PPT文稿",
             func: function () {
-                $.showPrompt('请输入PPT文档名称', '', {'fileType':'PPT'}, createDocument);
+                $.showPrompt('请输入PPT文档名称', '', {'fileType': 'PPT'}, createDocument);
             }
         }, {
             text: "Markdown文档",
             func: function () {
-                $.showPrompt('请输入Markdown文档名称','', {'fileType':'MD'}, createDocument);
+                $.showPrompt('请输入Markdown文档名称', '', {'fileType': 'MD'}, createDocument);
             }
         }
     ]]
@@ -296,19 +286,19 @@ let fileMenu = [[{
         {
             text: "Word文档",
             func: function () {
-                $.showPrompt('请输入Word文档名称', '',{'fileType': 'WORD'}, createDocument);
+                $.showPrompt('请输入Word文档名称', '', {'fileType': 'WORD'}, createDocument);
             }
         },
         {
             text: "Markdown文稿",
             func: function () {
-                $.showPrompt('请输入Markdown文档名称','',{'fileType': 'MD'}, createDocument);
+                $.showPrompt('请输入Markdown文档名称', '', {'fileType': 'MD'}, createDocument);
             }
         },
         {
             text: "PPT文稿",
             func: function () {
-                $.showPrompt('请输入PPT文档名称', '',{'fileType': 'PPT'}, createDocument);
+                $.showPrompt('请输入PPT文档名称', '', {'fileType': 'PPT'}, createDocument);
             }
         }
     ]]
@@ -317,7 +307,7 @@ let fileMenu = [[{
     func: function () {
         let docName = $(this).children("span").text();
         let id = $(this).children(".id").val();
-        $.password(docName + " 加密", 6, {"id": id}, addPassword);
+        $.password(docName + " 加密", 6, {"docId": id}, addPassword);
     }
 }, {
     text: "属性",
@@ -344,7 +334,7 @@ let fileMenu = [[{
 let friendMenu = [[{
     text: "发送信息",
     func: function () {
-
+        // TODO 待完成
     }
 }, {
     text: "修改备注",

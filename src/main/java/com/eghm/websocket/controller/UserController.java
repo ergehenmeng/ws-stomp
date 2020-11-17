@@ -34,4 +34,16 @@ public class UserController {
             return RespBody.error(e.getMessage());
         }
     }
+
+    /**
+     * 退出登陆
+     */
+    @PostMapping("/logout")
+    public RespBody<Object> logout() {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated()) {
+            subject.logout();
+        }
+        return RespBody.success();
+    }
 }
