@@ -2,8 +2,8 @@ let load = null;
 let stompClient;
 let systemEditor;
 $(function () {
-    systemEditor = initEditor();
     load = $.loadMsg("服务器连接中...");
+    systemEditor = initEditor();
     connectServer("/serverChat", 1);
     $("#chatMessage").on("keypress", function (event) {
         if (event.keyCode === 13) {
@@ -36,7 +36,7 @@ let connectServer = function(endpoint, num) {
     stompClient.debug = null;
     stompClient.heartbeat.incoming = 10000;
     stompClient.connect({}, function (frame) {
-        if (load != null) {
+        if (load) {
             layer.close(load);
         }
         initDoc();
