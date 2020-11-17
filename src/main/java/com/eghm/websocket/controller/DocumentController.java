@@ -127,7 +127,7 @@ public class DocumentController {
         Long userId = ShiroUtil.getUserId();
         model.addAttribute("userId", StringUtil.encryptNumber(userId));
         model.addAttribute("editable", userId.equals(document.getId()));
-        model.addAttribute("content", document.getContent());
+        model.addAttribute("content", StringEscapeUtils.unescapeHtml4(document.getContent()));
         model.addAttribute("title", document.getDocName());
         return "document";
     }

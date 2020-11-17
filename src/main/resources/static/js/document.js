@@ -89,8 +89,6 @@ let initChat = function() {
 let subscribe = function(subscribeUrl, callback) {
     if (stompClient) {
         stompClient.subscribe(subscribeUrl, function (response) {
-            // body为stomp的body体
-            console.log("subscribeResp:" + response.body);
             if (typeof callback === "function" ) {
                 let jsonResult = JSON.parse(response.body);
                 callback(jsonResult);
@@ -203,7 +201,7 @@ function initEditor() {
     if (editable === 'false') {
         editor.disable();
     }
-    editor.config.onchangeTimeout = 500;
+    editor.config.onchangeTimeout = 1000;
     editor.config.onchange = syncDocument;
     editor.create();
     return editor;

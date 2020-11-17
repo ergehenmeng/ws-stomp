@@ -26,7 +26,7 @@
 <div>
 	<div class="col-xs-9" >
 		<br>
-		<div id="wangEditorDiv"><p>${content!}</p></div>
+		<div id="wangEditorDiv">${content!}</div>
 	</div>
 	<div class="col-xs-3">
 		<br>
@@ -46,6 +46,5 @@
 		</div>
 	</div>
 </div>
-
 </body>
 </html>
