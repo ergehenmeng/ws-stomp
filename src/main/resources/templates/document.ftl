@@ -26,8 +26,7 @@
 <div>
 	<div class="col-xs-9" >
 		<br>
-		<div id="wangEditorDiv">${content!}</div>
-		<input type="hidden" id="fileId" />
+		<div id="wangEditorDiv"><p>${content!}</p></div>
 	</div>
 	<div class="col-xs-3">
 		<br>

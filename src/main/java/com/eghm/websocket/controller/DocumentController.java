@@ -16,6 +16,7 @@ import com.eghm.websocket.utils.LimitQueue;
 import com.eghm.websocket.utils.ShiroUtil;
 import com.eghm.websocket.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -151,6 +152,8 @@ public class DocumentController {
             Document document = documentService.getCacheById(doc.getDocumentId());
             // 将文档通给所有人 不包含作者本人(因为该动作就是他自己触发的)
             if (document.getUserId().equals(user.getId())) {
+                // 转义一波防止xss注入
+                doc.setContent(StringEscapeUtils.escapeHtml4(doc.getContent()));
                 documentTask.syncContent(doc);
                 SyncDoc syncDoc = new SyncDoc();
                 syncDoc.setContent(doc.getContent());
@@ -161,7 +164,4 @@ public class DocumentController {
             log.warn("非创建人无法操作该文档 author: [{}] userId:[{}}", document.getUserId(), user.getId());
         }
     }
-
-
-
 }

@@ -7,7 +7,7 @@
     <meta name="renderer" content="webkit">
     <script src="/static/js/home.js?t=201742114" type="text/javascript" charset="UTF-8"></script>
     <script type="text/javascript">
-        var spaceId = ${spaceId};
+        var spaceId = ${spaceId!};
     </script>
 </head>
 <body>

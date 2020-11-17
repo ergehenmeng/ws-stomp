@@ -14,7 +14,7 @@ spring:
       minimum-idle: 5
   ## freemarker 相关配置
   freemarker:
-    cache: true
+    cache: false
     template-loader-path: classpath:/templates/
     settings:
       template_update_delay: 60s

@@ -13,6 +13,7 @@ import com.eghm.websocket.utils.KeyGenerator;
 import com.eghm.websocket.utils.LimitQueue;
 import com.eghm.websocket.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -80,11 +81,7 @@ public class ChatController {
             message.setContent(sendChat.getContent());
             User user = (User) map.get(SocketConstant.SOCKET_USER);
             message.setUserId(StringUtil.encryptNumber(user.getId()));
-            try {
-                message.setContent(HtmlUtils.htmlEscape(URLDecoder.decode(sendChat.getContent(), "UTF-8")));
-            } catch (UnsupportedEncodingException e) {
-                log.warn("URL解析失败 [{}]", sendChat.getContent(), e);
-            }
+            message.setContent(StringEscapeUtils.escapeHtml4(sendChat.getContent()));
             message.setNickName(user.getNickName());
             message.setCreateTime(DateUtil.format(new Date(), "HH:mm:ss"));
             message.setMsgType(MsgType.TEXT);

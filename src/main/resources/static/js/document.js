@@ -124,7 +124,7 @@ function sendMsg() {
     let msg = $.trim($chatMessage.val());
     if (msg) {
         send("/websocket/sendGroupMsg", {
-            'content': encodeURIComponent(msg),
+            'content': msg,
             'documentId': documentId,
             'spaceId': spaceId
         });
@@ -138,7 +138,7 @@ function sendMsg() {
  */
 function syncDocument(content) {
     send("/websocket/syncDocument",{
-        'content': encodeURIComponent(content),
+        'content': content,
         "documentId": documentId,
         "spaceId": spaceId,
     })
