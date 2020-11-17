@@ -41,7 +41,7 @@ let connectServer = function(endpoint, num) {
         initChat();
     }, function (err) {
         console.error("websocket链接失败:" + err.stack);
-        connectServer(endpoint, num++);
+        connectServer(endpoint, ++num);
     });
 };
 
