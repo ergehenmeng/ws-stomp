@@ -65,7 +65,7 @@
                             <div class="col-xs-2 underline">
                                 <a href="#"
                                    class="thumbnail documentMenu <#if document.hidden == true > hidden-backgroud</#if>">
-                                    <img alt="${document.type!'word'}" src="/static/images/${document.type!'word'}.png"
+                                    <img alt="${document.type!'word'}" src="/static/images/${document.type!'WORD'}.png"
                                          style="height: 100px;  display: block;">
                                     <span>${document.docName}</span>
                                     <input type="hidden" class="id" value="${document.id}"/>
