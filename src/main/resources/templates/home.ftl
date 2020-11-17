@@ -51,19 +51,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-xs-2">
-                        <a href="#" class="btn btn-primary"
-                           onclick="$.showPrompt('请输入Word文档名称', '', {'fileType':'WORD'}, createDocument);">创建Word文档</a>
-                    </div>
-                    <div class="col-xs-2 ">
-                        <a href="#" class="btn btn-info"
-                           onclick="$.showPrompt('请输入PPT文档名称', '', {'fileType':'PPT'}, createDocument);">创建PPT文档</a>
-                    </div>
-                    <div class="col-xs-2 ">
-                        <a href="#" class="btn btn-info"
-                           onclick="$.showPrompt('请输入Markdown文档名称', '',{'fileType':'MD' }, createDocument);">创建MD文档</a>
-                    </div>
-                    <div class="col-xs-4 col-xs-push-2 search-document">
+                    <div class="col-xs-4 col-xs-push-8 search-document">
                         <input type="text" class="form-control" id="documentName" placeholder="请输入文档名称"/>
                         <input type="submit" value="" onclick="searchDocument();"/>
                     </div>
