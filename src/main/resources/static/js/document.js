@@ -203,11 +203,11 @@ function initEditor() {
     const editor = new E('#wangEditorDiv');
     editor.config.height = 778;
     if (editable) {
-        editor.disable();
-    } else {
         // 只有可编辑时需要出发同步操作
         editor.config.onchangeTimeout = 1000;
         editor.config.onchange = syncDocument;
+    } else {
+        editor.disable();
     }
     editor.create();
     return editor;
