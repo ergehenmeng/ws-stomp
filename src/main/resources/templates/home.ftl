@@ -84,7 +84,7 @@
         <br>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <a class="btn btn-info btn-block btn-sm ">添加好友</a>
+                <a class="btn btn-info btn-block btn-sm ">邀请用户</a>
             </div>
             <div class="panel-body" style="height: 640px;overflow:auto;">
                 <div class="list-group">
