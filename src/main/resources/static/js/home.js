@@ -6,13 +6,15 @@ $(function () {
         }
     });
     $("#logout").on("click", function () {
-        $.post("/logout",{}, function (data) {
-            if (data.code === 200) {
-                window.location.href="/index";
-            } else {
-                $.error(data.msg);
-            }
-        })
+        layer.confirm("确定要退出系统吗?", {icon: 3, shift: 5}, function (yes) {
+            $.post("/logout",{}, function (data) {
+                if (data.code === 200) {
+                    window.location.href="/index";
+                } else {
+                    $.error(data.msg);
+                }
+            })
+        });
     });
 });
 
