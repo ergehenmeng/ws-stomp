@@ -3,7 +3,10 @@ package com.eghm.websocket.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.eghm.websocket.constant.SocketConstant;
-import com.eghm.websocket.dto.*;
+import com.eghm.websocket.dto.RespBody;
+import com.eghm.websocket.dto.SendDoc;
+import com.eghm.websocket.dto.SocketBody;
+import com.eghm.websocket.dto.SyncDoc;
 import com.eghm.websocket.dto.request.SearchDocumentRequest;
 import com.eghm.websocket.enums.ActionType;
 import com.eghm.websocket.enums.ErrorCode;
@@ -12,7 +15,6 @@ import com.eghm.websocket.model.Document;
 import com.eghm.websocket.model.User;
 import com.eghm.websocket.service.DocumentService;
 import com.eghm.websocket.service.DocumentTask;
-import com.eghm.websocket.utils.LimitQueue;
 import com.eghm.websocket.utils.ShiroUtil;
 import com.eghm.websocket.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +33,6 @@ import org.springframework.web.bind.annotation.*;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 
@@ -109,7 +110,7 @@ public class DocumentController {
      */
     @RequestMapping("/checkPassword")
     @ResponseBody
-    public RespBody<Object> checkPassword(Long spaceId, Long docId, String pwd) {
+    public RespBody<Object> checkPassword(Long docId, String pwd) {
         Document doc = documentService.getById(docId);
         if (StrUtil.isNotEmpty(doc.getPwd()) && !doc.getPwd().equals(pwd)) {
             return RespBody.error(ErrorCode.DOC_PWD_ERROR);
@@ -147,7 +148,7 @@ public class DocumentController {
      * 同步文档信息
      */
     @MessageMapping("/syncDocument")
-    public void syncDocument(SimpMessageHeaderAccessor accessor, @Payload SendDoc doc) throws ExecutionException{
+    public void syncDocument(SimpMessageHeaderAccessor accessor, @Payload SendDoc doc) throws ExecutionException {
         Map<String, Object> attributes = accessor.getSessionAttributes();
         if (CollUtil.isNotEmpty(attributes)) {
             User user = (User) attributes.get(SocketConstant.SOCKET_USER);

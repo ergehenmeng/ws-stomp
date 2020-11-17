@@ -49,8 +49,8 @@ let initDoc = function () {
     subscribe("/websocket/document/" + spaceId + "/" + documentId, function (json) {
         let action = json.action;
         if (action === 'SYNC_CONTENT') {
-            let userId = json.data['author'];
-            if (userId !== userId) {
+            let author = json.data['author'];
+            if (author !== userId) {
                 systemEditor.txt.html(json.data.content);
             }
         }
@@ -200,9 +200,11 @@ function initEditor() {
     editor.config.height = 778;
     if (editable === 'false') {
         editor.disable();
+    } else {
+        // 只有可编辑时需要出发同步操作
+        editor.config.onchangeTimeout = 1000;
+        editor.config.onchange = syncDocument;
     }
-    editor.config.onchangeTimeout = 1000;
-    editor.config.onchange = syncDocument;
     editor.create();
     return editor;
 }
