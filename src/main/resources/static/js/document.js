@@ -204,7 +204,7 @@ function initEditor() {
     editor.config.height = 778;
     if (editable) {
         // 只有可编辑时需要出发同步操作
-        editor.config.onchangeTimeout = 1000;
+        editor.config.onchangeTimeout = 3000;
         editor.config.onchange = syncDocument;
     }
     editor.create();
