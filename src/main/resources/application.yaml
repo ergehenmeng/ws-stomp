@@ -39,3 +39,4 @@ project:
 shiro:
   unauthorizedUrl: /index
   loginUrl: /index
+  userNativeSessionManager: true

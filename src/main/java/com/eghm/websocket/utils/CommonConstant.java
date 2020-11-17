@@ -28,12 +28,7 @@ public class CommonConstant {
 	 * Http post请求
 	 */
 	public static final String POST = "POST";
-	
-	/**
-	 * Http get请求
-	 */
-	public static final String GET = "GET";
-	
+
 	/**
 	 * 登陆验证码
 	 */
@@ -42,18 +37,7 @@ public class CommonConstant {
 	/**
 	 * Session中存取的对象
 	 */
-	public static final String SESSION_USER = "loginUser";
-	
-	/**
-	 * 排序方式
-	 */
-	public static final String ORDER_BY = "orderBy";
-	
-	/**
-	 * 是否隐藏
-	 */
-	public static final String HIDDEN = "hidden";
-	
-	public static final  Map<String,User> WEBSOCKET_SESSION = new HashMap<String,User>();
+	public static final String LOGIN_USER = "loginUser";
+
 	
 }
