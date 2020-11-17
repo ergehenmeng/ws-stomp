@@ -69,6 +69,7 @@ public class DocumentController {
     @GetMapping("/searchDocument")
     @ResponseBody
     public RespBody<List<Document>> searchDocument(SearchDocumentRequest request) {
+        request.setUserId(ShiroUtil.getUserId());
         List<Document> documentList = documentService.getList(request);
         return RespBody.success(documentList);
     }

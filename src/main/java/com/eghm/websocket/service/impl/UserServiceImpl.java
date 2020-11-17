@@ -42,13 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getFriendList(Long userId, Long spaceId) {
-        List<User> friendList = userMapper.getFriendList(spaceId);
-        if (CollUtil.isNotEmpty(friendList)) {
+    public List<User> getUserList(Long userId, Long spaceId) {
+        List<User> userList = userMapper.getUserList(spaceId);
+        if (CollUtil.isNotEmpty(userList)) {
             // 排序 自己排在最前面
-            friendList.sort(Comparator.comparing(user -> !user.getId().equals(userId)));
+            userList.sort(Comparator.comparing(user -> !user.getId().equals(userId)));
         }
-        return friendList;
+        return userList;
     }
 
 }

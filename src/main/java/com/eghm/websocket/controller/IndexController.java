@@ -46,14 +46,17 @@ public class IndexController {
     @RequestMapping("/home")
     public String home(Model model) {
         User user = ShiroUtil.getUser();
+        // 用户所能访问工作空间
         List<Space> list = spaceService.getByUserId(user.getId());
         if (CollUtil.isNotEmpty(list)) {
             Long spaceId = list.get(0).getId();
             model.addAttribute("spaceId", spaceId);
-            List<User> friendList = userService.getFriendList(user.getId(), spaceId);
-            model.addAttribute("friendList", friendList);
+            // 该工作空间的所有用户
+            List<User> userList = userService.getUserList(user.getId(), spaceId);
+            model.addAttribute("userList", userList);
             SearchDocumentRequest request = new SearchDocumentRequest();
             request.setSpaceId(spaceId);
+            request.setUserId(user.getId());
             List<Document> documentList = documentService.getList(request);
             model.addAttribute("documentList", documentList);
         }

@@ -1,5 +1,6 @@
 package com.eghm.websocket.dto.request;
 
+import com.eghm.websocket.annotation.Tag;
 import com.eghm.websocket.enums.OrderType;
 import lombok.Data;
 
@@ -34,4 +35,7 @@ public class SearchDocumentRequest {
      * 排序规则
      */
     private OrderType orderType;
+
+    @Tag
+    private Long userId;
 }

@@ -1,12 +1,11 @@
 package com.eghm.websocket.service;
 
 import com.eghm.websocket.dto.SendDoc;
-import com.eghm.websocket.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.Document;
 
+import javax.annotation.PreDestroy;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -33,5 +32,11 @@ public class DocumentTask {
      */
     public void syncContent(SendDoc doc) {
         Holder.WORD_EXECUTOR.execute(() -> documentService.updateContent(doc.getDocumentId(), doc.getContent()));
+    }
+
+    @PreDestroy
+    public void destroy() {
+        log.info("开始关闭线程池...");
+        Holder.WORD_EXECUTOR.shutdown();
     }
 }

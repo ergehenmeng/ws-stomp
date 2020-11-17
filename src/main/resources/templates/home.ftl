@@ -99,10 +99,10 @@
             </div>
             <div class="panel-body" style="height: 640px;overflow:auto;">
                 <div class="list-group">
-                    <#if friendList?? && friendList?size gt 0>
-                        <#list friendList as friend>
+                    <#if userList?? && userList?size gt 0>
+                        <#list userList as user>
                             <a href="#"
-                               class="list-group-item list-group-item-warning">${friend.nickName} <#if friend.id == userId>
+                               class="list-group-item list-group-item-warning">${user.nickName} <#if user.id == userId>
                                     <span class="label label-success">我</span></#if> </a>
                         </#list>
                     </#if>

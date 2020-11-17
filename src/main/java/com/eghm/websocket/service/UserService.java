@@ -24,5 +24,5 @@ public interface UserService {
      * @param spaceId spaceId
      * @return
      */
-    List<User> getFriendList(Long userId, Long spaceId);
+    List<User> getUserList(Long userId, Long spaceId);
 }

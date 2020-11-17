@@ -121,6 +121,6 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 	<select id="getByUserId" resultMap="BaseResultMap">
-		select * from space where user_id = #{userId}
+		select t.* from space t where exists (select 1 from user_join_space r where r.space_id = t.id and r.user_id = ${userId})
 	</select>
 </mapper>

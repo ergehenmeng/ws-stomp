@@ -143,7 +143,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="getFriendList" resultMap="BaseResultMap">
+    <select id="getUserList" resultMap="BaseResultMap">
         select t.* from user t where exists (select 1 from user_join_space r where r.user_id = t.id and r.space_id = ${spaceId})
 	</select>
 

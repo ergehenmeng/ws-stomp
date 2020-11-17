@@ -53,5 +53,5 @@ public interface UserMapper {
      * @param spaceId 工作空间id
      * @return
      */
-    List<User> getFriendList(@Param("spaceId") Long spaceId);
+    List<User> getUserList(@Param("spaceId") Long spaceId);
 }

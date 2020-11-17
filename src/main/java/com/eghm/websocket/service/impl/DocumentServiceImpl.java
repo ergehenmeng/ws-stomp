@@ -47,7 +47,6 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public List<Document> getList(SearchDocumentRequest request) {
-
         return documentMapper.getList(request);
     }
 
