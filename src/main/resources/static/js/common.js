@@ -3,12 +3,12 @@ $.loadMsg = function (msg) {
         icon: 16,
         time: 0,
         shade: [0.4, '#000'],
-        shift: 5
+        anim: 0
     });
 };
 $.deleteFun = function (url, id, msg, data, callback, value) {
     let sendData = $.extend({}, data);
-    layer.confirm(msg, {icon: 3, shift: 5}, function (yes) {
+    layer.confirm(msg, {icon: 3, anim: 0}, function (yes) {
         sendData["id"] = id;
         $.post(url, sendData, function (data) {
             if (data.result) {
@@ -50,7 +50,7 @@ $.password = function (title, length, data, callback) {
     layer.prompt({
         formType: 1, // 密码框
         title: title,
-        shift: 5,
+        anim: 0,
         maxlength: length
     }, function (value, index, elem) {
         layer.close(index);
@@ -59,10 +59,10 @@ $.password = function (title, length, data, callback) {
 };
 
 $.right = function (msg) {
-    layer.alert(msg, {icon: 1, shift: 5});
+    layer.alert(msg, {icon: 1, anim: 0});
 };
 $.error = function (msg) {
-    layer.alert(msg, {icon: 5, shift: 5});
+    layer.alert(msg, {icon: 5, anim: 0});
 };
 
 
@@ -70,7 +70,7 @@ $.window = function (html, title, callback) {
     layer.open({
         title: title,
         content: html,
-        shift: 5,
+        anim: 0,
         btn: ["确定", "取消"],
         yes: function () {
             callback();
