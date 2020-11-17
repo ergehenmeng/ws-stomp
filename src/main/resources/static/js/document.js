@@ -32,6 +32,8 @@ let connectServer = function(endpoint, num) {
     }
     let socket = new SockJS(endpoint);
     stompClient = Stomp.over(socket);
+    // 禁用debug模式
+    stompClient.debug = null;
     stompClient.heartbeat.incoming = 10000;
     stompClient.connect({}, function (frame) {
         if (load != null) {
@@ -39,8 +41,8 @@ let connectServer = function(endpoint, num) {
         }
         initDoc();
         initChat();
-    }, function (err) {
-        console.error("websocket链接失败:" + err.stack);
+    }, function (e) {
+        console.error("websocket链接异常 " +  e);
         connectServer(endpoint, ++num);
     });
 };
