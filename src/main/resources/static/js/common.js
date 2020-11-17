@@ -2,8 +2,7 @@ $.loadMsg = function (msg) {
     return parent.layer.msg(msg, {
         icon: 16,
         time: 0,
-        shade: [0.4, '#000'],
-        anim: 0
+        shade: [0.4, '#000']
     });
 };
 $.deleteFun = function (url, id, msg, data, callback, value) {
