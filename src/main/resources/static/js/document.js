@@ -40,7 +40,7 @@ let connectServer = function(endpoint, num) {
         initDoc();
         initChat();
     }, function (err) {
-        console.error("websocket链接失败:" + err);
+        console.error("websocket链接失败:" + err.stack);
         connectServer(endpoint, num++);
     });
 };
