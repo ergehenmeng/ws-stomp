@@ -6,7 +6,7 @@ $(function () {
         }
     });
     $("#logout").on("click", function () {
-        layer.confirm("确定要退出系统吗?", {icon: 3, shift: 5}, function (yes) {
+        layer.confirm("确定要退出系统吗", {icon: 3, anim: 0}, function (yes) {
             $.post("/logout",{}, function (data) {
                 if (data.code === 200) {
                     window.location.href="/index";
@@ -210,19 +210,13 @@ let centerMenu = [[{
 }]];
 
 
-function openNewWindow(url) {
-    document.document.action = url;
-    window.open('about:blank', 'newWindow');
-    document.document.target = 'newWindow';
-    document.document.submit();
-}
 
 
 let fileMenu = [[{
     text: "打开",
     func: function () {
         let id = $(this).children(".id").val();
-        openNewWindow("/document/" + spaceId + "/" + id);
+        window.open("/document/" + spaceId + "/" + id);
     }
 }, {
     text: "排序",
