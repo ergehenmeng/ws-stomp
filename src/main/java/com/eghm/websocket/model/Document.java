@@ -1,5 +1,6 @@
 package com.eghm.websocket.model;
 
+import com.eghm.websocket.annotation.Tag;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -87,6 +88,12 @@ public class Document implements Serializable {
      * 对应字段 : content<br>
      */
     private String content;
+
+    /**
+     * 用户加密字段
+     */
+    @Tag
+    private String author;
 
     private static final long serialVersionUID = 1L;
 

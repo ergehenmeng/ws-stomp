@@ -125,7 +125,7 @@ function formatHtml(entity) {
 
 function updateDocument(newValue, json) {
     json["docName"] = newValue;
-    $.post("/updateDocument/" + spaceId, json, function (data) {
+    $.post("/updateDocument", json, function (data) {
         if (data.result === 200) {
             $.right(data.msg);
             searchDocument();
@@ -143,7 +143,7 @@ function updateDocument(newValue, json) {
  */
 function addPassword(value, json) {
     json["pwd"] = value;
-    $.post("/createPassword/" + spaceId, json, function (data) {
+    $.post("/createPassword", json, function (data) {
         if (data.result === 200) {
             $.right(data.msg);
         } else {
@@ -215,8 +215,26 @@ let centerMenu = [[{
 let fileMenu = [[{
     text: "打开",
     func: function () {
+        let hasPwd = $(this).children(".hasPwd").val();
         let id = $(this).children(".id").val();
-        window.open("/document/" + spaceId + "/" + id);
+        let author = $(this).children(".author").val();
+        if (hasPwd && author !== userId) {
+            $.showPrompt("请输入文档密码",'', {'docId': id}, function (value, json) {
+                let timestamp = new Date().getTime();
+                let pwd = md5(md5(value) + timestamp);
+                json["pwd"] = pwd;
+                json["timestamp"] = timestamp;
+                $.post("/checkPassword", json, function (data) {
+                    if (data.code === 200) {
+                        window.open("/document/" + spaceId + "/" + id + "?p=" + pwd + "&t=" + timestamp);
+                    } else {
+                        $.error("密码输入错误");
+                    }
+                });
+            })
+        } else {
+            window.open("/document/" + spaceId + "/" + id);
+        }
     }
 }, {
     text: "排序",

@@ -69,6 +69,8 @@
                                          style="height: 100px;  display: block;">
                                     <span>${document.docName}</span>
                                     <input type="hidden" class="id" value="${document.id}"/>
+                                    <input type="hidden" class="hasPwd" value="<#if document.pwd??>true</#if>"/>
+                                    <input type="hidden" class="author" value="${(document.author)!}"/>
                                     <input type="hidden" class="type" value="${document.type}"/>
                                 </a>
                             </div>

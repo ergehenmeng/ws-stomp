@@ -2,6 +2,7 @@ package com.eghm.websocket.controller;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.MD5;
 import com.eghm.websocket.constant.SocketConstant;
 import com.eghm.websocket.dto.RespBody;
 import com.eghm.websocket.dto.SendDoc;
@@ -109,9 +110,10 @@ public class DocumentController {
      */
     @RequestMapping("/checkPassword")
     @ResponseBody
-    public RespBody<Object> checkPassword(Long docId, String pwd) {
+    public RespBody<Object> checkPassword(Long docId, String pwd, String timestamp) {
         Document doc = documentService.getById(docId);
-        if (StrUtil.isNotEmpty(doc.getPwd()) && !doc.getPwd().equals(pwd)) {
+        boolean checkPwd = this.checkPwd(doc.getPwd(), pwd, timestamp);
+        if (!checkPwd) {
             return RespBody.error(ErrorCode.DOC_PWD_ERROR);
         }
         return RespBody.success();
@@ -121,10 +123,13 @@ public class DocumentController {
      * 文档管理页面
      */
     @RequestMapping("/document/{spaceId}/{documentId}")
-    public String document(@PathVariable Long spaceId, @PathVariable Long documentId, Model model) {
+    public String document(@PathVariable Long spaceId, @PathVariable Long documentId, String p, String t, Model model) {
+        Document document = documentService.getById(documentId);
+        if (!this.checkPwd(document.getPwd(), p, t)) {
+            return "redirect:/home";
+        }
         model.addAttribute("spaceId", spaceId);
         model.addAttribute("documentId", documentId);
-        Document document = documentService.getById(documentId);
         Long userId = ShiroUtil.getUserId();
         model.addAttribute("userId", StringUtil.encryptNumber(userId));
         model.addAttribute("editable", userId.equals(document.getUserId()));
@@ -133,6 +138,9 @@ public class DocumentController {
         return "document";
     }
 
+    private boolean checkPwd(String docPwd, String pwd, String timestamp) {
+        return StrUtil.isEmpty(docPwd) || MD5.create().digestHex((docPwd + timestamp)).equalsIgnoreCase(pwd);
+    }
 
     /**
      * 订阅文档接口

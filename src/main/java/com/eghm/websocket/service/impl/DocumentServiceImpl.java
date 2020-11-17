@@ -1,5 +1,6 @@
 package com.eghm.websocket.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.eghm.websocket.dto.request.SearchDocumentRequest;
 import com.eghm.websocket.enums.ErrorCode;
 import com.eghm.websocket.enums.FileType;
@@ -9,6 +10,7 @@ import com.eghm.websocket.model.Document;
 import com.eghm.websocket.service.DocumentService;
 import com.eghm.websocket.utils.KeyGenerator;
 import com.eghm.websocket.utils.ShiroUtil;
+import com.eghm.websocket.utils.StringUtil;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -47,7 +49,11 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public List<Document> getList(SearchDocumentRequest request) {
-        return documentMapper.getList(request);
+        List<Document> documentList = documentMapper.getList(request);
+        if (CollUtil.isNotEmpty(documentList)) {
+            documentList.forEach(document -> document.setAuthor(StringUtil.encryptNumber(document.getUserId())));
+        }
+        return documentList;
     }
 
     @Override
