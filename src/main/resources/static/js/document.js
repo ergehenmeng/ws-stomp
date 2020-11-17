@@ -206,10 +206,11 @@ function initEditor() {
         // 只有可编辑时需要出发同步操作
         editor.config.onchangeTimeout = 1000;
         editor.config.onchange = syncDocument;
-    } else {
-        editor.disable();
     }
     editor.create();
+    if (!editable) {
+        editor.disable();
+    }
     return editor;
 }
 
