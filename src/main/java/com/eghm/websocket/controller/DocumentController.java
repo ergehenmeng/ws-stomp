@@ -127,6 +127,7 @@ public class DocumentController {
         Long userId = ShiroUtil.getUserId();
         model.addAttribute("userId", StringUtil.encryptNumber(userId));
         model.addAttribute("editable", userId.equals(document.getId()));
+        // wangEditor不吃转义后的html 可能出现xss???
         model.addAttribute("content", StringEscapeUtils.unescapeHtml4(document.getContent()));
         model.addAttribute("title", document.getDocName());
         return "document";
