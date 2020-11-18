@@ -30,7 +30,7 @@ $.showPrompt = function (title, defaultValue, json, callback) {
     layer.prompt({
         formType: 0,
         title: title,
-        maxlength: 8,
+        maxlength: 12,
         value: defaultValue
     }, function (value, index) {
         layer.close(index);
@@ -42,18 +42,17 @@ $.showPrompt = function (title, defaultValue, json, callback) {
  * 密码框,文本域
  * @param title 标题
  * @param callback 回调函数
- * @param length 长度限制
- * @param data 附加数据
+ * @param json 传递过来的参数
  */
-$.password = function (title, length, data, callback) {
+$.password = function (title, json, callback) {
     layer.prompt({
         formType: 1, // 密码框
         title: title,
         anim: 0,
-        maxlength: length
+        maxlength: 6
     }, function (value, index, elem) {
         layer.close(index);
-        callback(value, data);
+        callback(value, json);
     });
 };
 

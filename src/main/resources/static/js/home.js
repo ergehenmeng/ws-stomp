@@ -219,7 +219,7 @@ let fileMenu = [[{
         let id = $(this).children(".id").val();
         let author = $(this).children(".author").val();
         if (hasPwd && author !== userId) {
-            $.showPrompt("请输入文档密码",'', {'docId': id}, function (value, json) {
+            $.password("请输入文档密码",{'docId': id}, function (value, json) {
                 let timestamp = new Date().getTime();
                 let pwd = md5(md5(value) + timestamp);
                 json["pwd"] = pwd;
