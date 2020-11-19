@@ -85,7 +85,8 @@ public class ChatController {
             LimitQueue<ChatMessage> limit = cacheChat.get(sendChat.getDocumentId());
             limit.offer(message);
             // 向所有订阅该接口的用户发送聊天信息
-            messagingTemplate.convertAndSend(MessageFormat.format(SocketConstant.CHAT_ROOM_PREFIX, sendChat.getSpaceId(), sendChat.getDocumentId()), SocketBody.success(ActionType.CHAT_MSG, message));
+            messagingTemplate.convertAndSend(MessageFormat.format(SocketConstant.CHAT_ROOM_PREFIX, String.valueOf(sendChat.getSpaceId()), String.valueOf(sendChat.getDocumentId())), SocketBody.success(ActionType.CHAT_MSG, message));
         }
     }
+
 }
