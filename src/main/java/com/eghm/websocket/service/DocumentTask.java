@@ -36,7 +36,7 @@ public class DocumentTask {
 
     @PreDestroy
     public void destroy() {
-        log.info("开始关闭线程池...");
         Holder.WORD_EXECUTOR.shutdown();
+        log.info("...线程池已关闭...");
     }
 }

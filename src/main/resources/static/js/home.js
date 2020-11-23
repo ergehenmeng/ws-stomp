@@ -7,13 +7,19 @@ $(function () {
     });
     $("#logout").on("click", function () {
         layer.confirm("确定要退出系统吗", {icon: 3, anim: 0}, function (yes) {
-            $.post("/logout",{}, function (data) {
-                if (data.code === 200) {
-                    window.location.href="/index";
-                } else {
+            $.ajax("/logout",{
+                type: "get",
+                success: function (data) {
+                    if (data.code === 200) {
+                        window.location.href="/index";
+                    } else {
+                        $.error(data.msg);
+                    }
+                },
+                error: function () {
                     $.error(data.msg);
                 }
-            })
+            });
         });
     });
 });
@@ -64,7 +70,8 @@ function searchDocument() {
             if (data.code === 200) {
                 loadDocument(data.data, true);
             } else {
-                $.error(data.msg);
+                $.error("网络错误,请重试");
+                window.location.reload();
             }
         }
     });
