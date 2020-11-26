@@ -50,25 +50,25 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public String encryptPrivateKey(String source) {
-        RSA rsa = new RSA(this.getPrivateKey(), this.getPublicKey());
+        RSA rsa = new RSA(this.getPrivateKey(), null);
         return rsa.encryptBase64(source, KeyType.PrivateKey);
     }
 
     @Override
     public String decryptPrivateKey(String source) {
-        RSA rsa = new RSA(this.getPrivateKey(), this.getPublicKey());
+        RSA rsa = new RSA(this.getPrivateKey(), null);
         return rsa.decryptStr(source, KeyType.PrivateKey);
     }
 
     @Override
     public String encryptPublicKey(String source) {
-        RSA rsa = new RSA(this.getPrivateKey(), this.getPublicKey());
+        RSA rsa = new RSA(null, this.getPublicKey());
         return rsa.encryptBase64(source, KeyType.PublicKey);
     }
 
     @Override
     public String decryptPublicKey(String source) {
-        RSA rsa = new RSA(this.getPrivateKey(), this.getPublicKey());
+        RSA rsa = new RSA(null, this.getPublicKey());
         return rsa.decryptStr(source, KeyType.PublicKey);
     }
 
@@ -89,15 +89,14 @@ public class SignServiceImpl implements SignService {
 
     private PrivateKey getPrivateKey() {
         try {
-            KeyStore ks = KeyStore.getInstance("PKCS12");
             char[] charPassword = password.toCharArray();
-            ks.load(privateKeyResource.getInputStream(), charPassword);
-            Enumeration<String> aliasEnum = ks.aliases();
+            KeyStore keyStore = KeyUtil.readPKCS12KeyStore(privateKeyResource.getInputStream(), charPassword);
+            Enumeration<String> aliasEnum = keyStore.aliases();
             String keyAlias = null;
             if (aliasEnum.hasMoreElements()) {
                 keyAlias = aliasEnum.nextElement();
             }
-            return (PrivateKey) ks.getKey(keyAlias, charPassword);
+            return (PrivateKey) keyStore.getKey(keyAlias, charPassword);
         } catch (Exception e) {
             log.error("获取私钥失败", e);
             throw new RuntimeException("获取私钥失败");
