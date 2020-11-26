@@ -43,7 +43,7 @@ public interface SignService {
     boolean verifySign(String source, String signature);
 
     /**
-     * 签名
+     * 签名 使用私钥签名
      * @param source 原始字符串
      * @return 签名后的字符串
      */

@@ -76,8 +76,7 @@ public class SignServiceImpl implements SignService {
     public boolean verifySign(String source, String signature) {
         PublicKey publicKey = KeyUtil.generateRSAPublicKey(this.getPublicKey().getEncoded());
         Sign sign = new Sign(SignAlgorithm.SHA1withRSA, null, publicKey);
-        sign.verify(source.getBytes(), HexUtil.decodeHex(signature));
-        return false;
+        return sign.verify(source.getBytes(), HexUtil.decodeHex(signature));
     }
 
     @Override
@@ -108,7 +107,5 @@ public class SignServiceImpl implements SignService {
     private PublicKey getPublicKey() {
         return SecureUtil.readCertificate("X509",new ByteArrayInputStream(Base64Decoder.decode(publicKey))).getPublicKey();
     }
-
-
 
 }
