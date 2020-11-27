@@ -35,16 +35,24 @@ public class BaoFuProperties {
     /**
      * 机构号/平台号
      */
+    @Value("${orgNo}")
     private String orgNo;
 
     /**
      * 商户号
      */
+    @Value("${merchantNo}")
     private String merchantNo;
 
     /**
      * 终端号
      */
+    @Value("${terminalNo}")
     private String terminalNo;
 
+    /**
+     * 唤醒地址
+     */
+    @Value("${awakeUrl}")
+    private String awakeUrl;
 }

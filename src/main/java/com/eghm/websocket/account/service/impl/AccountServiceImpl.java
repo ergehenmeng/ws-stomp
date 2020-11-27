@@ -4,6 +4,7 @@ import com.eghm.websocket.account.constant.SignConstant;
 import com.eghm.websocket.account.enums.CallType;
 import com.eghm.websocket.account.request.CallRequest;
 import com.eghm.websocket.account.service.AccountService;
+import com.eghm.websocket.account.service.HttpClientService;
 import com.eghm.websocket.account.service.SignService;
 import com.eghm.websocket.utils.BaoFuProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,11 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private SignService signService;
 
+    @Autowired
+    private HttpClientService httpClientService;
 
     @Override
-    public CallRequest getCall(CallType callType, String loginNo, String dataContent) {
+    public String getAwakeUrl(CallType callType, String loginNo, String dataContent) {
         CallRequest request = new CallRequest();
         request.setOrgNo(baoFuProperties.getOrgNo());
         request.setMerchantNo(baoFuProperties.getMerchantNo());
@@ -33,7 +36,9 @@ public class AccountServiceImpl implements AccountService {
         request.setDataContent(dataContent);
         String signData = signService.sign(SignConstant.AWAKE_SIGN, request);
         request.setSignData(signData);
-        return request;
+        return httpClientService.doPost(baoFuProperties.getAwakeUrl(), request);
     }
+
+
 
 }
