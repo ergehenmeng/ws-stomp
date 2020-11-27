@@ -13,6 +13,6 @@ public class AccountServiceTest extends BaseTest {
 
     @Test
     public void getCall() {
-        accountService.getAwakeUrl(CallType.REGISTER, "13136213695", null);
+        System.out.println(accountService.getAwakeUrl(CallType.REGISTER, "13136213695", null));
     }
 }
