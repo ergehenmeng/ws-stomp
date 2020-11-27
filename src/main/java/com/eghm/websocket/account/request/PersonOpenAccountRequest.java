@@ -1,7 +1,6 @@
 package com.eghm.websocket.account.request;
 
 import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.format.FastDateFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -36,7 +35,7 @@ public class PersonOpenAccountRequest {
     /**
      * 请求日期
      */
-    private String requestDate = DatePattern.PURE_DATETIME_FORMAT.format(new Date());;
+    private String requestDate = DatePattern.PURE_DATETIME_FORMAT.format(new Date());
 
     /**
      * 客户姓名

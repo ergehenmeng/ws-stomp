@@ -16,4 +16,12 @@ public interface AccountService {
      * @return 跳转的地址
      */
     String getAwakeUrl(CallType callType, String loginNo, String dataContent);
+
+
+    /**
+     * 企业申请开户
+     * @param loginNo 登录号(唯一)
+     * @param email 邮箱号(用于注册接收验证等)
+     */
+    void enterpriseAccountApply(String loginNo, String email);
 }

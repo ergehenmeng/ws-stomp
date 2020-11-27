@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @author 殿小二
  * @date 2020/11/27
  */
-@PropertySource("classpath:baofu.properties")
+@PropertySource("classpath:crypt/baofu.properties")
 @Component
 @Data
 public class BaoFuProperties {
@@ -51,8 +51,21 @@ public class BaoFuProperties {
     private String terminalNo;
 
     /**
-     * 唤醒地址
+     * 拉起网关页面时的请求地址
      */
     @Value("${awakeUrl}")
     private String awakeUrl;
+
+    /**
+     * 企业开户成功异步通知地址
+     */
+    @Value("${enterpriseNotifyUrl}")
+    private String enterpriseNotifyUrl;
+
+    /**
+     * 企业开户地址
+     */
+    @Value("${enterpriseOpenUrl}")
+    private String enterpriseOpenUrl;
+
 }

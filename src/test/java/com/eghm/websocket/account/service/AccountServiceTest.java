@@ -12,7 +12,12 @@ public class AccountServiceTest extends BaseTest {
 
 
     @Test
-    public void getCall() {
+    public void getAwakeUrl() {
         System.out.println(accountService.getAwakeUrl(CallType.REGISTER, "13136213695", null));
+    }
+
+    @Test
+    public void getEnterpriseOpenUrl() {
+        accountService.enterpriseAccountApply("123123123", "664956140@qq.com");
     }
 }

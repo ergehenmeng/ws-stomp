@@ -3,6 +3,7 @@ package com.eghm.websocket.account.response;
 import lombok.Data;
 
 /**
+ * 针对普通接口响应的基类
  * @author 殿小二
  * @date 2020/11/27
  */
@@ -10,17 +11,22 @@ import lombok.Data;
 public class BaseResponse {
 
     /**
-     * 成功的状态
-     */
-    public static final String SUCCESS = "SUCCESS";
-
-    /**
      * 成功或失败状态
      */
-    private String retCode;
+    private Boolean success;
 
     /**
-     * 失败时的错误信息
+     * 结果状态 没卵用
      */
-    private String retMsg;
+    private Boolean result;
+
+    /**
+     * 错误码 success=false时有值
+     */
+    private String errorCode;
+
+    /**
+     * 错误信息 success=false时有值
+     */
+    private String errorMsg;
 }

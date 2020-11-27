@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class AwakeResponse extends BaseResponse{
+public class AwakeResponse extends H5Response {
 
     /**
      * 成功后跳转的地址
