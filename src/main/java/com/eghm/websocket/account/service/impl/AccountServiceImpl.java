@@ -1,8 +1,5 @@
 package com.eghm.websocket.account.service.impl;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.crypto.asymmetric.KeyType;
-import cn.hutool.crypto.asymmetric.RSA;
 import com.eghm.websocket.account.enums.CallType;
 import com.eghm.websocket.account.request.CallRequest;
 import com.eghm.websocket.account.service.AccountService;
@@ -36,7 +33,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public CallRequest getCall(CallType callType, String loginNo) {
         CallRequest request = new CallRequest();
-        request.setOrgNo(orgNo);
         request.setMerchantNo(merchantNo);
         request.setTerminalNo(terminalNo);
         request.setCallType(callType);
@@ -46,19 +42,4 @@ public class AccountServiceImpl implements AccountService {
         return null;
     }
 
-    private String signRequest(CallRequest request) {
-        RSA rsa = new RSA(null, publicKey);
-        String base64 = rsa.encryptBase64("ABC".getBytes(), KeyType.PublicKey);
-        System.out.println(base64);
-        return base64;
-    }
-
-    public static void main(String[] args) {
-        byte[] readBytes = FileUtil.readBytes("D:\\BusinessBaoHuTong\\BusinessBaoHuTong\\WebContent\\CER\\bfkey_100026363@@200001510.pfx");
-
-        RSA rsa = new RSA(readBytes, null);
-        String base64 = rsa.encryptBase64("ABC".getBytes(), KeyType.PrivateKey);
-
-        System.out.println(base64);
-    }
 }

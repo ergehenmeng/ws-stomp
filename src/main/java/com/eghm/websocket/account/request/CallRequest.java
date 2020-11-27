@@ -12,7 +12,7 @@ public class CallRequest {
     /**
      * 宝付提供 机构号
      */
-    private String orgNo;
+    private String loginMobile;
 
     /**
      * 商户号
