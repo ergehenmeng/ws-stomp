@@ -21,8 +21,12 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public String sign(BusinessType type, Object object) {
+        return this.sign(type.getSignField(), object);
+    }
+
+    @Override
+    public String sign(String[] signField, Object object) {
         Map<String, Object> objectMap = BeanUtil.beanToMap(object);
-        String[] signField = type.getSignField();
         StringBuilder builder = new StringBuilder();
         for (String key: signField) {
             builder.append(objectMap.get(key)).append("|");

@@ -32,4 +32,19 @@ public class BaoFuProperties {
     @Value("${password}")
     private String password;
 
+    /**
+     * 机构号/平台号
+     */
+    private String orgNo;
+
+    /**
+     * 商户号
+     */
+    private String merchantNo;
+
+    /**
+     * 终端号
+     */
+    private String terminalNo;
+
 }

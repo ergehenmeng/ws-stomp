@@ -6,13 +6,16 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author 二哥很猛
+ */
 @Data
 public class CallRequest {
 
     /**
      * 宝付提供 机构号
      */
-    private String loginMobile;
+    private String orgNo;
 
     /**
      * 商户号

@@ -15,4 +15,12 @@ public interface SignService {
      * @return 签名字符串
      */
     String sign(BusinessType type, Object object);
+
+    /**
+     * 给指定对象进行签名
+     * @param signField 签名排序字段
+     * @param object 签名对象
+     * @return 签名字符串
+     */
+    String sign(String[] signField, Object object);
 }
