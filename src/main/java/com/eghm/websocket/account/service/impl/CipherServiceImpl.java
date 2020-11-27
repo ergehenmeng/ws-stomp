@@ -91,8 +91,4 @@ public class CipherServiceImpl implements CipherService {
         return SecureUtil.readCertificate("X509",new ByteArrayInputStream(Base64Decoder.decode(baoFuProperties.getPublicKey()))).getPublicKey();
     }
 
-    public static void main(String[] args) {
-        CipherService service = new CipherServiceImpl();
-        System.out.println(service.sign("abc"));
-    }
 }

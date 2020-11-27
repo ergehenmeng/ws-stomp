@@ -1,6 +1,7 @@
 package com.eghm.websocket.account.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.eghm.websocket.account.enums.BusinessType;
 import com.eghm.websocket.account.service.CipherService;
 import com.eghm.websocket.account.service.SignService;
@@ -26,12 +27,17 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public String sign(String[] signField, Object object) {
-        Map<String, Object> objectMap = BeanUtil.beanToMap(object);
+        Map<String, Object> objectMap = BeanUtil.beanToMap(object, false, true);
         StringBuilder builder = new StringBuilder();
         for (String key: signField) {
-            builder.append(objectMap.get(key)).append("|");
+            Object value = objectMap.get(key);
+            // 宝付文档写的要传null,但他妈竟然不吃null
+            if (ObjectUtil.isNotNull(value)) {
+                builder.append(value);
+            }
+            builder.append("|");
         }
-        String substring = builder.substring(0, builder.length() - 2);
+        String substring = builder.substring(0, builder.length() - 1);
         return cipherService.sign(substring);
     }
 
