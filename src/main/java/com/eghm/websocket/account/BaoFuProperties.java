@@ -1,4 +1,4 @@
-package com.eghm.websocket.utils;
+package com.eghm.websocket.account;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

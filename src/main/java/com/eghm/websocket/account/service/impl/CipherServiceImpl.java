@@ -9,7 +9,7 @@ import cn.hutool.crypto.asymmetric.RSA;
 import cn.hutool.crypto.asymmetric.Sign;
 import cn.hutool.crypto.asymmetric.SignAlgorithm;
 import com.eghm.websocket.account.service.CipherService;
-import com.eghm.websocket.utils.BaoFuProperties;
+import com.eghm.websocket.account.BaoFuProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

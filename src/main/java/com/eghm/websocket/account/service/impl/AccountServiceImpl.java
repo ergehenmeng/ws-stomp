@@ -10,7 +10,7 @@ import com.eghm.websocket.account.response.H5Response;
 import com.eghm.websocket.account.service.AccountService;
 import com.eghm.websocket.account.service.HttpClientService;
 import com.eghm.websocket.account.service.SignService;
-import com.eghm.websocket.utils.BaoFuProperties;
+import com.eghm.websocket.account.BaoFuProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
