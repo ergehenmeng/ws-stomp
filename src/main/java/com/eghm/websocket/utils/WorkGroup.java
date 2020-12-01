@@ -41,9 +41,9 @@ public enum WorkGroup {
     private static final long HOSTNAME_WORK_ID = 0L;
 
     /**
-     * 根据机器IP获取工作进程Id,如果线上机器的IP二进制表示的最后10位不重复,建议使用此种方式
+     * 根据机器IP获取工作进程Id,如果线上机器的IP二进制表示的最后8位不重复,建议使用此种方式
      * ,列如机器的IP为192.168.1.108,二进制表示:11000000 10101000 00000001 01101100
-     * ,截取最后10位 01 01101100,转为十进制364,设置workerId为364.
+     * ,截取最后8位 01101100,转为十进制108,设置workerId为108. 也可取最后10位 按业务需求来(机器多的话10位)
      */
     private static long workId;
 
@@ -55,7 +55,7 @@ public enum WorkGroup {
             throw new SystemException(ErrorCode.UNKNOWN_HOST_ADDRESS);
         }
         byte[] ipAddressByteArray = address.getAddress();
-        workId = (((ipAddressByteArray[ipAddressByteArray.length - 2] & 0B11) << Byte.SIZE) + (ipAddressByteArray[ipAddressByteArray.length - 1] & 0xFF));
+        workId = ipAddressByteArray[ipAddressByteArray.length - 1];
     }
 
     /**

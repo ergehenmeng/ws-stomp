@@ -9,7 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * 1 + 41 + 10 + 12
+ * 5为预留位
+ * 5 + 41 + 8 + 10
  *
  * @author 二哥很猛
  * @date 2018/9/19 11:04
@@ -24,17 +25,17 @@ public class KeyGenerator {
     private static final long EPOCH;
 
     /**
-     * 自增序列占位长度 支持:4096/ms
+     * 自增序列占位长度 支持:1024/ms
      */
-    private static final long SEQUENCE_BITS = 12L;
+    private static final long SEQUENCE_BITS = 10L;
 
     /**
-     * 机器id占位长度 1024
+     * 机器id占位长度 256
      */
-    private static final long WORKER_ID_BITS = 10L;
+    private static final long WORKER_ID_BITS = 8L;
 
     /**
-     * 自增序列最大值 4095,如果同一毫秒生成序列超过4095个,会等待下一毫秒再生成
+     * 自增序列最大值 1024,如果同一毫秒生成序列超过1024个,会等待下一毫秒再生成
      */
     private static final long SEQUENCE_MASK = (1L << SEQUENCE_BITS) - 1;
 
