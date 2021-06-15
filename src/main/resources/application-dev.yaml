@@ -1,0 +1,42 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:log4jdbc:mysql://127.0.0.1:3306/stomp?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&serverTimezone=UTC&useSSL=true
+    username: root
+    password: root
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+    hikari:
+      connection-test-query: select 'x'
+      idle-timeout: 60000
+      maximum-pool-size: 100
+      minimum-idle: 5
+  ## freemarker 相关配置
+  freemarker:
+    cache: false
+    template-loader-path: classpath:/templates/
+    settings:
+      template_update_delay: 60s
+      number_format: 0.##
+      default_encoding: UTF-8
+      output_encoding: UTF-8
+      url_escaping_charset: UTF-8
+      locale: zh_CN
+      time_format: HH:mm:ss
+      date_format: yyyy-MM-dd
+      datetime_format: yyyy-MM-dd HH:mm:ss
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    suffix: .ftl
+## mybatis相关配置
+mybatis:
+  mapper-locations:
+    - classpath*:mapper/**/*.xml
+project:
+  captcha: false
+shiro:
+  unauthorizedUrl: /index
+  loginUrl: /index
+  userNativeSessionManager: true
